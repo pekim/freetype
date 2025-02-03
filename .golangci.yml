@@ -126,6 +126,8 @@ linters-settings:
 
       # Functions or methods with unused parameters can be a symptom of an unfinished refactoring or a bug.
       - name: unused-parameter
+        arguments:
+          - allowRegex: "^_"
 
       # report when a variable declaration can be simplified
       - name: var-declaration

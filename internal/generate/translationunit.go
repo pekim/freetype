@@ -53,8 +53,8 @@ func newTranslationUnit(headerFile string) translationUnit {
 	return transUnit
 }
 
-func (tu translationUnit) enrichApi(api *api) {
-	tu.TranslationUnitCursor().Visit(func(cursor, parent clang.Cursor) (status clang.ChildVisitResult) {
+func (tu translationUnit) enrichApi(_api *api) {
+	tu.TranslationUnitCursor().Visit(func(cursor, _parent clang.Cursor) (status clang.ChildVisitResult) {
 		// file, _, _, _ := cursor.Location().FileLocation()
 		f, l, c, _ := cursor.Location().ExpansionLocation()
 		if strings.Contains(f.Name(), "freetype/") {

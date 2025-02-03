@@ -1,15 +1,16 @@
 package generate
 
 import (
-	_ "embed"
 	"fmt"
 	"runtime"
 	"sync"
 	"time"
 
 	"golang.org/x/sync/errgroup"
-	// "muzzammil.xyz/jsonc"
 )
+
+// _ "embed"
+// "muzzammil.xyz/jsonc"
 
 // //go:embed api.jsonc
 // var apiJson []byte
