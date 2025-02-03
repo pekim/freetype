@@ -60,7 +60,7 @@ linters-settings:
       # Default section: catchall that is not standard or custom
       - default
       # linters that related to local tool, so they should be separated
-      - localmodule
+      # - localmodule
 
   revive:
     rules:
