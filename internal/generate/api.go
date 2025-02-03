@@ -2,11 +2,8 @@ package generate
 
 import (
 	"fmt"
-	"runtime"
 	"sync"
 	"time"
-
-	"golang.org/x/sync/errgroup"
 )
 
 // _ "embed"
@@ -21,7 +18,7 @@ type api struct {
 	// Functions     []callable `json:"functions"`
 	// Typedefs      []typedef  `json:"typedefs"`
 	// Variables     []variable
-	tus           []translationUnit
+	tu            translationUnit
 	variablesLock *sync.Mutex
 }
 
@@ -29,29 +26,16 @@ func (api *api) parseTranslationUnits() {
 	// err := json.Unmarshal(jsonc.ToJSON(apiJson), &api)
 	// fatalOnError(err)
 
-	fmt.Print("parse header files ")
+	fmt.Print("parse header file ")
 	start := time.Now()
-	api.tus = make([]translationUnit, len(headerFiles))
-	var group errgroup.Group
-	group.SetLimit(runtime.NumCPU())
-	for i, headerFile := range headerFiles {
-		group.Go(func() error {
-			api.tus[i] = newTranslationUnit(headerFile)
-			fmt.Print(".")
-			return nil
-		})
-	}
-	err := group.Wait()
-	fatalOnError(err)
+	api.tu = newTranslationUnit("internal/generate/freetype.h")
 	fmt.Printf(" %dms\n", time.Since(start).Milliseconds())
 }
 
 func (api *api) enrich1() {
 	fmt.Print("enrich 1")
 	start := time.Now()
-	for _, tu := range api.tus {
-		tu.enrichApi(api)
-	}
+	api.tu.enrichApi(api)
 	fmt.Printf(" %dms\n", time.Since(start).Milliseconds())
 }
 

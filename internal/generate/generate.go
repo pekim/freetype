@@ -5,10 +5,6 @@ import (
 	"sync"
 )
 
-var headerFiles = []string{
-	"internal/generate/freetype.h",
-}
-
 type generator struct {
 	// goFile     *fileGo
 	// headerFile *fileHeader
