@@ -37,5 +37,5 @@ func (lib Library) NewFace(filepathname string, index int) (Face, error) {
 
 	face := Face{}
 	err := C.FT_New_Face(lib.library, cFilepathname, C.FT_Long(index), &face.face)
-	return face, newError(err, "failed to create a face for a file")
+	return face, newError(err, "failed to create a face for file '%s'", filepathname)
 }

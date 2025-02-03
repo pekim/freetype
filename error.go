@@ -234,19 +234,19 @@ var errorsText = map[C.FT_Error]string{
 
 type Error struct {
 	ftError C.FT_Error
-	action  string
+	message string
 }
 
-func newError(err C.FT_Error, action string) error {
+func newError(err C.FT_Error, format string, args ...any) error {
 	if err == C.FT_Err_Ok {
 		return nil
 	}
 	return Error{
 		ftError: err,
-		action:  action,
+		message: fmt.Sprintf(format, args...),
 	}
 }
 
 func (err Error) Error() string {
-	return fmt.Sprintf("%s : error %d : %s", err.action, err.ftError, errorsText[err.ftError])
+	return fmt.Sprintf("%s : error %d : %s", err.message, err.ftError, errorsText[err.ftError])
 }
