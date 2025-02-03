@@ -33,6 +33,8 @@ func TestLibraryNewFace(t *testing.T) {
 	face, err := lib.NewFace("internal/font/DejaVuSansMono.ttf", 0)
 	assert.Nil(t, err)
 	assert.NotNil(t, face.face)
+	err = face.Done()
+	assert.Nil(t, err)
 
 	// no such file
 	face, err = lib.NewFace("bad path", 0)
