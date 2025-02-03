@@ -13,6 +13,7 @@ import (
 type translationUnit struct {
 	headerFile string
 	clang.TranslationUnit
+	sourceFiles sourceFiles
 }
 
 var clangResourceDir = sync.OnceValue[string](func() string {
@@ -42,11 +43,14 @@ func newTranslationUnit(headerFile string) translationUnit {
 	}
 
 	transUnit := translationUnit{
-		headerFile: headerFile,
+		headerFile:  headerFile,
+		sourceFiles: newSourceFiles(),
 	}
 	index := clang.NewIndex(0, 1)
 	errCode := index.ParseTranslationUnit2(headerFile, parseArgs, nil,
-		clang.TranslationUnit_SkipFunctionBodies, &transUnit.TranslationUnit)
+		clang.TranslationUnit_SkipFunctionBodies|clang.TranslationUnit_DetailedPreprocessingRecord,
+		&transUnit.TranslationUnit,
+	)
 	if errCode != clang.Error_Success {
 		fatal(errCode)
 	}
@@ -55,15 +59,28 @@ func newTranslationUnit(headerFile string) translationUnit {
 
 func (tu translationUnit) enrichApi(_api *api) {
 	tu.TranslationUnitCursor().Visit(func(cursor, _parent clang.Cursor) (status clang.ChildVisitResult) {
-		// file, _, _, _ := cursor.Location().FileLocation()
-		f, l, c, _ := cursor.Location().ExpansionLocation()
-		if strings.Contains(f.Name(), "freetype/") {
-			fmt.Println(f.Name(), l, c, cursor.Kind(), cursor.Spelling())
+		file, line, col, _ := cursor.Location().FileLocation()
+		if !strings.Contains(file.Name(), "freetype/") {
+			// Skip declarations from non-freetype files.
+			return clang.ChildVisit_Continue
 		}
-		// 	if file.Name() != tu.headerFile {
-		// 		// Skip declarations from other files.
-		// 		return clang.ChildVisit_Continue
-		// 	}
+
+		switch cursor.Kind() {
+		case clang.Cursor_MacroDefinition:
+			if strings.HasPrefix(cursor.Spelling(), "FT_") {
+				fmt.Println(file.Name(), line, col, cursor.Kind(), cursor.Spelling())
+				line := tu.sourceFiles.line(file.Name(), int(line))
+				fmt.Println("  ", line)
+			}
+
+			// case clang.Cursor_MacroExpansion:
+			// 	fmt.Println("!!!!", cursor.Spelling())
+			// fmt.Println("  ", cursor.IsMacroFunctionLike())
+			// cursor.Visit(func(cursor, _parent clang.Cursor) clang.ChildVisitResult {
+			// 	fmt.Println("  ", cursor.Kind(), cursor.Spelling())
+			// 	return clang.ChildVisit_Continue
+			// })
+		}
 
 		// 	switch cursor.Kind() {
 		// 	case clang.Cursor_Namespace:
