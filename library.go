@@ -2,7 +2,13 @@ package freetype
 
 // #include <ft2build.h>
 // #include FT_FREETYPE_H
+//
+// #include <stdlib.h>
 import "C"
+
+import (
+	"unsafe"
+)
 
 type Library struct {
 	library C.FT_Library
@@ -23,4 +29,13 @@ func (lib Library) Version() (int, int, int) {
 	var major, minor, patch C.FT_Int
 	C.FT_Library_Version(lib.library, &major, &minor, &patch)
 	return int(major), int(minor), int(patch)
+}
+
+func (lib Library) NewFace(filepathname string, index int) (Face, error) {
+	cFilepathname := C.CString(filepathname)
+	defer C.free(unsafe.Pointer(cFilepathname))
+
+	face := Face{}
+	err := C.FT_New_Face(lib.library, cFilepathname, C.FT_Long(index), &face.face)
+	return face, newError(err, "failed to create a face for a file")
 }
