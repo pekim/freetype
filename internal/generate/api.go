@@ -18,8 +18,9 @@ type api struct {
 	// Functions     []callable `json:"functions"`
 	// Typedefs      []typedef  `json:"typedefs"`
 	// Variables     []variable
-	tu            translationUnit
-	variablesLock *sync.Mutex
+	defineConstants []string
+	tu              translationUnit
+	variablesLock   *sync.Mutex
 }
 
 func (api *api) parseTranslationUnits() {
@@ -104,6 +105,10 @@ func (api *api) enrich1() {
 func (api api) generate(_g generator) {
 	fmt.Print("generate")
 	start := time.Now()
+
+	for _, defineConstant := range api.defineConstants {
+		_g.goFile.writelnf("const %s = C.%s", defineConstant, defineConstant)
+	}
 
 	// for _, record := range api.Records {
 	// 	record.generateCStruct(g)

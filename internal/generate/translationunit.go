@@ -67,10 +67,23 @@ func (tu translationUnit) enrichApi(_api *api) {
 
 		switch cursor.Kind() {
 		case clang.Cursor_MacroDefinition:
+			if !strings.HasSuffix(file.Name(), "/freetype.h") {
+				return clang.ChildVisit_Continue
+			}
+
 			if strings.HasPrefix(cursor.Spelling(), "FT_") {
 				fmt.Println(file.Name(), line, col, cursor.Kind(), cursor.Spelling())
 				line := tu.sourceFiles.line(file.Name(), int(line))
 				fmt.Println("  ", line)
+
+				_api.defineConstants = append(_api.defineConstants, cursor.Spelling())
+
+				// value := strings.TrimSpace(line)
+				// value = strings.TrimPrefix(value, "#define")
+				// value = strings.TrimSpace(value)
+				// value = strings.TrimPrefix(value, cursor.Spelling())
+				// value = strings.TrimSpace(value)
+				// fmt.Println("  ", value)
 			}
 
 			// case clang.Cursor_MacroExpansion:
