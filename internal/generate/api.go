@@ -101,43 +101,43 @@ func (api *api) enrich1() {
 // 	return nil, false
 // }
 
-// func (api api) generate(g generator) {
-// 	fmt.Print("generate")
-// 	start := time.Now()
+func (api api) generate(_g generator) {
+	fmt.Print("generate")
+	start := time.Now()
 
-// 	for _, record := range api.Records {
-// 		record.generateCStruct(g)
-// 		for _, record := range record.Records {
-// 			record.generateCStruct(g)
-// 		}
-// 	}
+	// for _, record := range api.Records {
+	// 	record.generateCStruct(g)
+	// 	for _, record := range record.Records {
+	// 		record.generateCStruct(g)
+	// 	}
+	// }
 
-// 	for _, record := range api.Records {
-// 		record.generate(g)
-// 	}
+	// for _, record := range api.Records {
+	// 	record.generate(g)
+	// }
 
-// 	for _, enum := range api.Enums {
-// 		enum.generate(g)
-// 	}
+	// for _, enum := range api.Enums {
+	// 	enum.generate(g)
+	// }
 
-// 	for _, function := range api.Functions {
-// 		function.generate(g)
-// 	}
+	// for _, function := range api.Functions {
+	// 	function.generate(g)
+	// }
 
-// 	for _, typedef := range api.Typedefs {
-// 		typedef.generate(g)
-// 	}
+	// for _, typedef := range api.Typedefs {
+	// 	typedef.generate(g)
+	// }
 
-// 	g.headerFile.writeln()
-// 	slices.SortFunc(api.Variables, func(a, b variable) int {
-// 		return strings.Compare(a.cppName, b.cppName)
-// 	})
-// 	for _, variable := range api.Variables {
-// 		variable.generate(g)
-// 	}
+	// g.headerFile.writeln()
+	// slices.SortFunc(api.Variables, func(a, b variable) int {
+	// 	return strings.Compare(a.cppName, b.cppName)
+	// })
+	// for _, variable := range api.Variables {
+	// 	variable.generate(g)
+	// }
 
-// 	fmt.Printf(" %dms\n", time.Since(start).Milliseconds())
-// }
+	fmt.Printf(" %dms\n", time.Since(start).Milliseconds())
+}
 
 // func (api api) printStats() {
 // 	classCount := 0
