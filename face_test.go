@@ -83,3 +83,10 @@ func TestFaceSetCharSize(t *testing.T) {
 	err := face.SetCharSize(50, 50, 96, 96)
 	assert.Nil(t, err)
 }
+
+func TestFaceSetPixelSizes(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+	err := face.SetPixelSizes(24, 0)
+	assert.Nil(t, err)
+}
