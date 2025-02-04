@@ -11,7 +11,7 @@ import (
 	"unsafe"
 )
 
-type Parameter C.FT_Parameter
+type Parameter = C.FT_Parameter
 
 func (param Parameter) freeData() {
 	C.free(unsafe.Pointer(param.data))
@@ -39,19 +39,19 @@ const lcdFilterWeightsLen = 5
 // cgo seems to think that cWeights is (or contains) Go memory.
 func ParamTagLCDFilterWeights(weights *[lcdFilterWeightsLen]byte) Parameter {
 	if weights == nil {
-		return Parameter(C.FT_Parameter{
+		return C.FT_Parameter{
 			tag:  C.FT_PARAM_TAG_LCD_FILTER_WEIGHTS,
 			data: nil,
-		})
+		}
 	}
 
 	cWeights := (*C.uchar)(C.malloc(lcdFilterWeightsLen))
 	C.memcpy(unsafe.Pointer(cWeights), unsafe.Pointer(&weights[0]), lcdFilterWeightsLen)
 
-	return Parameter(C.FT_Parameter{
+	return C.FT_Parameter{
 		tag:  C.FT_PARAM_TAG_LCD_FILTER_WEIGHTS,
 		data: C.FT_Pointer(cWeights),
-	})
+	}
 }
 
 func ParamTagRandomSeed(value *int) Parameter {
@@ -68,10 +68,10 @@ func ParamTagUnpatentedHinting(value *bool) Parameter {
 
 func booleanParamTag(tag C.FT_ULong, value *bool) Parameter {
 	if value == nil {
-		return Parameter(C.FT_Parameter{
+		return C.FT_Parameter{
 			tag:  tag,
 			data: nil,
-		})
+		}
 	}
 
 	var cBool C.FT_Bool
@@ -82,26 +82,26 @@ func booleanParamTag(tag C.FT_ULong, value *bool) Parameter {
 		*cValue = 0
 	}
 
-	return Parameter(C.FT_Parameter{
+	return C.FT_Parameter{
 		tag:  tag,
 		data: C.FT_Pointer(cValue),
-	})
+	}
 }
 
 func integerParamTag(tag C.FT_ULong, value *int) Parameter {
 	if value == nil {
-		return Parameter(C.FT_Parameter{
+		return C.FT_Parameter{
 			tag:  tag,
 			data: nil,
-		})
+		}
 	}
 
 	var cInt C.FT_Int32
 	cValue := (*C.FT_Int32)(C.malloc(C.size_t(unsafe.Sizeof(cInt))))
 	*cValue = C.FT_Int32(*value)
 
-	return Parameter(C.FT_Parameter{
+	return C.FT_Parameter{
 		tag:  tag,
 		data: C.FT_Pointer(cValue),
-	})
+	}
 }
