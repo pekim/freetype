@@ -4,10 +4,6 @@ package freetype
 // #include FT_FREETYPE_H
 import "C"
 
-import (
-	"fmt"
-)
-
 type Encoding = C.FT_Encoding
 
 const (
@@ -41,12 +37,7 @@ const (
 )
 
 func (encoding Encoding) String() string {
-	return fmt.Sprintf("'%s', '%s', '%s', '%s'",
-		string(rune(encoding>>24&0x000000ff)),
-		string(rune(encoding>>16&0x000000ff)),
-		string(rune(encoding>>8&0x000000ff)),
-		string(rune(encoding>>0&0x000000ff)),
-	)
+	return formatTag(uint32(encoding))
 }
 
 func (face Face) SelectCharmap(encoding Encoding) error {

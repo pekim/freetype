@@ -55,10 +55,14 @@ const (
 )
 
 func (glyphFormat GlyphFormat) String() string {
+	return formatTag(uint32(glyphFormat))
+}
+
+func formatTag(tag uint32) string {
 	return fmt.Sprintf("'%s', '%s', '%s', '%s'",
-		string(rune(glyphFormat>>24&0x000000ff)),
-		string(rune(glyphFormat>>16&0x000000ff)),
-		string(rune(glyphFormat>>8&0x000000ff)),
-		string(rune(glyphFormat>>0&0x000000ff)),
+		string(rune(tag>>24&0x000000ff)),
+		string(rune(tag>>16&0x000000ff)),
+		string(rune(tag>>8&0x000000ff)),
+		string(rune(tag>>0&0x000000ff)),
 	)
 }
