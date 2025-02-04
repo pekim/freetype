@@ -33,13 +33,13 @@ func assertSameSize[A any, B any](a A, b B) {
 }
 
 type BitmapSize struct {
-	height Short
-	width  Short
+	Height Short
+	Width  Short
 
-	size Pos
+	Size Pos
 
-	x_ppem Pos
-	y_ppem Pos
+	Xppem Pos
+	YPpem Pos
 }
 
 type CharMapRec struct {
@@ -50,13 +50,13 @@ type CharMapRec struct {
 }
 
 type FaceRec struct {
-	num_faces  Long
-	face_index Long
+	NumFaces  Long
+	FaceIndex Long
 
-	face_flags  Long
-	style_flags Long
+	FaceFlags  Long
+	StyleFlags Long
 
-	num_glyphs Long
+	NumGlyphs Long
 
 	family_name *String
 	style_name  *String
@@ -72,22 +72,22 @@ type FaceRec struct {
 	/* The following member variables (down to `underline_thickness`) */
 	/* outlines are only relevant to scalable  cf. @FT_Bitmap_Size    */
 	/* for bitmap fonts.                                              */
-	bbox BBox
+	Bbox BBox
 
-	units_per_EM UShort
-	ascender     Short
-	descender    Short
-	height       Short
+	UnitsPerEM UShort
+	Ascender   Short
+	Descender  Short
+	Height     Short
 
-	max_advance_width  Short
-	max_advance_height Short
+	MaxAdvanceWidth  Short
+	MaxAdvanceHeight Short
 
-	underline_position  Short
-	underline_thickness Short
+	UnderlinePosition  Short
+	UnderlineThickness Short
 
-	glyph   *GlyphSlotRec
-	size    *SizeRec
-	charmap *CharMapRec
+	Glyph   *GlyphSlotRec
+	Size    *SizeRec
+	Charmap *CharMapRec
 
 	/* private fields, internal to FreeType */
 
@@ -109,37 +109,37 @@ type Generic struct {
 }
 
 type GlyphMetrics struct {
-	width  Pos
-	height Pos
+	Width  Pos
+	Height Pos
 
-	horiBearingX Pos
-	horiBearingY Pos
-	horiAdvance  Pos
+	HoriBearingX Pos
+	HoriBearingY Pos
+	HoriAdvance  Pos
 
-	vertBearingX Pos
-	vertBearingY Pos
-	vertAdvance  Pos
+	VertBearingX Pos
+	VertBearingY Pos
+	VertAdvance  Pos
 }
 
 type GlyphSlotRec struct {
-	library Library
-	face    Face
-	next    *GlyphSlotRec
-	glyph_index/* new in 2.10; was reserved previously */ UInt
+	Library Library
+	Face    Face
+	Next    *GlyphSlotRec
+	GlyphIndex/* new in 2.10; was reserved previously */ UInt
 	generic Generic
 
-	metrics           GlyphMetrics
-	linearHoriAdvance Fixed
-	linearVertAdvance Fixed
-	advance           Vector
+	Metrics           GlyphMetrics
+	LinearHoriAdvance Fixed
+	LinearVertAdvance Fixed
+	Advance           Vector
 
-	format Glyph_Format
+	Format GlyphFormat
 
-	bitmap      Bitmap
-	bitmap_left Int
-	bitmap_top  Int
+	Bitmap     Bitmap
+	BitmapLeft Int
+	BitmapTop  Int
 
-	outline Outline
+	Outline Outline
 
 	num_subglyphs UInt
 	subglyphs     unsafe.Pointer
@@ -147,8 +147,8 @@ type GlyphSlotRec struct {
 	control_data unsafe.Pointer
 	control_len  C.long
 
-	lsb_delta Pos
-	rsb_delta Pos
+	LsbDelta Pos
+	RsbDelta Pos
 
 	other    unsafe.Pointer
 	internal unsafe.Pointer
@@ -166,8 +166,8 @@ type ListRec struct {
 }
 
 type Matrix struct {
-	xx, xy Fixed
-	yx, yy Fixed
+	XX, XY Fixed
+	YX, YY Fixed
 }
 
 type Outline struct {
@@ -183,22 +183,22 @@ type Outline struct {
 }
 
 type SizeMetrics struct {
-	x_ppem UShort /* horizontal pixels per EM               */
-	y_ppem UShort /* vertical pixels per EM                 */
+	Xppem UShort /* horizontal pixels per EM               */
+	Yppem UShort /* vertical pixels per EM                 */
 
-	x_scale Fixed /* scaling values used to convert font    */
-	y_scale Fixed /* units to 26.6 fractional pixels        */
+	XScale Fixed /* scaling values used to convert font    */
+	YScale Fixed /* units to 26.6 fractional pixels        */
 
-	ascender    Pos /* ascender in 26.6 frac. pixels          */
-	descender   Pos /* descender in 26.6 frac. pixels         */
-	height      Pos /* text height in 26.6 frac. pixels       */
-	max_advance Pos /* max horizontal advance, in 26.6 pixels */
+	Ascender   Pos /* ascender in 26.6 frac. pixels          */
+	Descender  Pos /* descender in 26.6 frac. pixels         */
+	Height     Pos /* text height in 26.6 frac. pixels       */
+	MaxAdvance Pos /* max horizontal advance, in 26.6 pixels */
 }
 
 type SizeRec struct {
-	face     Face        /* parent face object              */
+	Face     Face        /* parent face object              */
 	generic  Generic     /* generic pointer for client uses */
-	metrics  SizeMetrics /* size metrics                    */
+	Metrics  SizeMetrics /* size metrics                    */
 	internal unsafe.Pointer
 }
 
@@ -211,6 +211,6 @@ type SizeRequestRec struct {
 }
 
 type Vector struct {
-	x Pos
-	y Pos
+	X Pos
+	Y Pos
 }

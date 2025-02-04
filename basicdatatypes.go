@@ -4,6 +4,10 @@ package freetype
 // #include FT_FREETYPE_H
 import "C"
 
+import (
+	"fmt"
+)
+
 type Byte = C.FT_Byte
 type Bytes = C.FT_Bytes
 type Char = C.FT_Char
@@ -37,4 +41,24 @@ type Data = C.FT_Data
 type Generic_Finalizer = C.FT_Generic_Finalizer
 type Bitmap = C.FT_Bitmap
 type Pixel_Mode = C.FT_Pixel_Mode
-type Glyph_Format = C.FT_Glyph_Format
+
+type GlyphFormat C.FT_Glyph_Format
+
+const (
+	GLYPH_FORMAT_NONE = GlyphFormat(C.FT_GLYPH_FORMAT_NONE)
+
+	GLYPH_FORMAT_COMPOSITE = GlyphFormat(C.FT_GLYPH_FORMAT_COMPOSITE)
+	GLYPH_FORMAT_BITMAP    = GlyphFormat(C.FT_GLYPH_FORMAT_BITMAP)
+	GLYPH_FORMAT_OUTLINE   = GlyphFormat(C.FT_GLYPH_FORMAT_OUTLINE)
+	GLYPH_FORMAT_PLOTTER   = GlyphFormat(C.FT_GLYPH_FORMAT_PLOTTER)
+	GLYPH_FORMAT_SVG       = GlyphFormat(C.FT_GLYPH_FORMAT_SVG)
+)
+
+func (glyphFormat GlyphFormat) String() string {
+	return fmt.Sprintf("'%s', '%s', '%s', '%s'",
+		string(rune(glyphFormat>>24&0x000000ff)),
+		string(rune(glyphFormat>>16&0x000000ff)),
+		string(rune(glyphFormat>>8&0x000000ff)),
+		string(rune(glyphFormat>>0&0x000000ff)),
+	)
+}
