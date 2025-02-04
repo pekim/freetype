@@ -34,7 +34,6 @@ type F2Dot14 = C.FT_F2Dot14
 type UnitVector = C.FT_UnitVector
 type F26Dot6 = C.FT_F26Dot6
 type Data = C.FT_Data
-type Generic = C.FT_Generic
 type Generic_Finalizer = C.FT_Generic_Finalizer
 type Bitmap = C.FT_Bitmap
 type Pixel_Mode = C.FT_Pixel_Mode
