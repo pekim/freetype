@@ -27,21 +27,9 @@ func (face Face) SetPixelSizes(pixelWidth UInt, pixelHeight UInt) error {
 	return newError(err, "failed to set pixel sizes for face")
 }
 
-func (face Face) RequestSize(
-	typ SizeRequestType,
-	width Long, height Long,
-	horiResolution UInt, vertResolution UInt,
-) error {
-	err := C.FT_Request_Size(
-		face.face,
-		&C.FT_Size_RequestRec{
-			_type:          typ,
-			width:          width,
-			height:         height,
-			horiResolution: horiResolution,
-			vertResolution: vertResolution,
-		},
-	)
+func (face Face) RequestSize(size SizeRequestRec) error {
+	ftSize := size.toFT()
+	err := C.FT_Request_Size(face.face, &ftSize)
 	return newError(err, "failed to request size for face")
 }
 

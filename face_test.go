@@ -101,6 +101,13 @@ func TestFaceSelectSize(t *testing.T) {
 func TestFaceRequestSize(t *testing.T) {
 	lib, _ := Init()
 	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
-	err := face.RequestSize(SIZE_REQUEST_TYPE_BBOX, 50, 50, 96, 96)
+	// err := face.RequestSize(SIZE_REQUEST_TYPE_BBOX, 50, 50, 96, 96)
+	err := face.RequestSize(SizeRequestRec{
+		Type:           SIZE_REQUEST_TYPE_BBOX,
+		Width:          50,
+		Height:         50,
+		HoriResolution: 96,
+		VertResolution: 96,
+	})
 	assert.Nil(t, err)
 }
