@@ -97,3 +97,10 @@ func TestFaceSelectSize(t *testing.T) {
 	err := face.SelectSize(1)
 	assert.Error(t, err) // the font is not a bitmap font
 }
+
+func TestFaceRequestSize(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+	err := face.RequestSize(SIZE_REQUEST_TYPE_BBOX, 50, 50, 96, 96)
+	assert.Nil(t, err)
+}
