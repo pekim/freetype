@@ -8,131 +8,133 @@ import (
 	"fmt"
 )
 
-const Err_Ok = C.FT_Err_Ok
-const Err_Cannot_Open_Resource = C.FT_Err_Cannot_Open_Resource
-const Err_Unknown_File_Format = C.FT_Err_Unknown_File_Format
-const Err_Invalid_File_Format = C.FT_Err_Invalid_File_Format
-const Err_Invalid_Version = C.FT_Err_Invalid_Version
-const Err_Lower_Module_Version = C.FT_Err_Lower_Module_Version
-const Err_Invalid_Argument = C.FT_Err_Invalid_Argument
-const Err_Unimplemented_Feature = C.FT_Err_Unimplemented_Feature
-const Err_Invalid_Table = C.FT_Err_Invalid_Table
-const Err_Invalid_Offset = C.FT_Err_Invalid_Offset
-const Err_Array_Too_Large = C.FT_Err_Array_Too_Large
-const Err_Missing_Module = C.FT_Err_Missing_Module
-const Err_Missing_Property = C.FT_Err_Missing_Property
+type FTError = C.FT_Error
+
+const Err_Ok = FTError(C.FT_Err_Ok)
+const Err_Cannot_Open_Resource = FTError(C.FT_Err_Cannot_Open_Resource)
+const Err_Unknown_File_Format = FTError(C.FT_Err_Unknown_File_Format)
+const Err_Invalid_File_Format = FTError(C.FT_Err_Invalid_File_Format)
+const Err_Invalid_Version = FTError(C.FT_Err_Invalid_Version)
+const Err_Lower_Module_Version = FTError(C.FT_Err_Lower_Module_Version)
+const Err_Invalid_Argument = FTError(C.FT_Err_Invalid_Argument)
+const Err_Unimplemented_Feature = FTError(C.FT_Err_Unimplemented_Feature)
+const Err_Invalid_Table = FTError(C.FT_Err_Invalid_Table)
+const Err_Invalid_Offset = FTError(C.FT_Err_Invalid_Offset)
+const Err_Array_Too_Large = FTError(C.FT_Err_Array_Too_Large)
+const Err_Missing_Module = FTError(C.FT_Err_Missing_Module)
+const Err_Missing_Property = FTError(C.FT_Err_Missing_Property)
 
 /* glyph/character errors */
 
-const Err_Invalid_Glyph_Index = C.FT_Err_Invalid_Glyph_Index
-const Err_Invalid_Character_Code = C.FT_Err_Invalid_Character_Code
-const Err_Invalid_Glyph_Format = C.FT_Err_Invalid_Glyph_Format
-const Err_Cannot_Render_Glyph = C.FT_Err_Cannot_Render_Glyph
-const Err_Invalid_Outline = C.FT_Err_Invalid_Outline
-const Err_Invalid_Composite = C.FT_Err_Invalid_Composite
-const Err_Too_Many_Hints = C.FT_Err_Too_Many_Hints
-const Err_Invalid_Pixel_Size = C.FT_Err_Invalid_Pixel_Size
-const Err_Invalid_SVG_Document = C.FT_Err_Invalid_SVG_Document
+const Err_Invalid_Glyph_Index = FTError(C.FT_Err_Invalid_Glyph_Index)
+const Err_Invalid_Character_Code = FTError(C.FT_Err_Invalid_Character_Code)
+const Err_Invalid_Glyph_Format = FTError(C.FT_Err_Invalid_Glyph_Format)
+const Err_Cannot_Render_Glyph = FTError(C.FT_Err_Cannot_Render_Glyph)
+const Err_Invalid_Outline = FTError(C.FT_Err_Invalid_Outline)
+const Err_Invalid_Composite = FTError(C.FT_Err_Invalid_Composite)
+const Err_Too_Many_Hints = FTError(C.FT_Err_Too_Many_Hints)
+const Err_Invalid_Pixel_Size = FTError(C.FT_Err_Invalid_Pixel_Size)
+const Err_Invalid_SVG_Document = FTError(C.FT_Err_Invalid_SVG_Document)
 
 /* handle errors */
 
-const Err_Invalid_Handle = C.FT_Err_Invalid_Handle
-const Err_Invalid_Library_Handle = C.FT_Err_Invalid_Library_Handle
-const Err_Invalid_Driver_Handle = C.FT_Err_Invalid_Driver_Handle
-const Err_Invalid_Face_Handle = C.FT_Err_Invalid_Face_Handle
-const Err_Invalid_Size_Handle = C.FT_Err_Invalid_Size_Handle
-const Err_Invalid_Slot_Handle = C.FT_Err_Invalid_Slot_Handle
-const Err_Invalid_CharMap_Handle = C.FT_Err_Invalid_CharMap_Handle
-const Err_Invalid_Cache_Handle = C.FT_Err_Invalid_Cache_Handle
-const Err_Invalid_Stream_Handle = C.FT_Err_Invalid_Stream_Handle
+const Err_Invalid_Handle = FTError(C.FT_Err_Invalid_Handle)
+const Err_Invalid_Library_Handle = FTError(C.FT_Err_Invalid_Library_Handle)
+const Err_Invalid_Driver_Handle = FTError(C.FT_Err_Invalid_Driver_Handle)
+const Err_Invalid_Face_Handle = FTError(C.FT_Err_Invalid_Face_Handle)
+const Err_Invalid_Size_Handle = FTError(C.FT_Err_Invalid_Size_Handle)
+const Err_Invalid_Slot_Handle = FTError(C.FT_Err_Invalid_Slot_Handle)
+const Err_Invalid_CharMap_Handle = FTError(C.FT_Err_Invalid_CharMap_Handle)
+const Err_Invalid_Cache_Handle = FTError(C.FT_Err_Invalid_Cache_Handle)
+const Err_Invalid_Stream_Handle = FTError(C.FT_Err_Invalid_Stream_Handle)
 
 /* driver errors */
 
-const Err_Too_Many_Drivers = C.FT_Err_Too_Many_Drivers
-const Err_Too_Many_Extensions = C.FT_Err_Too_Many_Extensions
+const Err_Too_Many_Drivers = FTError(C.FT_Err_Too_Many_Drivers)
+const Err_Too_Many_Extensions = FTError(C.FT_Err_Too_Many_Extensions)
 
 /* memory errors */
 
-const Err_Out_Of_Memory = C.FT_Err_Out_Of_Memory
-const Err_Unlisted_Object = C.FT_Err_Unlisted_Object
+const Err_Out_Of_Memory = FTError(C.FT_Err_Out_Of_Memory)
+const Err_Unlisted_Object = FTError(C.FT_Err_Unlisted_Object)
 
 /* stream errors */
 
-const Err_Cannot_Open_Stream = C.FT_Err_Cannot_Open_Stream
-const Err_Invalid_Stream_Seek = C.FT_Err_Invalid_Stream_Seek
-const Err_Invalid_Stream_Skip = C.FT_Err_Invalid_Stream_Skip
-const Err_Invalid_Stream_Read = C.FT_Err_Invalid_Stream_Read
-const Err_Invalid_Stream_Operation = C.FT_Err_Invalid_Stream_Operation
-const Err_Invalid_Frame_Operation = C.FT_Err_Invalid_Frame_Operation
-const Err_Nested_Frame_Access = C.FT_Err_Nested_Frame_Access
-const Err_Invalid_Frame_Read = C.FT_Err_Invalid_Frame_Read
+const Err_Cannot_Open_Stream = FTError(C.FT_Err_Cannot_Open_Stream)
+const Err_Invalid_Stream_Seek = FTError(C.FT_Err_Invalid_Stream_Seek)
+const Err_Invalid_Stream_Skip = FTError(C.FT_Err_Invalid_Stream_Skip)
+const Err_Invalid_Stream_Read = FTError(C.FT_Err_Invalid_Stream_Read)
+const Err_Invalid_Stream_Operation = FTError(C.FT_Err_Invalid_Stream_Operation)
+const Err_Invalid_Frame_Operation = FTError(C.FT_Err_Invalid_Frame_Operation)
+const Err_Nested_Frame_Access = FTError(C.FT_Err_Nested_Frame_Access)
+const Err_Invalid_Frame_Read = FTError(C.FT_Err_Invalid_Frame_Read)
 
 /* raster errors */
 
-const Err_Raster_Uninitialized = C.FT_Err_Raster_Uninitialized
-const Err_Raster_Corrupted = C.FT_Err_Raster_Corrupted
-const Err_Raster_Overflow = C.FT_Err_Raster_Overflow
-const Err_Raster_Negative_Height = C.FT_Err_Raster_Negative_Height
+const Err_Raster_Uninitialized = FTError(C.FT_Err_Raster_Uninitialized)
+const Err_Raster_Corrupted = FTError(C.FT_Err_Raster_Corrupted)
+const Err_Raster_Overflow = FTError(C.FT_Err_Raster_Overflow)
+const Err_Raster_Negative_Height = FTError(C.FT_Err_Raster_Negative_Height)
 
 /* cache errors */
 
-const Err_Too_Many_Caches = C.FT_Err_Too_Many_Caches
+const Err_Too_Many_Caches = FTError(C.FT_Err_Too_Many_Caches)
 
 /* TrueType and SFNT errors */
 
-const Err_Invalid_Opcode = C.FT_Err_Invalid_Opcode
-const Err_Too_Few_Arguments = C.FT_Err_Too_Few_Arguments
-const Err_Stack_Overflow = C.FT_Err_Stack_Overflow
-const Err_Code_Overflow = C.FT_Err_Code_Overflow
-const Err_Bad_Argument = C.FT_Err_Bad_Argument
-const Err_Divide_By_Zero = C.FT_Err_Divide_By_Zero
-const Err_Invalid_Reference = C.FT_Err_Invalid_Reference
-const Err_Debug_OpCode = C.FT_Err_Debug_OpCode
-const Err_ENDF_In_Exec_Stream = C.FT_Err_ENDF_In_Exec_Stream
-const Err_Nested_DEFS = C.FT_Err_Nested_DEFS
-const Err_Invalid_CodeRange = C.FT_Err_Invalid_CodeRange
-const Err_Execution_Too_Long = C.FT_Err_Execution_Too_Long
-const Err_Too_Many_Function_Defs = C.FT_Err_Too_Many_Function_Defs
-const Err_Too_Many_Instruction_Defs = C.FT_Err_Too_Many_Instruction_Defs
-const Err_Table_Missing = C.FT_Err_Table_Missing
-const Err_Horiz_Header_Missing = C.FT_Err_Horiz_Header_Missing
-const Err_Locations_Missing = C.FT_Err_Locations_Missing
-const Err_Name_Table_Missing = C.FT_Err_Name_Table_Missing
-const Err_CMap_Table_Missing = C.FT_Err_CMap_Table_Missing
-const Err_Hmtx_Table_Missing = C.FT_Err_Hmtx_Table_Missing
-const Err_Post_Table_Missing = C.FT_Err_Post_Table_Missing
-const Err_Invalid_Horiz_Metrics = C.FT_Err_Invalid_Horiz_Metrics
-const Err_Invalid_CharMap_Format = C.FT_Err_Invalid_CharMap_Format
-const Err_Invalid_PPem = C.FT_Err_Invalid_PPem
-const Err_Invalid_Vert_Metrics = C.FT_Err_Invalid_Vert_Metrics
-const Err_Could_Not_Find_Context = C.FT_Err_Could_Not_Find_Context
-const Err_Invalid_Post_Table_Format = C.FT_Err_Invalid_Post_Table_Format
-const Err_Invalid_Post_Table = C.FT_Err_Invalid_Post_Table
-const Err_DEF_In_Glyf_Bytecode = C.FT_Err_DEF_In_Glyf_Bytecode
-const Err_Missing_Bitmap = C.FT_Err_Missing_Bitmap
-const Err_Missing_SVG_Hooks = C.FT_Err_Missing_SVG_Hooks
+const Err_Invalid_Opcode = FTError(C.FT_Err_Invalid_Opcode)
+const Err_Too_Few_Arguments = FTError(C.FT_Err_Too_Few_Arguments)
+const Err_Stack_Overflow = FTError(C.FT_Err_Stack_Overflow)
+const Err_Code_Overflow = FTError(C.FT_Err_Code_Overflow)
+const Err_Bad_Argument = FTError(C.FT_Err_Bad_Argument)
+const Err_Divide_By_Zero = FTError(C.FT_Err_Divide_By_Zero)
+const Err_Invalid_Reference = FTError(C.FT_Err_Invalid_Reference)
+const Err_Debug_OpCode = FTError(C.FT_Err_Debug_OpCode)
+const Err_ENDF_In_Exec_Stream = FTError(C.FT_Err_ENDF_In_Exec_Stream)
+const Err_Nested_DEFS = FTError(C.FT_Err_Nested_DEFS)
+const Err_Invalid_CodeRange = FTError(C.FT_Err_Invalid_CodeRange)
+const Err_Execution_Too_Long = FTError(C.FT_Err_Execution_Too_Long)
+const Err_Too_Many_Function_Defs = FTError(C.FT_Err_Too_Many_Function_Defs)
+const Err_Too_Many_Instruction_Defs = FTError(C.FT_Err_Too_Many_Instruction_Defs)
+const Err_Table_Missing = FTError(C.FT_Err_Table_Missing)
+const Err_Horiz_Header_Missing = FTError(C.FT_Err_Horiz_Header_Missing)
+const Err_Locations_Missing = FTError(C.FT_Err_Locations_Missing)
+const Err_Name_Table_Missing = FTError(C.FT_Err_Name_Table_Missing)
+const Err_CMap_Table_Missing = FTError(C.FT_Err_CMap_Table_Missing)
+const Err_Hmtx_Table_Missing = FTError(C.FT_Err_Hmtx_Table_Missing)
+const Err_Post_Table_Missing = FTError(C.FT_Err_Post_Table_Missing)
+const Err_Invalid_Horiz_Metrics = FTError(C.FT_Err_Invalid_Horiz_Metrics)
+const Err_Invalid_CharMap_Format = FTError(C.FT_Err_Invalid_CharMap_Format)
+const Err_Invalid_PPem = FTError(C.FT_Err_Invalid_PPem)
+const Err_Invalid_Vert_Metrics = FTError(C.FT_Err_Invalid_Vert_Metrics)
+const Err_Could_Not_Find_Context = FTError(C.FT_Err_Could_Not_Find_Context)
+const Err_Invalid_Post_Table_Format = FTError(C.FT_Err_Invalid_Post_Table_Format)
+const Err_Invalid_Post_Table = FTError(C.FT_Err_Invalid_Post_Table)
+const Err_DEF_In_Glyf_Bytecode = FTError(C.FT_Err_DEF_In_Glyf_Bytecode)
+const Err_Missing_Bitmap = FTError(C.FT_Err_Missing_Bitmap)
+const Err_Missing_SVG_Hooks = FTError(C.FT_Err_Missing_SVG_Hooks)
 
 /* CFF, CID, and Type 1 errors */
 
-const Err_Syntax_Error = C.FT_Err_Syntax_Error
-const Err_Stack_Underflow = C.FT_Err_Stack_Underflow
-const Err_Ignore = C.FT_Err_Ignore
-const Err_No_Unicode_Glyph_Name = C.FT_Err_No_Unicode_Glyph_Name
-const Err_Glyph_Too_Big = C.FT_Err_Glyph_Too_Big
+const Err_Syntax_Error = FTError(C.FT_Err_Syntax_Error)
+const Err_Stack_Underflow = FTError(C.FT_Err_Stack_Underflow)
+const Err_Ignore = FTError(C.FT_Err_Ignore)
+const Err_No_Unicode_Glyph_Name = FTError(C.FT_Err_No_Unicode_Glyph_Name)
+const Err_Glyph_Too_Big = FTError(C.FT_Err_Glyph_Too_Big)
 
 /* BDF errors */
 
-const Err_Missing_Startfont_Field = C.FT_Err_Missing_Startfont_Field
-const Err_Missing_Font_Field = C.FT_Err_Missing_Font_Field
-const Err_Missing_Size_Field = C.FT_Err_Missing_Size_Field
-const Err_Missing_Fontboundingbox_Field = C.FT_Err_Missing_Fontboundingbox_Field
-const Err_Missing_Chars_Field = C.FT_Err_Missing_Chars_Field
-const Err_Missing_Startchar_Field = C.FT_Err_Missing_Startchar_Field
-const Err_Missing_Encoding_Field = C.FT_Err_Missing_Encoding_Field
-const Err_Missing_Bbx_Field = C.FT_Err_Missing_Bbx_Field
-const Err_Bbx_Too_Big = C.FT_Err_Bbx_Too_Big
-const Err_Corrupted_Font_Header = C.FT_Err_Corrupted_Font_Header
-const Err_Corrupted_Font_Glyphs = C.FT_Err_Corrupted_Font_Glyphs
+const Err_Missing_Startfont_Field = FTError(C.FT_Err_Missing_Startfont_Field)
+const Err_Missing_Font_Field = FTError(C.FT_Err_Missing_Font_Field)
+const Err_Missing_Size_Field = FTError(C.FT_Err_Missing_Size_Field)
+const Err_Missing_Fontboundingbox_Field = FTError(C.FT_Err_Missing_Fontboundingbox_Field)
+const Err_Missing_Chars_Field = FTError(C.FT_Err_Missing_Chars_Field)
+const Err_Missing_Startchar_Field = FTError(C.FT_Err_Missing_Startchar_Field)
+const Err_Missing_Encoding_Field = FTError(C.FT_Err_Missing_Encoding_Field)
+const Err_Missing_Bbx_Field = FTError(C.FT_Err_Missing_Bbx_Field)
+const Err_Bbx_Too_Big = FTError(C.FT_Err_Bbx_Too_Big)
+const Err_Corrupted_Font_Header = FTError(C.FT_Err_Corrupted_Font_Header)
+const Err_Corrupted_Font_Glyphs = FTError(C.FT_Err_Corrupted_Font_Glyphs)
 
 var errorsText = map[C.FT_Error]string{
 	C.FT_Err_Ok:                            "no error",
@@ -233,7 +235,7 @@ var errorsText = map[C.FT_Error]string{
 }
 
 type Error struct {
-	ftError C.FT_Error
+	ftError FTError
 	message string
 }
 
@@ -249,4 +251,8 @@ func newError(err C.FT_Error, format string, args ...any) error {
 
 func (err Error) Error() string {
 	return fmt.Sprintf("%s : error %d : %s", err.message, err.ftError, errorsText[err.ftError])
+}
+
+func (err Error) FTError() FTError {
+	return err.ftError
 }
