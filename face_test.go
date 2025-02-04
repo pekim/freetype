@@ -57,6 +57,7 @@ func TestFaceProperies(t *testing.T) {
 func TestFaceFontTestingMacros(t *testing.T) {
 	lib, _ := Init()
 	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+
 	assert.True(t, face.HasHorizontal())
 	assert.False(t, face.HasVertical())
 	assert.False(t, face.HasKerning())
@@ -74,4 +75,11 @@ func TestFaceFontTestingMacros(t *testing.T) {
 	assert.False(t, face.IsTricky())
 	assert.False(t, face.IsNamedInstance())
 	assert.False(t, face.IsVariation())
+}
+
+func TestFaceSetCharSize(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+	err := face.SetCharSize(50, 50, 96, 96)
+	assert.Nil(t, err)
 }
