@@ -58,12 +58,16 @@ type FaceRec struct {
 
 	NumGlyphs Long
 
+	// TODO
 	family_name *String
-	style_name  *String
+	// TODO
+	style_name *String
 
+	// TODO
 	num_fixed_sizes Int
 	available_sizes *BitmapSize
 
+	// TODO
 	num_charmaps Int
 	charmaps     **CharMapRec
 
@@ -141,8 +145,8 @@ type GlyphSlotRec struct {
 
 	Outline Outline
 
-	num_subglyphs UInt
-	subglyphs     unsafe.Pointer
+	NumSubglyphs UInt
+	subglyphs    unsafe.Pointer
 
 	control_data unsafe.Pointer
 	control_len  C.long
