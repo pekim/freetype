@@ -123,3 +123,14 @@ func TestFaceGetTransformSetTransform(t *testing.T) {
 	assert.Equal(t, matrix, matrix2)
 	assert.Equal(t, vector, vector2)
 }
+
+func TestFaceSelectCharmap(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+
+	err := face.SelectCharmap(ENCODING_UNICODE)
+	assert.Nil(t, err)
+
+	err = face.SelectCharmap(ENCODING_BIG5)
+	assert.Error(t, err)
+}
