@@ -82,3 +82,8 @@ func (face Face) GetNextChar(charCode ULong) (ULong, UInt) {
 	nextCharCode := C.FT_Get_Next_Char(face.face, charCode, &gindex)
 	return nextCharCode, gindex
 }
+
+func (face Face) LoadChar(charCode rune, loadFlags LoadFlag) error {
+	err := C.FT_Load_Char(face.face, ULong(charCode), loadFlags)
+	return newError(err, "failed to load char '%s' (0x%04x) with flags 0x%04x", string(charCode), charCode, loadFlags)
+}

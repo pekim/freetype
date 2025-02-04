@@ -193,3 +193,11 @@ func TestFaceGetFirstCharGetNextChar(t *testing.T) {
 	c-- // discount the last one, as it wasn't a char
 	assert.Equal(t, 3322, c)
 }
+
+func TestFaceLoadChar(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+
+	err := face.LoadChar('a', LOAD_DEFAULT)
+	assert.Nil(t, err)
+}
