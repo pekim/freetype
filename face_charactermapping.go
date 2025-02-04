@@ -50,3 +50,10 @@ func (face Face) SelectCharmap(encoding Encoding) error {
 	err := C.FT_Select_Charmap(face.face, encoding)
 	return newError(err, "failed to select charmap for encoding %s (0x%04x)", encoding, int32(encoding))
 }
+
+func (face Face) SetCharmap(charmap CharMapRec) error {
+	ftCharmap := toPointer[C.FT_CharMapRec](charmap)
+	ftCharmap.face = charmap.Face.face
+	err := C.FT_Set_Charmap(face.face, ftCharmap)
+	return newError(err, "failed to set charmap")
+}

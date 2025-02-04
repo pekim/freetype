@@ -134,3 +134,16 @@ func TestFaceSelectCharmap(t *testing.T) {
 	err = face.SelectCharmap(ENCODING_BIG5)
 	assert.Error(t, err)
 }
+
+func TestFaceSetCharmap(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+
+	err := face.SetCharmap(CharMapRec{
+		Face:       face,
+		Encoding:   ENCODING_UNICODE,
+		PlatformID: 0,
+		EncodingID: 1,
+	})
+	assert.Error(t, err)
+}
