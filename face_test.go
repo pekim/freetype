@@ -169,3 +169,27 @@ func TestFaceGetIndex(t *testing.T) {
 	assert.Equal(t, UInt(0x3), face.GetCharIndex(' '))
 	assert.Equal(t, UInt(0x44), face.GetCharIndex('a'))
 }
+
+func TestFaceGetFirstCharGetNextChar(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+
+	// first char
+	charCode, glyphIndex := face.GetFirstChar()
+	assert.Equal(t, ULong(' '), charCode)
+	assert.Equal(t, UInt(3), glyphIndex)
+
+	// second char
+	charCode, glyphIndex = face.GetNextChar(charCode)
+	assert.Equal(t, ULong('!'), charCode)
+	assert.Equal(t, UInt(4), glyphIndex)
+
+	// remaining chars
+	c := 2
+	for glyphIndex != 0 {
+		charCode, glyphIndex = face.GetNextChar(charCode)
+		c++
+	}
+	c-- // discount the last one, as it wasn't a char
+	assert.Equal(t, 3322, c)
+}

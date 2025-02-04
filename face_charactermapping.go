@@ -70,3 +70,15 @@ func GetCharmapIndex(charmap CharMapRec) Int {
 func (face Face) GetCharIndex(charcode rune) UInt {
 	return C.FT_Get_Char_Index(face.face, ULong(charcode))
 }
+
+func (face Face) GetFirstChar() (ULong, UInt) {
+	var gindex UInt
+	charCode := C.FT_Get_First_Char(face.face, &gindex)
+	return charCode, gindex
+}
+
+func (face Face) GetNextChar(charCode ULong) (ULong, UInt) {
+	var gindex UInt
+	nextCharCode := C.FT_Get_Next_Char(face.face, charCode, &gindex)
+	return nextCharCode, gindex
+}
