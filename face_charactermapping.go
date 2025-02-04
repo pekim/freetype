@@ -3,7 +3,10 @@ package freetype
 // #include <ft2build.h>
 // #include FT_FREETYPE_H
 import "C"
-import "fmt"
+
+import (
+	"fmt"
+)
 
 type Encoding = C.FT_Encoding
 
@@ -56,4 +59,10 @@ func (face Face) SetCharmap(charmap CharMapRec) error {
 	ftCharmap.face = charmap.Face.face
 	err := C.FT_Set_Charmap(face.face, ftCharmap)
 	return newError(err, "failed to set charmap")
+}
+
+func GetCharmapIndex(charmap CharMapRec) Int {
+	ftCharmap := toPointer[C.FT_CharMapRec](charmap)
+	ftCharmap.face = charmap.Face.face
+	return C.FT_Get_Charmap_Index(ftCharmap)
 }

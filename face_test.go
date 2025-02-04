@@ -147,3 +147,17 @@ func TestFaceSetCharmap(t *testing.T) {
 	})
 	assert.Error(t, err)
 }
+
+func TestFaceGetCharmapIndex(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+
+	// No idea whether 5 really is the expected index.
+	index := GetCharmapIndex(CharMapRec{
+		Face:       face,
+		Encoding:   ENCODING_UNICODE,
+		PlatformID: 0,
+		EncodingID: 1,
+	})
+	assert.Equal(t, Int(5), index)
+}
