@@ -9,8 +9,6 @@ import (
 
 func TestFaceReference(t *testing.T) {
 	lib, _ := Init()
-	defer func() { _ = lib.Done() }()
-
 	face, err := lib.NewMemoryFace(font.DejaVuSansMono, 0)
 	assert.Nil(t, err)
 	err = face.Reference()
@@ -19,8 +17,6 @@ func TestFaceReference(t *testing.T) {
 
 func TestFaceProperies(t *testing.T) {
 	lib, _ := Init()
-	defer func() { _ = lib.Done() }()
-
 	true_ := true
 	number := 1
 	// weights := [5]byte{1, 2, 3, 4, 5}
@@ -56,4 +52,26 @@ func TestFaceProperies(t *testing.T) {
 		)
 		assert.Error(t, err)
 	}
+}
+
+func TestFaceFontTestingMacros(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+	assert.True(t, face.HasHorizontal())
+	assert.False(t, face.HasVertical())
+	assert.False(t, face.HasKerning())
+	assert.False(t, face.HadFixedSizes())
+	assert.True(t, face.HasGlyphNames())
+	assert.False(t, face.HasColor())
+	assert.False(t, face.HasMultipleMasters())
+	assert.False(t, face.HaseSVG())
+	assert.False(t, face.HasSbix())
+	assert.False(t, face.HasSbixOverlay())
+	assert.True(t, face.IsSFNT())
+	assert.True(t, face.IsScalable())
+	assert.True(t, face.IsFixedWidth())
+	assert.False(t, face.IsCIDKeyed())
+	assert.False(t, face.IsTricky())
+	assert.False(t, face.IsNamedInstance())
+	assert.False(t, face.IsVariation())
 }
