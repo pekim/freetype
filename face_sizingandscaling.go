@@ -16,3 +16,8 @@ func (face Face) SetPixelSizes(pixelWidth UInt, pixelHeight UInt) error {
 	err := C.FT_Set_Pixel_Sizes(face.face, pixelWidth, pixelHeight)
 	return newError(err, "failed to set pixel sizes for face")
 }
+
+func (face Face) SelectSize(strikeIndex Int) error {
+	err := C.FT_Select_Size(face.face, strikeIndex)
+	return newError(err, "failed to set select size for face")
+}

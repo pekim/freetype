@@ -90,3 +90,10 @@ func TestFaceSetPixelSizes(t *testing.T) {
 	err := face.SetPixelSizes(24, 0)
 	assert.Nil(t, err)
 }
+
+func TestFaceSelectSize(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+	err := face.SelectSize(1)
+	assert.Error(t, err) // the font is not a bitmap font
+}
