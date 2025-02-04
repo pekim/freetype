@@ -101,7 +101,6 @@ func TestFaceSelectSize(t *testing.T) {
 func TestFaceRequestSize(t *testing.T) {
 	lib, _ := Init()
 	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
-	// err := face.RequestSize(SIZE_REQUEST_TYPE_BBOX, 50, 50, 96, 96)
 	err := face.RequestSize(SizeRequestRec{
 		Type:           SIZE_REQUEST_TYPE_BBOX,
 		Width:          50,
@@ -110,4 +109,17 @@ func TestFaceRequestSize(t *testing.T) {
 		VertResolution: 96,
 	})
 	assert.Nil(t, err)
+}
+
+func TestFaceGetTransformSetTransform(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+
+	matrix := Matrix{xx: 1, xy: 2, yx: 3, yy: 4}
+	vector := Vector{x: 5, y: 6}
+	face.SetTransform(&matrix, &vector)
+
+	matrix2, vector2 := face.GetTransform()
+	assert.Equal(t, matrix, matrix2)
+	assert.Equal(t, vector, vector2)
 }

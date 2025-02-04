@@ -4,6 +4,10 @@ package freetype
 // #include FT_FREETYPE_H
 import "C"
 
+import (
+	"unsafe"
+)
+
 type SizeRequestType = C.FT_Size_Request_Type
 
 const (
@@ -28,12 +32,25 @@ func (face Face) SetPixelSizes(pixelWidth UInt, pixelHeight UInt) error {
 }
 
 func (face Face) RequestSize(size SizeRequestRec) error {
-	ftSize := size.toFT()
-	err := C.FT_Request_Size(face.face, &ftSize)
+	err := C.FT_Request_Size(face.face, toPointer[C.FT_Size_RequestRec](size))
 	return newError(err, "failed to request size for face")
 }
 
 func (face Face) SelectSize(strikeIndex Int) error {
 	err := C.FT_Select_Size(face.face, strikeIndex)
 	return newError(err, "failed to set select size for face")
+}
+
+func (face Face) SetTransform(matrix *Matrix, delta *Vector) {
+	C.FT_Set_Transform(face.face,
+		(*C.FT_Matrix)(unsafe.Pointer(matrix)),
+		(*C.FT_Vector)(unsafe.Pointer(delta)),
+	)
+}
+
+func (face Face) GetTransform() (Matrix, Vector) {
+	var matrix C.FT_Matrix
+	var vector C.FT_Vector
+	C.FT_Get_Transform(face.face, &matrix, &vector)
+	return to[Matrix](matrix), to[Vector](vector)
 }

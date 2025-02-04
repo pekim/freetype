@@ -10,13 +10,20 @@ import (
 )
 
 func init() {
+	assertSameSize(Matrix{}, C.FT_Matrix{})
 	assertSameSize(SizeRequestRec{}, C.FT_Size_RequestRec{})
+	assertSameSize(Vector{}, C.FT_Vector{})
 }
 
 func assertSameSize[A any, B any](a A, b B) {
 	if unsafe.Sizeof(a) != unsafe.Sizeof(b) {
 		panic(fmt.Sprintf("size of %T (%d) != size of %T (%d)", a, unsafe.Sizeof(a), b, unsafe.Sizeof(b)))
 	}
+}
+
+type Matrix struct {
+	xx, xy Fixed
+	yx, yy Fixed
 }
 
 type SizeRequestRec struct {
@@ -27,6 +34,7 @@ type SizeRequestRec struct {
 	VertResolution UInt
 }
 
-func (src SizeRequestRec) toFT() C.FT_Size_RequestRec {
-	return *(*C.FT_Size_RequestRec)(unsafe.Pointer(&src))
+type Vector struct {
+	x Pos
+	y Pos
 }
