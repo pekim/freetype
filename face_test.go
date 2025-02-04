@@ -161,3 +161,11 @@ func TestFaceGetCharmapIndex(t *testing.T) {
 	})
 	assert.Equal(t, Int(5), index)
 }
+
+func TestFaceGetIndex(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+
+	assert.Equal(t, UInt(0x3), face.GetCharIndex(' '))
+	assert.Equal(t, UInt(0x44), face.GetCharIndex('a'))
+}

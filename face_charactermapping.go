@@ -66,3 +66,7 @@ func GetCharmapIndex(charmap CharMapRec) Int {
 	ftCharmap.face = charmap.Face.face
 	return C.FT_Get_Charmap_Index(ftCharmap)
 }
+
+func (face Face) GetCharIndex(charcode rune) UInt {
+	return C.FT_Get_Char_Index(face.face, ULong(charcode))
+}
