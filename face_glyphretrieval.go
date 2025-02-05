@@ -3,6 +3,7 @@ package freetype
 // #include <ft2build.h>
 // #include FT_FREETYPE_H
 import "C"
+
 import (
 	"unsafe"
 )
@@ -68,4 +69,10 @@ func (face Face) GetKerning(leftGlyph UInt, rightGlyph UInt, kernMode KerningMod
 	var kerning Vector
 	err := C.FT_Get_Kerning(face.face, leftGlyph, rightGlyph, kernMode, (*C.FT_Vector)(unsafe.Pointer(&kerning)))
 	return kerning, newError(err, "failed to get kerning for %d and %d with kern mode %d", leftGlyph, rightGlyph, kernMode)
+}
+
+func (face Face) GetTrackKerning(pointSize Fixed, degree Int) (Fixed, error) {
+	var kerning Fixed
+	err := C.FT_Get_Track_Kerning(face.face, pointSize, degree, (*C.FT_Fixed)(unsafe.Pointer(&kerning)))
+	return kerning, newError(err, "failed to get track kerning")
 }
