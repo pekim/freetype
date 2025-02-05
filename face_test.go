@@ -284,3 +284,12 @@ func TestFaceGetGlyphName(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, "asciitilde", name)
 }
+
+func TestFaceGetNameIndex(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSans, 0)
+
+	assert.True(t, face.HasGlyphNames())
+	index := face.GetNameIndex("asciitilde")
+	assert.Equal(t, face.GetCharIndex('~'), index)
+}

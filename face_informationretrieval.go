@@ -2,11 +2,19 @@ package freetype
 
 // #include <ft2build.h>
 // #include FT_FREETYPE_H
+// #include <stdlib.h>
 import "C"
 
 import (
 	"unsafe"
 )
+
+func (face Face) GetNameIndex(glyphName string) UInt {
+	cName := C.CString(glyphName)
+	defer C.free(unsafe.Pointer(cName))
+
+	return C.FT_Get_Name_Index(face.face, cName)
+}
 
 func (face Face) GetGlyphName(glyphIndex UInt) (string, error) {
 	buffer := make([]C.char, 128)
