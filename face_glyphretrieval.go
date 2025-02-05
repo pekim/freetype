@@ -3,6 +3,9 @@ package freetype
 // #include <ft2build.h>
 // #include FT_FREETYPE_H
 import "C"
+import (
+	"unsafe"
+)
 
 type LoadFlag = Int32
 
@@ -31,7 +34,24 @@ const (
 	LOAD_NO_SVG              = LoadFlag(C.FT_LOAD_NO_SVG)
 )
 
+type RenderMode = C.FT_Render_Mode
+
+const (
+	RENDER_MODE_NORMAL = RenderMode(C.FT_RENDER_MODE_NORMAL)
+	RENDER_MODE_LIGHT  = RenderMode(C.FT_RENDER_MODE_LIGHT)
+	RENDER_MODE_MONO   = RenderMode(C.FT_RENDER_MODE_MONO)
+	RENDER_MODE_LCD    = RenderMode(C.FT_RENDER_MODE_LCD)
+	RENDER_MODE_LCD_V  = RenderMode(C.FT_RENDER_MODE_LCD_V)
+	RENDER_MODE_SDF    = RenderMode(C.FT_RENDER_MODE_SDF)
+)
+
 func (face Face) LoadGlyph(glyphIndex UInt, loadFlags Int32) error {
 	err := C.FT_Load_Glyph(face.face, glyphIndex, loadFlags)
 	return newError(err, "failed to load glyph index %d with flags %04x", glyphIndex, loadFlags)
+}
+
+func (face Face) RenderGlyph(renderMode RenderMode) error {
+	glyph := face.Rec().Glyph
+	err := C.FT_Render_Glyph((*C.FT_GlyphSlotRec)(unsafe.Pointer(glyph)), renderMode)
+	return newError(err, "failed to render glyph with index %d for render mode %04x", glyph.GlyphIndex, renderMode)
 }

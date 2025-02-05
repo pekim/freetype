@@ -39,10 +39,9 @@ type UnitVector = C.FT_UnitVector
 type F26Dot6 = C.FT_F26Dot6
 type Data = C.FT_Data
 type Generic_Finalizer = C.FT_Generic_Finalizer
-type Bitmap = C.FT_Bitmap
 type Pixel_Mode = C.FT_Pixel_Mode
 
-type GlyphFormat C.FT_Glyph_Format
+type GlyphFormat = C.FT_Glyph_Format
 
 const (
 	GLYPH_FORMAT_NONE = GlyphFormat(C.FT_GLYPH_FORMAT_NONE)
@@ -56,6 +55,23 @@ const (
 
 func (glyphFormat GlyphFormat) String() string {
 	return formatTag(uint32(glyphFormat))
+}
+
+type PixelMode = C.uchar
+
+const (
+	PIXEL_MODE_NONE  = PixelMode(C.FT_PIXEL_MODE_NONE)
+	PIXEL_MODE_MONO  = PixelMode(C.FT_PIXEL_MODE_MONO)
+	PIXEL_MODE_GRAY  = PixelMode(C.FT_PIXEL_MODE_GRAY)
+	PIXEL_MODE_GRAY2 = PixelMode(C.FT_PIXEL_MODE_GRAY2)
+	PIXEL_MODE_GRAY4 = PixelMode(C.FT_PIXEL_MODE_GRAY4)
+	PIXEL_MODE_LCD   = PixelMode(C.FT_PIXEL_MODE_LCD)
+	PIXEL_MODE_LCD_V = PixelMode(C.FT_PIXEL_MODE_LCD_V)
+	PIXEL_MODE_BGRA  = PixelMode(C.FT_PIXEL_MODE_BGRA)
+)
+
+func (pixelMode PixelMode) String() string {
+	return formatTag(uint32(pixelMode))
 }
 
 func formatTag(tag uint32) string {

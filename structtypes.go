@@ -6,10 +6,13 @@ import "C"
 
 import (
 	"fmt"
+	"math"
+	"strings"
 	"unsafe"
 )
 
 func init() {
+	assertSameSize(Bitmap{}, C.FT_Bitmap{})
 	assertSameSize(BitmapSize{}, C.FT_Bitmap_Size{})
 	assertSameSize(CharMapRec{}, C.FT_CharMapRec{})
 	assertSameSize(FaceRec{}, C.FT_FaceRec{})
@@ -30,6 +33,40 @@ func assertSameSize[A any, B any](a A, b B) {
 	if unsafe.Sizeof(a) != unsafe.Sizeof(b) {
 		panic(fmt.Sprintf("size of %T (%d) != size of %T (%d)", a, unsafe.Sizeof(a), b, unsafe.Sizeof(b)))
 	}
+}
+
+type Bitmap struct {
+	Rows         UInt
+	Width        UInt
+	Pitch        Int
+	buffer       *C.uchar
+	num_grays    UShort
+	PixelMode    PixelMode
+	palette_mode C.uchar
+	palette      unsafe.Pointer
+}
+
+func (bm Bitmap) Buffer() []byte {
+	return unsafe.Slice((*byte)(bm.buffer), bm.Rows*UInt(math.Abs(float64(bm.Pitch))))
+}
+
+func (bm Bitmap) BufferVisualization() string {
+	const density = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. "
+	var builder strings.Builder
+	buffer := bm.Buffer()
+
+	rowStart := 0
+	for range bm.Rows {
+		for col := range bm.Width {
+			byte_ := buffer[rowStart+int(col)]
+			densityIndex := density[byte(len(density))-(byte_/byte(len(density)))-1]
+			builder.WriteByte(densityIndex)
+		}
+		builder.WriteRune('\n')
+		rowStart += int(bm.Pitch)
+	}
+
+	return builder.String()
 }
 
 type BitmapSize struct {
