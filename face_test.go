@@ -293,3 +293,11 @@ func TestFaceGetNameIndex(t *testing.T) {
 	index := face.GetNameIndex("asciitilde")
 	assert.Equal(t, face.GetCharIndex('~'), index)
 }
+
+func TestFaceGetPostscriptName(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSans, 0)
+
+	name := face.GetPostscriptName()
+	assert.Equal(t, "DejaVuSans", name)
+}
