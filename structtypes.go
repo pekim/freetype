@@ -53,21 +53,17 @@ type FaceRec struct {
 	NumFaces  Long
 	FaceIndex Long
 
-	FaceFlags  Long
-	StyleFlags Long
+	FaceFlags  FACE_FLAG
+	StyleFlags STYLE_FLAG
 
 	NumGlyphs Long
 
-	// TODO
 	family_name *String
-	// TODO
-	style_name *String
+	style_name  *String
 
-	// TODO
 	num_fixed_sizes Int
 	available_sizes *BitmapSize
 
-	// TODO
 	num_charmaps Int
 	charmaps     **CharMapRec
 
