@@ -4,6 +4,10 @@ package freetype
 // #include FT_FREETYPE_H
 import "C"
 
+import (
+	"unsafe"
+)
+
 type Encoding = C.FT_Encoding
 
 const (
@@ -52,10 +56,8 @@ func (face Face) SetCharmap(charmap CharMapRec) error {
 	return newError(err, "failed to set charmap")
 }
 
-func GetCharmapIndex(charmap CharMapRec) Int {
-	ftCharmap := toPointer[C.FT_CharMapRec](charmap)
-	ftCharmap.face = charmap.Face.face
-	return C.FT_Get_Charmap_Index(ftCharmap)
+func GetCharmapIndex(charmap *CharMapRec) Int {
+	return C.FT_Get_Charmap_Index((C.FT_CharMap)(unsafe.Pointer(charmap)))
 }
 
 func (face Face) GetCharIndex(charcode rune) UInt {
