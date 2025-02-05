@@ -45,6 +45,14 @@ const (
 	RENDER_MODE_SDF    = RenderMode(C.FT_RENDER_MODE_SDF)
 )
 
+type KerningMode = UInt
+
+const (
+	KERNING_DEFAULT  = KerningMode(C.FT_KERNING_DEFAULT)
+	KERNING_UNFITTED = KerningMode(C.FT_KERNING_UNFITTED)
+	KERNING_UNSCALED = KerningMode(C.FT_KERNING_UNSCALED)
+)
+
 func (face Face) LoadGlyph(glyphIndex UInt, loadFlags Int32) error {
 	err := C.FT_Load_Glyph(face.face, glyphIndex, loadFlags)
 	return newError(err, "failed to load glyph index %d with flags %04x", glyphIndex, loadFlags)
@@ -54,4 +62,10 @@ func (face Face) RenderGlyph(renderMode RenderMode) error {
 	glyph := face.Rec().Glyph
 	err := C.FT_Render_Glyph((*C.FT_GlyphSlotRec)(unsafe.Pointer(glyph)), renderMode)
 	return newError(err, "failed to render glyph with index %d for render mode %04x", glyph.GlyphIndex, renderMode)
+}
+
+func (face Face) GetKerning(leftGlyph UInt, rightGlyph UInt, kernMode KerningMode) (Vector, error) {
+	var kerning Vector
+	err := C.FT_Get_Kerning(face.face, leftGlyph, rightGlyph, kernMode, (*C.FT_Vector)(unsafe.Pointer(&kerning)))
+	return kerning, newError(err, "failed to get kerning for %d and %d with kern mode %d", leftGlyph, rightGlyph, kernMode)
 }

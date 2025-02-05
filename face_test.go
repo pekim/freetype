@@ -262,3 +262,15 @@ var expectedBitmapForA = []byte{
 
 //go:embed bitmap_visualization_A
 var bitmapVisualizationA string
+
+func TestFaceGetKerning(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSans, 0)
+
+	leftGlyph := face.GetCharIndex('V')
+	rightGlyph := face.GetCharIndex('A')
+	kerning, err := face.GetKerning(leftGlyph, rightGlyph, KERNING_UNSCALED)
+	assert.Nil(t, err)
+	assert.Equal(t, Pos(-131), kerning.X)
+	assert.Equal(t, Pos(0), kerning.Y)
+}
