@@ -298,6 +298,12 @@ func TestFaceGetPostscriptName(t *testing.T) {
 	lib, _ := Init()
 	face, _ := lib.NewMemoryFace(font.DejaVuSans, 0)
 
-	name := face.GetPostscriptName()
-	assert.Equal(t, "DejaVuSans", name)
+	assert.Equal(t, "DejaVuSans", face.GetPostscriptName())
+}
+
+func TestFaceGetFSTypeFlags(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSans, 0)
+
+	assert.Equal(t, FSType(0), face.GetFSTypeFlags())
 }

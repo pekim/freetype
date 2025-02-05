@@ -9,6 +9,17 @@ import (
 	"unsafe"
 )
 
+type FSType = UShort
+
+const (
+	FSTYPE_INSTALLABLE_EMBEDDING        = FSType(C.FT_FSTYPE_INSTALLABLE_EMBEDDING)
+	FSTYPE_RESTRICTED_LICENSE_EMBEDDING = FSType(C.FT_FSTYPE_RESTRICTED_LICENSE_EMBEDDING)
+	FSTYPE_PREVIEW_AND_PRINT_EMBEDDING  = FSType(C.FT_FSTYPE_PREVIEW_AND_PRINT_EMBEDDING)
+	FSTYPE_EDITABLE_EMBEDDING           = FSType(C.FT_FSTYPE_EDITABLE_EMBEDDING)
+	FSTYPE_NO_SUBSETTING                = FSType(C.FT_FSTYPE_NO_SUBSETTING)
+	FSTYPE_BITMAP_EMBEDDING_ONLY        = FSType(C.FT_FSTYPE_BITMAP_EMBEDDING_ONLY)
+)
+
 func (face Face) GetNameIndex(glyphName string) UInt {
 	cName := C.CString(glyphName)
 	defer C.free(unsafe.Pointer(cName))
@@ -29,4 +40,8 @@ func (face Face) GetPostscriptName() string {
 		return ""
 	}
 	return C.GoString(cName)
+}
+
+func (face Face) GetFSTypeFlags() FSType {
+	return C.FT_Get_FSType_Flags(face.face)
 }
