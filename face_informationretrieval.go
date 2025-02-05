@@ -20,6 +20,18 @@ const (
 	FSTYPE_BITMAP_EMBEDDING_ONLY        = FSType(C.FT_FSTYPE_BITMAP_EMBEDDING_ONLY)
 )
 
+type SUBGLYPH_FLAG = UInt
+
+const (
+	SUBGLYPH_FLAG_ARGS_ARE_WORDS     = SUBGLYPH_FLAG(C.FT_SUBGLYPH_FLAG_ARGS_ARE_WORDS)
+	SUBGLYPH_FLAG_ARGS_ARE_XY_VALUES = SUBGLYPH_FLAG(C.FT_SUBGLYPH_FLAG_ARGS_ARE_XY_VALUES)
+	SUBGLYPH_FLAG_ROUND_XY_TO_GRID   = SUBGLYPH_FLAG(C.FT_SUBGLYPH_FLAG_ROUND_XY_TO_GRID)
+	SUBGLYPH_FLAG_SCALE              = SUBGLYPH_FLAG(C.FT_SUBGLYPH_FLAG_SCALE)
+	SUBGLYPH_FLAG_XY_SCALE           = SUBGLYPH_FLAG(C.FT_SUBGLYPH_FLAG_XY_SCALE)
+	SUBGLYPH_FLAG_2X2                = SUBGLYPH_FLAG(C.FT_SUBGLYPH_FLAG_2X2)
+	SUBGLYPH_FLAG_USE_MY_METRICS     = SUBGLYPH_FLAG(C.FT_SUBGLYPH_FLAG_USE_MY_METRICS)
+)
+
 func (face Face) GetNameIndex(glyphName string) UInt {
 	cName := C.CString(glyphName)
 	defer C.free(unsafe.Pointer(cName))
@@ -44,4 +56,16 @@ func (face Face) GetPostscriptName() string {
 
 func (face Face) GetFSTypeFlags() FSType {
 	return C.FT_Get_FSType_Flags(face.face)
+}
+
+func (face Face) GetSubGlyphInfo(glyph *GlyphSlotRec, subIndex UInt) (Int, SUBGLYPH_FLAG, Int, Int, Matrix, error) {
+	var index C.FT_Int
+	var flags C.FT_UInt
+	var arg1 C.FT_Int
+	var arg2 C.FT_Int
+	var transform C.FT_Matrix
+	err := C.FT_Get_SubGlyph_Info(
+		(C.FT_GlyphSlot)(unsafe.Pointer(glyph)), subIndex, &index, &flags, &arg1, &arg2, &transform)
+	return Int(index), SUBGLYPH_FLAG(flags), Int(arg1), Int(arg2), to[Matrix](transform),
+		newError(err, "failed to get sub glyph info")
 }
