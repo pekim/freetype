@@ -31,7 +31,7 @@ const (
 	LOAD_NO_SVG              = LoadFlag(C.FT_LOAD_NO_SVG)
 )
 
-// func (face Face) LoadGlyph(glyphIndex UInt, loadFlags Int32) error {
-// 	err := C.FT_Load_Glyph(face.face, glyphIndex, loadFlags)
-// 	return newError(err, "failed to load glyph index %d with flags %04x", glyphIndex, loadFlags)
-// }
+func (face Face) LoadGlyph(glyphIndex UInt, loadFlags Int32) error {
+	err := C.FT_Load_Glyph(face.face, glyphIndex, loadFlags)
+	return newError(err, "failed to load glyph index %d with flags %04x", glyphIndex, loadFlags)
+}

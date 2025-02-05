@@ -212,4 +212,16 @@ func TestFaceLoadChar(t *testing.T) {
 
 	err := face.LoadChar('a', LOAD_DEFAULT)
 	assert.Nil(t, err)
+	assert.Equal(t, GLYPH_FORMAT_OUTLINE, face.Rec().Glyph.Format)
+	assert.Equal(t, Pos(926), face.Rec().Glyph.Metrics.Width)
+}
+
+func TestFaceLoadGlyph(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+
+	err := face.LoadGlyph(face.GetCharIndex('a'), LOAD_DEFAULT)
+	assert.Nil(t, err)
+	assert.Equal(t, GLYPH_FORMAT_OUTLINE, face.Rec().Glyph.Format)
+	assert.Equal(t, Pos(926), face.Rec().Glyph.Metrics.Width)
 }
