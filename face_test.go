@@ -274,3 +274,13 @@ func TestFaceGetKerning(t *testing.T) {
 	assert.Equal(t, Pos(-131), kerning.X)
 	assert.Equal(t, Pos(0), kerning.Y)
 }
+
+func TestFaceGetGlyphName(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSans, 0)
+
+	assert.True(t, face.HasGlyphNames())
+	name, err := face.GetGlyphName(face.GetCharIndex('~'))
+	assert.Nil(t, err)
+	assert.Equal(t, "asciitilde", name)
+}
