@@ -35,8 +35,6 @@ func ParamTagIgnoreSbix(value *bool) Parameter {
 
 const lcdFilterWeightsLen = 5
 
-// ParamTagLCDFilterWeights DOES NOT WORK, results in "fatal error: can't happen".
-// cgo seems to think that cWeights is (or contains) Go memory.
 func ParamTagLCDFilterWeights(weights *[lcdFilterWeightsLen]byte) Parameter {
 	if weights == nil {
 		return C.FT_Parameter{
@@ -46,7 +44,7 @@ func ParamTagLCDFilterWeights(weights *[lcdFilterWeightsLen]byte) Parameter {
 	}
 
 	cWeights := (*C.uchar)(C.malloc(lcdFilterWeightsLen))
-	C.memcpy(unsafe.Pointer(cWeights), unsafe.Pointer(&weights[0]), lcdFilterWeightsLen)
+	C.memcpy(unsafe.Pointer(cWeights), unsafe.Pointer(&(*weights)[0]), lcdFilterWeightsLen)
 
 	return C.FT_Parameter{
 		tag:  C.FT_PARAM_TAG_LCD_FILTER_WEIGHTS,

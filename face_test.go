@@ -19,7 +19,7 @@ func TestFaceProperies(t *testing.T) {
 	lib, _ := Init()
 	true_ := true
 	number := 1
-	// weights := [5]byte{1, 2, 3, 4, 5}
+	weights := [5]byte{1, 2, 3, 4, 5}
 
 	// supported properties - set
 	{
@@ -27,7 +27,7 @@ func TestFaceProperies(t *testing.T) {
 		assert.Nil(t, err)
 		err = face.Properties(
 			ParamTagStemDarkening(&true_),
-			// ParamTagLCDFilterWeights(&weights),
+			ParamTagLCDFilterWeights(&weights),
 			ParamTagRandomSeed(&number),
 		)
 		assert.Nil(t, err)
