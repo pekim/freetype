@@ -26,6 +26,7 @@ func init() {
 	assertSameSize(SizeMetrics{}, C.FT_Size_Metrics{})
 	assertSameSize(SizeRec{}, C.FT_SizeRec{})
 	assertSameSize(SizeRequestRec{}, C.FT_Size_RequestRec{})
+	assertSameSize(UnitVector{}, C.FT_UnitVector{})
 	assertSameSize(Vector{}, C.FT_Vector{})
 }
 
@@ -245,6 +246,11 @@ type SizeRequestRec struct {
 	Height         Long
 	HoriResolution UInt
 	VertResolution UInt
+}
+
+type UnitVector struct {
+	X F2Dot14
+	Y F2Dot14
 }
 
 type Vector struct {
