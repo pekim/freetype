@@ -3,6 +3,7 @@ package freetype
 // #include <ft2build.h>
 // #include FT_FREETYPE_H
 //
+// #include <freetype/ftparams.h>
 // #include <stdlib.h>
 import "C"
 
@@ -403,10 +404,128 @@ func (face Face) Properties(properties ...Parameter) error {
 // FT_OPEN_XXX
 // https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_open_xxx
 
-// FT_Parameter
-// See parameter.go for the Parameter type, and functions to create instances of it.
+/*
+Parameter is a simple structure to pass more or less generic parameters to Library.OpenFace and Face.Properties.
+
+Use one of the ParamTagXXX functions to create a Parameter initialized to a specific parameter tag with data.
+Pass a nil argument to reset the property that the parameter represents.
+*/
+type Parameter = C.FT_Parameter
+
+func (param Parameter) freeData() {
+	C.free(unsafe.Pointer(param.data))
+}
+
+// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_FAMILY tag.
 //
-// https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_parameter
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_ignore_typographic_family
+func ParamTagIgnoreTypoGraphicFamily(value *bool) Parameter {
+	return booleanParamTag(C.FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_FAMILY, value)
+}
+
+// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_SUBFAMILY tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_ignore_typographic_subfamily
+func ParamTagIgnoreTypoGraphicSubfamily(value *bool) Parameter {
+	return booleanParamTag(C.FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_SUBFAMILY, value)
+}
+
+// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_INCREMENTAL tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_incremental
+func ParamTagIncremental(value *bool) Parameter {
+	return booleanParamTag(C.FT_PARAM_TAG_INCREMENTAL, value)
+}
+
+// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_IGNORE_SBIX tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_ignore_sbix
+func ParamTagIgnoreSbix(value *bool) Parameter {
+	return booleanParamTag(C.FT_PARAM_TAG_IGNORE_SBIX, value)
+}
+
+const lcdFilterWeightsLen = 5
+
+// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_LCD_FILTER_WEIGHTS tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_lcd_filter_weights
+func ParamTagLCDFilterWeights(weights *[lcdFilterWeightsLen]byte) Parameter {
+	if weights == nil {
+		return C.FT_Parameter{
+			tag:  C.FT_PARAM_TAG_LCD_FILTER_WEIGHTS,
+			data: nil,
+		}
+	}
+
+	cWeights := (*C.uchar)(C.malloc(lcdFilterWeightsLen))
+	C.memcpy(unsafe.Pointer(cWeights), unsafe.Pointer(&(*weights)[0]), lcdFilterWeightsLen)
+
+	return C.FT_Parameter{
+		tag:  C.FT_PARAM_TAG_LCD_FILTER_WEIGHTS,
+		data: C.FT_Pointer(cWeights),
+	}
+}
+
+// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_RANDOM_SEED tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_random_seed
+func ParamTagRandomSeed(value *int) Parameter {
+	return integerParamTag(C.FT_PARAM_TAG_RANDOM_SEED, value)
+}
+
+// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_STEM_DARKENING tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_stem_darkening
+func ParamTagStemDarkening(value *bool) Parameter {
+	return booleanParamTag(C.FT_PARAM_TAG_STEM_DARKENING, value)
+}
+
+// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_UNPATENTED_HINTING tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_unpatented_hinting
+func ParamTagUnpatentedHinting(value *bool) Parameter {
+	return booleanParamTag(C.FT_PARAM_TAG_UNPATENTED_HINTING, value)
+}
+
+func booleanParamTag(tag C.FT_ULong, value *bool) Parameter {
+	if value == nil {
+		return C.FT_Parameter{
+			tag:  tag,
+			data: nil,
+		}
+	}
+
+	var cBool C.FT_Bool
+	cValue := (*C.FT_Bool)(C.malloc(C.size_t(unsafe.Sizeof(cBool))))
+	if *value {
+		*cValue = 1
+	} else {
+		*cValue = 0
+	}
+
+	return C.FT_Parameter{
+		tag:  tag,
+		data: C.FT_Pointer(cValue),
+	}
+}
+
+func integerParamTag(tag C.FT_ULong, value *int) Parameter {
+	if value == nil {
+		return C.FT_Parameter{
+			tag:  tag,
+			data: nil,
+		}
+	}
+
+	var cInt C.FT_Int32
+	cValue := (*C.FT_Int32)(C.malloc(C.size_t(unsafe.Sizeof(cInt))))
+	*cValue = C.FT_Int32(*value)
+
+	return C.FT_Parameter{
+		tag:  tag,
+		data: C.FT_Pointer(cValue),
+	}
+}
 
 // FT_Attach_File
 // https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_attach_file
