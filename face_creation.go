@@ -2,6 +2,8 @@ package freetype
 
 // #include <ft2build.h>
 // #include FT_FREETYPE_H
+//
+// #include <stdlib.h>
 import "C"
 
 import (
@@ -313,3 +315,101 @@ const (
 	// The face is bold.
 	STYLE_FLAG_BOLD = STYLE_FLAG(C.FT_STYLE_FLAG_BOLD)
 )
+
+// NewFace opens a font by its pathname.
+//
+//   - filepathname - A path to the font file.
+//   - faceIndex - See OpenFace for a detailed description of this parameter.
+//
+// Use Done method to destroy the created Face object (along with its slot and sizes).
+//
+// https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_new_face
+func (lib Library) NewFace(filepathname string, faceIndex int) (Face, error) {
+	cFilepathname := C.CString(filepathname)
+	defer C.free(unsafe.Pointer(cFilepathname))
+
+	face := Face{}
+	err := C.FT_New_Face(lib.library, cFilepathname, C.FT_Long(faceIndex), &face.face)
+	return face, newError(err, "failed to create a face for file '%s'", filepathname)
+}
+
+// Done discards a given face object, as well as all of its child slots and sizes.
+//
+// See the discussion of reference counters in the description of ReferenceFace.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_done_face
+func (face Face) Done() error {
+	err := C.FT_Done_Face(face.face)
+	return newError(err, "failed to discard face")
+}
+
+/*
+A counter gets initialized to 1 at the time a Face structure is created.
+This function increments the counter.
+FT_Done_Face then only destroys a face if the counter is 1, otherwise it simply decrements the counter.
+
+This function helps in managing life-cycles of structures that reference Face objects.
+
+https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_reference_face
+*/
+func (face Face) Reference() error {
+	err := C.FT_Reference_Face(face.face)
+	return newError(err, "failed to reference face")
+}
+
+// NewMemoryFace opens a font that has been loaded into memory.
+//
+//   - data - the font's data
+//   - faceIndex	- See OpenFace for a detailed description of this parameter.
+//
+// You must not deallocate the memory before calling Face.Done.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_new_memory_face
+func (lib Library) NewMemoryFace(data []byte, faceIndex int) (Face, error) {
+	face := Face{}
+	err := C.FT_New_Memory_Face(lib.library, (*C.FT_Byte)(unsafe.Pointer(&data[0])), C.FT_Long(len(data)), C.FT_Long(faceIndex), &face.face)
+	return face, newError(err, "failed to create a new memory face")
+}
+
+/*
+Properties sets or overrides certain (library or module-wide) properties on a face-by-face basis.
+Useful for finer-grained control and avoiding locks on shared structures (threads can modify their own faces as they see fit).
+
+Contrary to PropertySet, this function uses Parameter so that you can pass multiple properties to the target face in one call.
+Note that only a subset of the available properties can be controlled.
+
+  - PARAM_TAG_STEM_DARKENING - (stem darkening, corresponding to the property no-stem-darkening provided by the ‘autofit’, ‘cff’, ‘type1’, and ‘t1cid’ modules; see no-stem-darkening).
+  - PARAM_TAG_LCD_FILTER_WEIGHTS - (LCD filter weights, corresponding to function FT_Library_SetLcdFilterWeights).
+  - PARAM_TAG_RANDOM_SEED - (seed value for the CFF, Type 1, and CID ‘random’ operator, corresponding to the random-seed property provided by the ‘cff’, ‘type1’, and ‘t1cid’ modules; see random-seed).
+
+Pass NULL as data in Parameter for a given tag to reset the option and use the library or module default again.
+
+https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_face_properties
+*/
+func (face Face) Properties(properties ...Parameter) error {
+	err := C.FT_Face_Properties(face.face, C.FT_UInt(len(properties)), (*C.FT_Parameter)(&properties[0]))
+	for _, param := range properties {
+		param.freeData()
+	}
+	return newError(err, "failed to set face properties")
+}
+
+// FT_Open_Face
+// https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_open_face
+
+// FT_Open_Args
+// https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_open_args
+
+// FT_OPEN_XXX
+// https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_open_xxx
+
+// FT_Parameter
+// See parameter.go for the Parameter type, and functions to create instances of it.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_parameter
+
+// FT_Attach_File
+// https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_attach_file
+
+// FT_Attach_Stream
+// https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_attach_stream
