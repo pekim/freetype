@@ -10,6 +10,8 @@ import (
 	"unsafe"
 )
 
+// The basic data types defined by the library.
+
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_byte
 type Byte = C.FT_Byte
 
