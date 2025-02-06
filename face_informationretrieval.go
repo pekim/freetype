@@ -65,7 +65,8 @@ func (face Face) GetSubGlyphInfo(glyph *GlyphSlotRec, subIndex UInt) (Int, SUBGL
 	var arg2 C.FT_Int
 	var transform C.FT_Matrix
 	err := C.FT_Get_SubGlyph_Info(
-		(C.FT_GlyphSlot)(unsafe.Pointer(glyph)), subIndex, &index, &flags, &arg1, &arg2, &transform)
+		(*C.FT_GlyphSlotRec)(unsafe.Pointer(glyph)),
+		subIndex, &index, &flags, &arg1, &arg2, &transform)
 	return Int(index), SUBGLYPH_FLAG(flags), Int(arg1), Int(arg2), to[Matrix](transform),
 		newError(err, "failed to get sub glyph info")
 }
