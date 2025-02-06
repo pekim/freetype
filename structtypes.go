@@ -5,33 +5,26 @@ package freetype
 import "C"
 
 import (
-	"fmt"
 	"unsafe"
 )
 
 func init() {
-	assertSameSize(Bitmap{}, C.FT_Bitmap{})
+	// assertSameSize(Bitmap{}, C.FT_Bitmap{})
 	assertSameSize(BitmapSize{}, C.FT_Bitmap_Size{})
 	assertSameSize(CharMapRec{}, C.FT_CharMapRec{})
-	assertSameSize(FaceRec{}, C.FT_FaceRec{})
-	assertSameSize(Generic{}, C.FT_Generic{})
+	// assertSameSize(FaceRec{}, C.FT_FaceRec{})
+	// assertSameSize(Generic{}, C.FT_Generic{})
 	assertSameSize(GlyphMetrics{}, C.FT_Glyph_Metrics{})
 	assertSameSize(GlyphSlotRec{}, C.FT_GlyphSlotRec{})
 	assertSameSize(ListNodeRec{}, C.FT_ListNodeRec{})
 	assertSameSize(ListRec{}, C.FT_ListRec{})
-	assertSameSize(Matrix{}, C.FT_Matrix{})
+	// assertSameSize(Matrix{}, C.FT_Matrix{})
 	assertSameSize(Outline{}, C.FT_Outline{})
 	assertSameSize(SizeMetrics{}, C.FT_Size_Metrics{})
 	assertSameSize(SizeRec{}, C.FT_SizeRec{})
 	assertSameSize(SizeRequestRec{}, C.FT_Size_RequestRec{})
-	assertSameSize(UnitVector{}, C.FT_UnitVector{})
-	assertSameSize(Vector{}, C.FT_Vector{})
-}
-
-func assertSameSize[A any, B any](a A, b B) {
-	if unsafe.Sizeof(a) != unsafe.Sizeof(b) {
-		panic(fmt.Sprintf("size of %T (%d) != size of %T (%d)", a, unsafe.Sizeof(a), b, unsafe.Sizeof(b)))
-	}
+	// assertSameSize(UnitVector{}, C.FT_UnitVector{})
+	// assertSameSize(Vector{}, C.FT_Vector{})
 }
 
 type BitmapSize struct {
@@ -49,60 +42,6 @@ type CharMapRec struct {
 	Encoding   Encoding
 	PlatformID UShort
 	EncodingID UShort
-}
-
-type FaceRec struct {
-	NumFaces  Long
-	FaceIndex Long
-
-	FaceFlags  FACE_FLAG
-	StyleFlags STYLE_FLAG
-
-	NumGlyphs Long
-
-	family_name *String
-	style_name  *String
-
-	num_fixed_sizes Int
-	available_sizes *BitmapSize
-
-	num_charmaps Int
-	charmaps     **CharMapRec
-
-	generic Generic
-
-	/* The following member variables (down to `underline_thickness`) */
-	/* outlines are only relevant to scalable  cf. @FT_Bitmap_Size    */
-	/* for bitmap fonts.                                              */
-	Bbox BBox
-
-	UnitsPerEM UShort
-	Ascender   Short
-	Descender  Short
-	Height     Short
-
-	MaxAdvanceWidth  Short
-	MaxAdvanceHeight Short
-
-	UnderlinePosition  Short
-	UnderlineThickness Short
-
-	Glyph   *GlyphSlotRec
-	Size    *SizeRec
-	Charmap *CharMapRec
-
-	/* private fields, internal to FreeType */
-
-	driver unsafe.Pointer
-	memory unsafe.Pointer
-	stream unsafe.Pointer
-
-	sizes_list ListRec
-
-	autohint   Generic        /* face-specific auto-hinter data */
-	extensions unsafe.Pointer /* unused                         */
-
-	internal unsafe.Pointer
 }
 
 type GlyphMetrics struct {

@@ -102,6 +102,10 @@ type Pointer = C.FT_Pointer
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_pos
 type Pos = C.FT_Pos
 
+func init() {
+	assertSameSize(Vector{}, C.FT_Vector{})
+}
+
 // Vector is a simple structure used to store a 2D vector; coordinates are of the FT_Pos type.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_vector
@@ -110,6 +114,10 @@ type Vector struct {
 	X Pos
 	// The vertical coordinate.
 	Y Pos
+}
+
+func init() {
+	assertSameSize(BBox{}, C.FT_BBox{})
 }
 
 // BBox is a structure used to hold an outline's bounding box,
@@ -135,6 +143,10 @@ type BBox struct {
 	XMax Pos
 	// The vertical maximum (top-most).
 	YMax Pos
+}
+
+func init() {
+	assertSameSize(Matrix{}, C.FT_Matrix{})
 }
 
 // Matrix is a simple structure used to store a 2x2 matrix.
@@ -165,6 +177,10 @@ type UFWord = C.FT_UFWord
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_f2dot14
 type F2Dot14 = C.FT_F2Dot14
 
+func init() {
+	assertSameSize(UnitVector{}, C.FT_UnitVector{})
+}
+
 // UnitVector is a simple structure used to store a 2D vector unit vector. Uses F2Dot14 types.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_unitvector
@@ -180,6 +196,10 @@ type UnitVector struct {
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_f26dot6
 type F26Dot6 = C.FT_F26Dot6
 
+func init() {
+	assertSameSize(Data{}, C.FT_Data{})
+}
+
 // Data is read-only binary data represented as a pointer and a length.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_data
@@ -192,6 +212,10 @@ type Data struct {
 
 // FT_MAKE_TAG
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_make_tag
+
+func init() {
+	assertSameSize(Generic{}, C.FT_Generic{})
+}
 
 /*
 Client applications often need to associate their own data to a variety of FreeType core objects.
@@ -220,6 +244,10 @@ type Generic struct {
 //
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_generic_finalizer
 type GenericFinalizer func(object unsafe.Pointer)
+
+func init() {
+	assertSameSize(Bitmap{}, C.FT_Bitmap{})
+}
 
 // Bitmap is a structure used to describe a bitmap or pixmap to the raster.
 // Note that we now manage pixmaps of various depths through the pixel_mode field.

@@ -9,7 +9,7 @@ import "C"
 // Functions to start and end the usage of the FreeType library.
 
 /*
-Library contains a handle to a FreeType library instance.
+Library is a handle to a FreeType library instance.
 Each ‘library’ is completely independent from the others;
 it is the ‘root’ of a set of objects like fonts, faces, sizes, etc.
 
