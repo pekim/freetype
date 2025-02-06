@@ -407,7 +407,7 @@ func (face Face) Properties(properties ...Parameter) error {
 /*
 Parameter is a simple structure to pass more or less generic parameters to Library.OpenFace and Face.Properties.
 
-Use one of the ParamTagXXX functions to create a Parameter initialized to a specific parameter tag with data.
+Use one of the ParameterTagXXX functions to create a Parameter initialized to a specific parameter tag with data.
 Pass a nil argument to reset the property that the parameter represents.
 */
 type Parameter = C.FT_Parameter
@@ -416,40 +416,40 @@ func (param Parameter) freeData() {
 	C.free(unsafe.Pointer(param.data))
 }
 
-// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_FAMILY tag.
+// ParameterTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_FAMILY tag.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_ignore_typographic_family
-func ParamTagIgnoreTypoGraphicFamily(value *bool) Parameter {
+func ParameterTagIgnoreTypoGraphicFamily(value *bool) Parameter {
 	return booleanParamTag(C.FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_FAMILY, value)
 }
 
-// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_SUBFAMILY tag.
+// ParameterTagIgnoreTypoGraphicSubfamily creates a Parameter for the FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_SUBFAMILY tag.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_ignore_typographic_subfamily
-func ParamTagIgnoreTypoGraphicSubfamily(value *bool) Parameter {
+func ParameterTagIgnoreTypoGraphicSubfamily(value *bool) Parameter {
 	return booleanParamTag(C.FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_SUBFAMILY, value)
 }
 
-// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_INCREMENTAL tag.
+// ParameterTagIncremental creates a Parameter for the FT_PARAM_TAG_INCREMENTAL tag.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_incremental
-func ParamTagIncremental(value *bool) Parameter {
+func ParameterTagIncremental(value *bool) Parameter {
 	return booleanParamTag(C.FT_PARAM_TAG_INCREMENTAL, value)
 }
 
-// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_IGNORE_SBIX tag.
+// ParameterTagIgnoreSbix creates a Parameter for the FT_PARAM_TAG_IGNORE_SBIX tag.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_ignore_sbix
-func ParamTagIgnoreSbix(value *bool) Parameter {
+func ParameterTagIgnoreSbix(value *bool) Parameter {
 	return booleanParamTag(C.FT_PARAM_TAG_IGNORE_SBIX, value)
 }
 
-const lcdFilterWeightsLen = 5
+const LCDFilterWeightsLen = 5
 
-// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_LCD_FILTER_WEIGHTS tag.
+// ParameterTagLCDFilterWeights creates a Parameter for the FT_PARAM_TAG_LCD_FILTER_WEIGHTS tag.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_lcd_filter_weights
-func ParamTagLCDFilterWeights(weights *[lcdFilterWeightsLen]byte) Parameter {
+func ParameterTagLCDFilterWeights(weights *[LCDFilterWeightsLen]byte) Parameter {
 	if weights == nil {
 		return C.FT_Parameter{
 			tag:  C.FT_PARAM_TAG_LCD_FILTER_WEIGHTS,
@@ -457,8 +457,8 @@ func ParamTagLCDFilterWeights(weights *[lcdFilterWeightsLen]byte) Parameter {
 		}
 	}
 
-	cWeights := (*C.uchar)(C.malloc(lcdFilterWeightsLen))
-	C.memcpy(unsafe.Pointer(cWeights), unsafe.Pointer(&(*weights)[0]), lcdFilterWeightsLen)
+	cWeights := (*C.uchar)(C.malloc(LCDFilterWeightsLen))
+	C.memcpy(unsafe.Pointer(cWeights), unsafe.Pointer(&(*weights)[0]), LCDFilterWeightsLen)
 
 	return C.FT_Parameter{
 		tag:  C.FT_PARAM_TAG_LCD_FILTER_WEIGHTS,
@@ -466,24 +466,24 @@ func ParamTagLCDFilterWeights(weights *[lcdFilterWeightsLen]byte) Parameter {
 	}
 }
 
-// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_RANDOM_SEED tag.
+// ParameterTagRandomSeed creates a Parameter for the FT_PARAM_TAG_RANDOM_SEED tag.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_random_seed
-func ParamTagRandomSeed(value *int) Parameter {
+func ParameterTagRandomSeed(value *int) Parameter {
 	return integerParamTag(C.FT_PARAM_TAG_RANDOM_SEED, value)
 }
 
-// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_STEM_DARKENING tag.
+// ParameterTagStemDarkening creates a Parameter for the FT_PARAM_TAG_STEM_DARKENING tag.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_stem_darkening
-func ParamTagStemDarkening(value *bool) Parameter {
+func ParameterTagStemDarkening(value *bool) Parameter {
 	return booleanParamTag(C.FT_PARAM_TAG_STEM_DARKENING, value)
 }
 
-// ParamTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_UNPATENTED_HINTING tag.
+// ParameterTagUnpatentedHinting creates a Parameter for the FT_PARAM_TAG_UNPATENTED_HINTING tag.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_unpatented_hinting
-func ParamTagUnpatentedHinting(value *bool) Parameter {
+func ParameterTagUnpatentedHinting(value *bool) Parameter {
 	return booleanParamTag(C.FT_PARAM_TAG_UNPATENTED_HINTING, value)
 }
 

@@ -77,9 +77,9 @@ func TestFaceProperies(t *testing.T) {
 		face, err := lib.NewMemoryFace(font.DejaVuSansMono, 0)
 		assert.Nil(t, err)
 		err = face.Properties(
-			ParamTagStemDarkening(&true_),
-			ParamTagLCDFilterWeights(&weights),
-			ParamTagRandomSeed(&number),
+			ParameterTagStemDarkening(&true_),
+			ParameterTagLCDFilterWeights(&weights),
+			ParameterTagRandomSeed(&number),
 		)
 		assert.Nil(t, err)
 	}
@@ -89,7 +89,7 @@ func TestFaceProperies(t *testing.T) {
 		face, err := lib.NewMemoryFace(font.DejaVuSansMono, 0)
 		assert.Nil(t, err)
 		err = face.Properties(
-			ParamTagStemDarkening(nil),
+			ParameterTagStemDarkening(nil),
 		)
 		assert.Nil(t, err)
 	}
@@ -99,7 +99,7 @@ func TestFaceProperies(t *testing.T) {
 		face, err := lib.NewMemoryFace(font.DejaVuSansMono, 0)
 		assert.Nil(t, err)
 		err = face.Properties(
-			ParamTagIgnoreTypoGraphicFamily(&true_),
+			ParameterTagIgnoreTypoGraphicFamily(&true_),
 		)
 		assert.Error(t, err)
 	}
