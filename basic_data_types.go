@@ -110,9 +110,7 @@ func init() {
 //
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_vector
 type Vector struct {
-	// The horizontal coordinate.
 	X Pos
-	// The vertical coordinate.
 	Y Pos
 }
 
@@ -123,25 +121,11 @@ func init() {
 // BBox is a structure used to hold an outline's bounding box,
 // i.e., the coordinates of its extrema in the horizontal and vertical directions.
 //
-// The bounding box is specified with the coordinates of the lower left and the upper right corner.
-// In PostScript, those values are often called (llx,lly) and (urx,ury), respectively.
-//
-// If yMin is negative, this value gives the glyph's descender.
-// Otherwise, the glyph doesn't descend below the baseline. Similarly, if ymax is positive,
-// this value gives the glyph's ascender.
-//
-// xMin gives the horizontal distance from the glyph's origin to the left edge of the glyph's bounding box.
-// If xMin is negative, the glyph extends to the left of the origin.
-//
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_bbox
 type BBox struct {
-	// The horizontal minimum (left-most).
 	XMin Pos
-	// The vertical minimum (bottom-most).
 	YMin Pos
-	// The horizontal maximum (right-most).
 	XMax Pos
-	// The vertical maximum (top-most).
 	YMax Pos
 }
 
@@ -151,10 +135,6 @@ func init() {
 
 // Matrix is a simple structure used to store a 2x2 matrix.
 // Coefficients are in 16.16 fixed-point format.
-// The computation performed is:
-//
-//	x' = x*xx + y*xy
-//	y' = x*yx + y*yy
 //
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_matrix
 type Matrix struct {
@@ -185,9 +165,7 @@ func init() {
 //
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_unitvector
 type UnitVector struct {
-	// Horizontal coordinate.
 	X F2Dot14
-	// Vertical coordinate.
 	Y F2Dot14
 }
 
@@ -204,10 +182,8 @@ func init() {
 //
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_data
 type Data struct {
-	// The data.
 	Pointer *Byte
-	// The length of the data in bytes.
-	Length UInt
+	Length  UInt
 }
 
 // FT_MAKE_TAG
@@ -221,26 +197,15 @@ func init() {
 Client applications often need to associate their own data to a variety of FreeType core objects.
 For example, a text layout API might want to associate a glyph cache to a given size object.
 
-Some FreeType object contains a generic field, of type FT_Generic,
-which usage is left to client applications and font servers.
-
-It can be used to store a pointer to client-specific data,
-as well as the address of a ‘finalizer’ function, which will be called by FreeType when the object is destroyed
-(for example, the previous client example would put the address of the glyph cache destructor in the finalizer field).
-
 https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_generic
 */
 type Generic struct {
-	// A typeless pointer to any client-specified data.
-	// This field is completely ignored by the FreeType library.
-	Data unsafe.Pointer
-	// A pointer to a ‘generic finalizer’ function, which will be called when the object is destroyed.
-	// If this field is set to NULL, no code will be called.
+	Data      unsafe.Pointer
 	Finalizer GenericFinalizer
 }
 
-// Describe a function used to destroy the ‘client’ data of any FreeType object.
-// See the description of the FT_Generic type for details of usage.
+// GenericFinalizer describes a function used to destroy the ‘client’ data of any FreeType object.
+// See the description of the Generic type for details of usage.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_generic_finalizer
 type GenericFinalizer func(object unsafe.Pointer)
@@ -250,45 +215,17 @@ func init() {
 }
 
 // Bitmap is a structure used to describe a bitmap or pixmap to the raster.
-// Note that we now manage pixmaps of various depths through the pixel_mode field.
-//
-// Width and Rows refer to the physical size of the bitmap, not the logical one.
-// For example, if PixelMode is set to PIXEL_MODE_LCD, the logical width is a just a third of the physical one.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_bitmap
 type Bitmap struct {
-	// The number of bitmap rows.
-	Rows UInt
-	// The number of pixels in bitmap row.
-	Width UInt
-	// The pitch's absolute value is the number of bytes taken by one bitmap row,
-	// including padding. However, the pitch is positive when the bitmap has a ‘down’ flow,
-	// and negative when it has an ‘up’ flow. In all cases, the pitch is an offset to add to
-	// a bitmap pointer in order to go down one row.
-	//
-	// Note that ‘padding’ means the alignment of a bitmap to a byte border,
-	// and FreeType functions normally align to the smallest possible integer value.
-	//
-	// For the B/W rasterizer, pitch is always an even number.
-	//
-	// To change the pitch of a bitmap (say, to make it a multiple of 4), use FT_Bitmap_Convert.
-	// Alternatively, you might use callback functions to directly render to the application's surface;
-	// see the file example2.cpp in the tutorial for a demonstration.
-	Pitch Int
-	// A typeless pointer to the bitmap buffer.
-	// This value should be aligned on 32-bit boundaries in most cases.
-	buffer *C.uchar
-	// This field is only used with FT_PIXEL_MODE_GRAY;
-	// it gives the number of gray levels used in the bitmap.
-	NumGrays UShort
-	// The pixel mode, i.e., how pixel bits are stored. See PixelMode for possible values.
-	PixelMode PixelMode
-	// This field is intended for paletted pixel modes; it indicates how the palette is stored.
-	// Not used currently.
+	Rows         UInt
+	Width        UInt
+	Pitch        Int
+	buffer       *C.uchar
+	NumGrays     UShort
+	PixelMode    PixelMode
 	palette_mode C.uchar
-	// A typeless pointer to the bitmap palette; this field is intended for paletted pixel modes.
-	// Not used currently.
-	palette unsafe.Pointer
+	palette      unsafe.Pointer
 }
 
 // Buffer returns the Bitmap's buffer as byte slice.
@@ -319,46 +256,19 @@ func (bm Bitmap) BufferVisualization() string {
 }
 
 // PixelMode is an enumeration type used to describe the format of pixels in a given bitmap.
-// Note that additional formats may be added in the future.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_pixel_mode
 type PixelMode = C.uchar
 
 const (
-	// Value 0 is reserved.
-	PIXEL_MODE_NONE = PixelMode(C.FT_PIXEL_MODE_NONE)
-	// A monochrome bitmap, using 1 bit per pixel.
-	// Note that pixels are stored in most-significant order (MSB),
-	// which means that the left-most pixel in a byte has value 128.
-	PIXEL_MODE_MONO = PixelMode(C.FT_PIXEL_MODE_MONO)
-	// An 8-bit bitmap, generally used to represent anti-aliased glyph images.
-	// Each pixel is stored in one byte.
-	// Note that the number of ‘gray’ levels is stored in the num_grays field of the
-	// Bitmap structure (it generally is 256).
-	PIXEL_MODE_GRAY = PixelMode(C.FT_PIXEL_MODE_GRAY)
-	// A 2-bit per pixel bitmap, used to represent embedded anti-aliased bitmaps in font files
-	// according to the OpenType specification.
-	// We haven't found a single font using this format, however.
+	PIXEL_MODE_NONE  = PixelMode(C.FT_PIXEL_MODE_NONE)
+	PIXEL_MODE_MONO  = PixelMode(C.FT_PIXEL_MODE_MONO)
+	PIXEL_MODE_GRAY  = PixelMode(C.FT_PIXEL_MODE_GRAY)
 	PIXEL_MODE_GRAY2 = PixelMode(C.FT_PIXEL_MODE_GRAY2)
-	// A 4-bit per pixel bitmap, representing embedded anti-aliased bitmaps in font files
-	// according to the OpenType specification.
-	// We haven't found a single font using this format, however.
 	PIXEL_MODE_GRAY4 = PixelMode(C.FT_PIXEL_MODE_GRAY4)
-	// An 8-bit bitmap, representing RGB or BGR decimated glyph images used for display on LCD displays;
-	// the bitmap is three times wider than the original glyph image.
-	// See also RENDER_MODE_LCD.
-	PIXEL_MODE_LCD = PixelMode(C.FT_PIXEL_MODE_LCD)
-	// An 8-bit bitmap, representing RGB or BGR decimated glyph images used for display on
-	// rotated LCD displays; the bitmap is three times taller than the original glyph image.
-	// See also RENDER_MODE_LCD_V.
+	PIXEL_MODE_LCD   = PixelMode(C.FT_PIXEL_MODE_LCD)
 	PIXEL_MODE_LCD_V = PixelMode(C.FT_PIXEL_MODE_LCD_V)
-	// [Since 2.5] An image with four 8-bit channels per pixel, representing a color image
-	// (such as emoticons) with alpha channel. For each pixel, the format is BGRA, which means,
-	// the blue channel comes first in memory. The color channels are pre-multiplied and in the
-	// sRGB colorspace. For example, full red at half-translucent opacity will be represented
-	// as ‘00,00,80,80’, not ‘00,00,FF,80’.
-	// See also LOAD_COLOR.
-	PIXEL_MODE_BGRA = PixelMode(C.FT_PIXEL_MODE_BGRA)
+	PIXEL_MODE_BGRA  = PixelMode(C.FT_PIXEL_MODE_BGRA)
 )
 
 // String returns a formatted representation of the 4 bytes of the PixelMode tag.
@@ -367,32 +277,17 @@ func (pixelMode PixelMode) String() string {
 }
 
 // GlyphFormat is an enumeration type used to describe the format of a given glyph image.
-// Note that this version of FreeType only supports two image formats,
-// even though future font drivers will be able to register their own format.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_glyph_format
 type GlyphFormat = C.FT_Glyph_Format
 
 const (
-	// The value 0 is reserved.
-	GLYPH_FORMAT_NONE = GlyphFormat(C.FT_GLYPH_FORMAT_NONE)
-	// The glyph image is a composite of several other images.
-	// This format is only used with LOAD_NO_RECURSE, and is used to report
-	// compound glyphs (like accented characters).
+	GLYPH_FORMAT_NONE      = GlyphFormat(C.FT_GLYPH_FORMAT_NONE)
 	GLYPH_FORMAT_COMPOSITE = GlyphFormat(C.FT_GLYPH_FORMAT_COMPOSITE)
-	// The glyph image is a bitmap, and can be described as an FT_Bitmap.
-	// You generally need to access the bitmap field of the FT_GlyphSlotRec structure to read it.
-	GLYPH_FORMAT_BITMAP = GlyphFormat(C.FT_GLYPH_FORMAT_BITMAP)
-	// The glyph image is a vectorial outline made of line segments and Bezier arcs;
-	// it can be described as an FT_Outline; you generally want to access the outline field
-	// of the FT_GlyphSlotRec structure to read it.
-	GLYPH_FORMAT_OUTLINE = GlyphFormat(C.FT_GLYPH_FORMAT_OUTLINE)
-	// The glyph image is a vectorial path with no inside and outside contours.
-	// Some Type 1 fonts, like those in the Hershey family, contain glyphs in this format.
-	// These are described as FT_Outline, but FreeType isn't currently capable of rendering them correctly.
-	GLYPH_FORMAT_PLOTTER = GlyphFormat(C.FT_GLYPH_FORMAT_PLOTTER)
-	// [Since 2.12] The glyph is represented by an SVG document in the ‘SVG ’ table.
-	GLYPH_FORMAT_SVG = GlyphFormat(C.FT_GLYPH_FORMAT_SVG)
+	GLYPH_FORMAT_BITMAP    = GlyphFormat(C.FT_GLYPH_FORMAT_BITMAP)
+	GLYPH_FORMAT_OUTLINE   = GlyphFormat(C.FT_GLYPH_FORMAT_OUTLINE)
+	GLYPH_FORMAT_PLOTTER   = GlyphFormat(C.FT_GLYPH_FORMAT_PLOTTER)
+	GLYPH_FORMAT_SVG       = GlyphFormat(C.FT_GLYPH_FORMAT_SVG)
 )
 
 // String returns a formatted representation of the 4 bytes of the GlyphFormat tag.

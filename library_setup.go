@@ -10,8 +10,6 @@ import "C"
 
 /*
 Library is a handle to a FreeType library instance.
-Each ‘library’ is completely independent from the others;
-it is the ‘root’ of a set of objects like fonts, faces, sizes, etc.
 
 https://freetype.org/freetype2/docs/reference/ft2-library_setup.html#ft_library
 */
@@ -21,7 +19,6 @@ type Library struct {
 
 /*
 Init initializes a new FreeType library object.
-The set of modules that are registered by this function is determined at build time.
 
 https://freetype.org/freetype2/docs/reference/ft2-library_setup.html#ft_init_freetype
 */

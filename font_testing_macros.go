@@ -99,7 +99,6 @@ func (face Face) HasKerning() bool {
 }
 
 // HasFixedSizes returns true whenever a face object contains some embedded bitmaps.
-// See the available_sizes field of the FaceRec structure.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-font_testing_macros.html#ft_has_fixed_sizes
 func (face Face) HasFixedSizes() bool {
@@ -121,7 +120,6 @@ func (face Face) HasColor() bool {
 }
 
 // HasMultipleMasters returns true whenever a face object contains some multiple masters.
-// The functions provided by FT_MULTIPLE_MASTERS_H are then available to choose the exact design you want.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-font_testing_macros.html#ft_has_multiple_masters
 func (face Face) HasMultipleMasters() bool {
@@ -137,14 +135,6 @@ func (face Face) HasSVG() bool {
 
 // HasSbix returns true whenever a face object contains an ‘sbix’ OpenType table and outline glyphs.
 //
-// Currently, FreeType only supports bitmap glyphs in PNG format for this table
-// (i.e., JPEG and TIFF formats are unsupported,
-// as are Apple-specific formats not part of the OpenType specification).
-//
-// For backward compatibility, a font with an ‘sbix’ table is treated as a bitmap-only face.
-// Using FT_Open_Face with FT_PARAM_TAG_IGNORE_SBIX, an application can switch off ‘sbix’ handling
-// so that the face is treated as an ordinary outline font with scalable outlines.
-//
 // https://freetype.org/freetype2/docs/reference/ft2-font_testing_macros.html#ft_has_sbix
 func (face Face) HasSbix() bool {
 	return cBoolToGo(C.c_FT_HAS_SBIX(face.face))
@@ -152,7 +142,7 @@ func (face Face) HasSbix() bool {
 
 // HasSbixOverlay returns true whenever a face object contains an ‘sbix’ OpenType table with bit 1
 // in its flags field set, instructing the application to overlay the bitmap strike with the corresponding
-// outline glyph. See HasSbix for pseudo code how to use it.
+// outline glyph.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-font_testing_macros.html#ft_has_sbix_overlay
 func (face Face) HasSbixOverlay() bool {
@@ -184,7 +174,6 @@ func (face Face) IsFixedWidth() bool {
 }
 
 // IsCIDKeyed returns true whenever a face object contains a CID-keyed font.
-// See the discussion of FACE_FLAG_CID_KEYED for more details.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-font_testing_macros.html#ft_is_cid_keyed
 func (face Face) IsCIDKeyed() bool {
@@ -192,7 +181,6 @@ func (face Face) IsCIDKeyed() bool {
 }
 
 // IsTricky returns true whenever a face represents a ‘tricky’ font.
-// See the discussion of FT_FACE_FLAG_TRICKY for more details.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-font_testing_macros.html#ft_is_tricky
 func (face Face) IsTricky() bool {
@@ -200,10 +188,6 @@ func (face Face) IsTricky() bool {
 }
 
 // IsNamedInstance returns true whenever a face object is a named instance of a GX or OpenType variation font.
-//
-// [Since 2.9] Changing the design coordinates with FT_Set_Var_Design_Coordinates or
-// FT_Set_Var_Blend_Coordinates does not influence the return value of this macro
-// (only Set_Named_Instance does that).
 //
 // https://freetype.org/freetype2/docs/reference/ft2-font_testing_macros.html#ft_is_named_instance
 func (face Face) IsNamedInstance() bool {
