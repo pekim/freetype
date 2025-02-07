@@ -38,7 +38,7 @@ var expectedBitmapForA = []byte{
 	0x45, 0xFF, 0xFF, 0xF4, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xB8, 0xFF, 0xFF, 0x88,
 }
 
-func assertGlyphRecFieldsForUppercaseA(t *testing.T, rec *GlyphSlotRec) {
+func assertGlyphRecFieldsForUppercaseA(t *testing.T, rec GlyphSlot) {
 	t.Helper()
 	assert.Equal(t, GLYPH_FORMAT_BITMAP, rec.Format)
 	assert.Equal(t, Pos(1159), rec.Metrics.Width)

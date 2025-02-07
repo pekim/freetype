@@ -153,7 +153,7 @@ Returns the index into the array of character maps within the face to which char
 
 https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_get_charmap_index
 */
-func GetCharmapIndex(charmap *CharMapRec) Int {
+func GetCharmapIndex(charmap CharMap) Int {
 	return C.FT_Get_Charmap_Index((C.FT_CharMap)(unsafe.Pointer(charmap)))
 }
 

@@ -83,7 +83,7 @@ type FaceRec struct {
 	available_sizes *BitmapSize
 
 	num_charmaps Int
-	charmaps     **CharMapRec
+	charmaps     *CharMap
 
 	generic Generic
 
@@ -209,7 +209,7 @@ Charmaps returns the charmaps of the face.
 
 (This exposes the data referenced by the unexported num_charmaps and charmap fields.)
 */
-func (fr *FaceRec) Charmaps() []*CharMapRec {
+func (fr *FaceRec) Charmaps() []CharMap {
 	return unsafe.Slice(fr.charmaps, fr.num_charmaps)
 }
 
