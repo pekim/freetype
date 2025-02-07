@@ -140,11 +140,11 @@ type FaceRec struct {
 	UnderlineThickness Short
 
 	// The face's associated glyph slot(s).
-	Glyph *GlyphSlotRec
+	Glyph GlyphSlot
 	// The current active size for this face.
-	Size *SizeRec
+	Size Size
 	// The current active charmap for this face.
-	Charmap *CharMapRec
+	Charmap CharMap
 
 	/* private fields, internal to FreeType */
 
