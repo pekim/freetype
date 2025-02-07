@@ -305,8 +305,10 @@ func (bm Bitmap) BufferVisualization() string {
 	rowStart := 0
 	for range bm.Rows {
 		for col := range bm.Width {
-			byte_ := buffer[rowStart+int(col)]
-			densityIndex := density[byte(len(density))-(byte_/byte(len(density)))-1]
+			pixel := buffer[rowStart+int(col)]
+			index := int(float64(pixel) / 0xff * float64(len(density)-1))
+			index = len(density) - 1 - index // reverse the index, as density const runs from most to least dense
+			densityIndex := density[index]
 			builder.WriteByte(densityIndex)
 		}
 		builder.WriteRune('\n')
