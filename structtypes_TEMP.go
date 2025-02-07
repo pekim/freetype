@@ -9,19 +9,9 @@ import (
 )
 
 func init() {
-	assertSameSize(CharMapRec{}, C.FT_CharMapRec{})
 	assertSameSize(ListNodeRec{}, C.FT_ListNodeRec{})
 	assertSameSize(ListRec{}, C.FT_ListRec{})
 	assertSameSize(Outline{}, C.FT_Outline{})
-}
-
-type CharMap *CharMapRec
-
-type CharMapRec struct {
-	Face       Face
-	Encoding   Encoding
-	PlatformID UShort
-	EncodingID UShort
 }
 
 type ListNodeRec struct {
