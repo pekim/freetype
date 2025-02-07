@@ -21,6 +21,10 @@ For example `dnf install freetype-devel` or `apt install libfreetype6-dev`.
 
 The FreeType library must be available, as it will be dynamically loaded at runtime.
 
+## Examples
+
+Simple examples can be found in the `example` directory.
+
 ## Completeness
 
 Most types and functions in the [Core API](https://freetype.org/freetype2/docs/reference/index.html#core-api) are implemented.
