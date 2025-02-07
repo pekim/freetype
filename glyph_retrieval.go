@@ -90,7 +90,7 @@ type GlyphSlotRec struct {
 	// selected instance are internally handled as 26.6 fractional font units but returned as (rounded)
 	// integers, as expected. To get unrounded font units, don't use LOAD_NO_SCALE but load the glyph with
 	// LOAD_NO_HINTING and scale it, using the font's units_per_EM value as the ppem.
-	Outline Outline
+	Outline C.FT_Outline
 
 	// The number of subglyphs in a composite glyph. This field is only valid for the composite glyph
 	// format that should normally only be loaded with the LOAD_NO_RECURSE flag.

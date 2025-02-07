@@ -152,7 +152,7 @@ type FaceRec struct {
 	memory unsafe.Pointer
 	stream unsafe.Pointer
 
-	sizes_list ListRec
+	sizes_list C.FT_ListRec
 
 	autohint   Generic        /* face-specific auto-hinter data */
 	extensions unsafe.Pointer /* unused                         */
