@@ -8,6 +8,11 @@ import (
 	"fmt"
 )
 
+/*
+FTError is the FreeType error code type. A value of 0 (Err_Ok) is always interpreted as a successful operation.
+
+https://freetype.org/freetype2/docs/reference/ft2-basic_types.html#ft_error
+*/
 type FTError = C.FT_Error
 
 const Err_Ok = FTError(C.FT_Err_Ok)
@@ -234,6 +239,11 @@ var errorsText = map[C.FT_Error]string{
 	C.FT_Err_Corrupted_Font_Glyphs:         "Font glyphs corrupted or missing fields",
 }
 
+/*
+Error is used to represent errors returned from FreeType functions.
+
+Its FTError method can be used to get the FTError value that was returned from the failing function.
+*/
 type Error struct {
 	ftError FTError
 	message string
@@ -253,6 +263,7 @@ func (err Error) Error() string {
 	return fmt.Sprintf("%s : error %d : %s", err.message, err.ftError, errorsText[err.ftError])
 }
 
+// FTError returns the FTError value that was returned from the failing function.
 func (err Error) FTError() FTError {
 	return err.ftError
 }
