@@ -137,7 +137,7 @@ It also fails if an OpenType type 14 charmap is selected (which doesn't map char
 
 https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_set_charmap
 */
-func (face Face) SetCharmap(charmap CharMapRec) error {
+func (face Face) SetCharmap(charmap CharMap) error {
 	ftCharmap := toPointer[C.FT_CharMapRec](charmap)
 	ftCharmap.face = charmap.Face.face
 	err := C.FT_Set_Charmap(face.face, ftCharmap)

@@ -22,7 +22,7 @@ func TestFaceSetCharmap(t *testing.T) {
 	lib, _ := Init()
 	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
 
-	err := face.SetCharmap(CharMapRec{
+	err := face.SetCharmap(&CharMapRec{
 		Face:       face,
 		Encoding:   ENCODING_UNICODE,
 		PlatformID: 0,
