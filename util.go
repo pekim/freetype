@@ -40,3 +40,15 @@ func to[T any, U any](value U) T {
 func toPointer[T any, U any](value U) *T {
 	return (*T)(unsafe.Pointer(&value))
 }
+
+func goStringForNotNullTerminatedCString(str *Byte, strLen UInt) string {
+	// The string is not guaranteed to be null-terminated, so create buffer with one more
+	// byte than string_len
+	buffer := make([]byte, strLen+1)
+	// Copy the string to the buffer.
+	copy(buffer[:strLen], unsafe.Slice((*byte)(unsafe.Pointer(str)), strLen))
+	// Add a null to ensure that the string is terminated.
+	buffer[strLen] = 0
+
+	return C.GoString((*C.char)(unsafe.Pointer(&buffer[0])))
+}
