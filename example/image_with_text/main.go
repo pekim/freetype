@@ -23,7 +23,7 @@ func main() {
 	}
 
 	// Set the nominal height.
-	err = face.SetPixelSizes(0, 20)
+	err = face.SetPixelSizes(0, 16)
 	if err != nil {
 		panic(err)
 	}
@@ -74,10 +74,16 @@ func drawGlyphAt(image *image.RGBA, face freetype.Face, codepoint rune, penX int
 		for xGlyph := 0; xGlyph < int(bitmap.Width); xGlyph++ {
 			imageIndex := (y * image.Stride) + (4 * x)
 			bitmapIndex := (yGlyph * int(bitmap.Pitch)) + xGlyph
-			image.Pix[imageIndex+0] = 0x00                         // R
-			image.Pix[imageIndex+1] = 0x00                         // G
-			image.Pix[imageIndex+2] = 0x00                         // B
-			image.Pix[imageIndex+3] = bitmap.Buffer()[bitmapIndex] // A
+			alpha := bitmap.Buffer()[bitmapIndex]
+			gray := 0xff - alpha
+			image.Pix[imageIndex+0] = gray // R
+			image.Pix[imageIndex+1] = gray // G
+			image.Pix[imageIndex+2] = gray // B
+			image.Pix[imageIndex+3] = 0xFF // A
+			// image.Pix[imageIndex+0] = 0x00                         // R
+			// image.Pix[imageIndex+1] = 0x00                         // G
+			// image.Pix[imageIndex+2] = 0x00                         // B
+			// image.Pix[imageIndex+3] = bitmap.Buffer()[bitmapIndex] // A
 			x++
 		}
 		y++
