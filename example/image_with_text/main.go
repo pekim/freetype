@@ -17,7 +17,7 @@ func main() {
 	}
 
 	// Load a Face from font data.
-	face, err := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+	face, err := lib.NewMemoryFace(font.DejaVuSans, 0)
 	if err != nil {
 		panic(err)
 	}
