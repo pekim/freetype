@@ -4,9 +4,35 @@
 
 This is a Go library that implements bindings for the [FreeType](https://freetype.org/) library.
 
+## API
+
+### functions
+
+For the most part there is a one-to-one mapping between C API function and Go functions.
+
+### structs
+
+Non-private struct fields are exported, with a few exceptions.
+
+- Where there are a pair of fields with a count and a pointer to an array, they will not be exported.
+  Instead a method that returns a slice is exported.
+- Fields that are a pointer to a zero-terminated string are not exported.
+  An exported method with the same name returns a Go string.
+
+### types
+
+Most C types defined by FreeType have a corresponding Go type.
+
+### C macros
+
+Most FreeType C macros do not need to be exposed.
+One exception is the [Font Testing Macros](https://freetype.org/freetype2/docs/reference/ft2-font_testing_macros.html).
+They are exposed as functions, such as
+[HasHorizontal](https://pkg.go.dev/pekim/freetype-go#Face.HasHorizontal).
+
 ## Requirements
 
-### Build
+### build
 
 #### C compiler
 
@@ -17,7 +43,7 @@ This is a Go library that implements bindings for the [FreeType](https://freetyp
 The FreeType headers must be available, so the freetype development package should be installed.
 For example `dnf install freetype-devel` or `apt install libfreetype6-dev`.
 
-### Runtime
+### runtime
 
 The FreeType library must be available, as it will be dynamically loaded at runtime.
 
@@ -40,7 +66,8 @@ The types and functions in those files are maintained in the same order as they 
 
 ### type aliases
 
-When defining Go types that correspond to C types, type aliases are used. This is done to reduce the need to convert the Go type to the C type when passing an argument to a C function.
+When defining Go types that correspond to C types, type aliases are used. This is done to reduce the need to convert
+the Go type to the C type when passing an argument to a C function.
 
 ### pre-commit hook
 
