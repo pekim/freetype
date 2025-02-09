@@ -39,13 +39,13 @@ func TestLibraryNewFace(t *testing.T) {
 	assert.Error(t, err)
 }
 
-// func TestFaceReference(t *testing.T) {
-// 	lib, _ := Init()
-// 	face, err := lib.NewMemoryFace(font.DejaVuSansMono, 0)
-// 	assert.Nil(t, err)
-// 	err = face.Reference()
-// 	assert.Nil(t, err)
-// }
+func TestFaceReference(t *testing.T) {
+	lib, _ := Init()
+	face, err := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+	assert.Nil(t, err)
+	err = face.Reference()
+	assert.Nil(t, err)
+}
 
 func TestLibraryNewMemoryFace(t *testing.T) {
 	lib, _ := Init()
@@ -60,41 +60,41 @@ func TestLibraryNewMemoryFace(t *testing.T) {
 	assert.Error(t, err)
 }
 
-// func TestFaceProperies(t *testing.T) {
-// 	lib, _ := Init()
-// 	true_ := true
-// 	number := 1
-// 	weights := [5]byte{1, 2, 3, 4, 5}
+func TestFaceProperies(t *testing.T) {
+	lib, _ := Init()
+	true_ := true
+	number := 1
+	// weights := [5]byte{1, 2, 3, 4, 5}
 
-// 	// supported properties - set
-// 	{
-// 		face, err := lib.NewMemoryFace(font.DejaVuSansMono, 0)
-// 		assert.Nil(t, err)
-// 		err = face.Properties(
-// 			ParameterTagStemDarkening(&true_),
-// 			ParameterTagLCDFilterWeights(&weights),
-// 			ParameterTagRandomSeed(&number),
-// 		)
-// 		assert.Nil(t, err)
-// 	}
+	// supported properties - set
+	{
+		face, err := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+		assert.Nil(t, err)
+		err = face.Properties(
+			ParameterTagStemDarkening(&true_),
+			// ParameterTagLCDFilterWeights(&weights),
+			ParameterTagRandomSeed(&number),
+		)
+		assert.Nil(t, err)
+	}
 
-// 	// supported property - reset
-// 	{
-// 		face, err := lib.NewMemoryFace(font.DejaVuSansMono, 0)
-// 		assert.Nil(t, err)
-// 		err = face.Properties(
-// 			ParameterTagStemDarkening(nil),
-// 		)
-// 		assert.Nil(t, err)
-// 	}
+	// supported property - reset
+	{
+		face, err := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+		assert.Nil(t, err)
+		err = face.Properties(
+			ParameterTagStemDarkening(nil),
+		)
+		assert.Nil(t, err)
+	}
 
-// 	// unsupported property
-// 	{
-// 		face, err := lib.NewMemoryFace(font.DejaVuSansMono, 0)
-// 		assert.Nil(t, err)
-// 		err = face.Properties(
-// 			ParameterTagIgnoreTypoGraphicFamily(&true_),
-// 		)
-// 		assert.Error(t, err)
-// 	}
-// }
+	// unsupported property
+	{
+		face, err := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+		assert.Nil(t, err)
+		err = face.Properties(
+			ParameterTagIgnoreTypoGraphicFamily(&true_),
+		)
+		assert.Error(t, err)
+	}
+}

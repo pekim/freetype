@@ -190,16 +190,16 @@ func (face Face) Done() error {
 	return newError(err, "failed to discard face")
 }
 
-// /*
-// A counter gets initialized to 1 at the time a Face structure is created.
-// This function increments the counter.
+/*
+A counter gets initialized to 1 at the time a Face structure is created.
+This function increments the counter.
 
-// https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_reference_face
-// */
-// func (face Face) Reference() error {
-// 	err := C.FT_Reference_Face(face.face)
-// 	return newError(err, "failed to reference face")
-// }
+https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_reference_face
+*/
+func (face Face) Reference() error {
+	err := libfreetype.XFT_Reference_Face(face.tls, face.face)
+	return newError(err, "failed to reference face")
+}
 
 // NewMemoryFace opens a font that has been loaded into memory.
 //
@@ -218,18 +218,18 @@ func (lib Library) NewMemoryFace(data []byte, faceIndex int) (Face, error) {
 	return face_, newError(err, "failed to create a new memory face")
 }
 
-// /*
-// Properties sets or overrides certain (library or module-wide) properties on a face-by-face basis.
+/*
+Properties sets or overrides certain (library or module-wide) properties on a face-by-face basis.
 
-// https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_face_properties
-// */
-// func (face Face) Properties(properties ...Parameter) error {
-// 	err := C.FT_Face_Properties(face.face, C.FT_UInt(len(properties)), (*C.FT_Parameter)(&properties[0]))
-// 	for _, param := range properties {
-// 		param.freeData()
-// 	}
-// 	return newError(err, "failed to set face properties")
-// }
+https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_face_properties
+*/
+func (face Face) Properties(properties ...Parameter) error {
+	err := libfreetype.XFT_Face_Properties(face.tls, face.face, UInt(len(properties)), toUintptr(&properties[0]))
+	for _, param := range properties {
+		param.freeData()
+	}
+	return newError(err, "failed to set face properties")
+}
 
 // // FT_Open_Face
 // // https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_open_face
@@ -240,128 +240,128 @@ func (lib Library) NewMemoryFace(data []byte, faceIndex int) (Face, error) {
 // // FT_OPEN_XXX
 // // https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_open_xxx
 
-// /*
-// Parameter is a simple structure to pass more or less generic parameters to Library.OpenFace and Face.Properties.
+/*
+Parameter is a simple structure to pass more or less generic parameters to Library.OpenFace and Face.Properties.
 
-// Use one of the ParameterTagXXX functions to create a Parameter initialized to a specific parameter tag with data.
-// Pass a nil argument to reset the property that the parameter represents.
-// */
-// type Parameter = C.FT_Parameter
+Use one of the ParameterTagXXX functions to create a Parameter initialized to a specific parameter tag with data.
+Pass a nil argument to reset the property that the parameter represents.
+*/
+type Parameter libfreetype.TFT_Parameter
 
-// func (param Parameter) freeData() {
-// 	C.free(unsafe.Pointer(param.data))
-// }
+func (param Parameter) freeData() {
+	libc.Xfree(nil, param.Fdata)
+}
 
-// // ParameterTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_FAMILY tag.
-// //
-// // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_ignore_typographic_family
-// func ParameterTagIgnoreTypoGraphicFamily(value *bool) Parameter {
-// 	return booleanParamTag(C.FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_FAMILY, value)
-// }
+// ParameterTagIgnoreTypoGraphicFamily creates a Parameter for the FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_FAMILY tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_ignore_typographic_family
+func ParameterTagIgnoreTypoGraphicFamily(value *bool) Parameter {
+	return booleanParamTag(PARAM_TAG_IGNORE_TYPOGRAPHIC_FAMILY, value)
+}
 
-// // ParameterTagIgnoreTypoGraphicSubfamily creates a Parameter for the FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_SUBFAMILY tag.
-// //
-// // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_ignore_typographic_subfamily
-// func ParameterTagIgnoreTypoGraphicSubfamily(value *bool) Parameter {
-// 	return booleanParamTag(C.FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_SUBFAMILY, value)
-// }
+// ParameterTagIgnoreTypoGraphicSubfamily creates a Parameter for the FT_PARAM_TAG_IGNORE_TYPOGRAPHIC_SUBFAMILY tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_ignore_typographic_subfamily
+func ParameterTagIgnoreTypoGraphicSubfamily(value *bool) Parameter {
+	return booleanParamTag(PARAM_TAG_IGNORE_TYPOGRAPHIC_SUBFAMILY, value)
+}
 
-// // ParameterTagIncremental creates a Parameter for the FT_PARAM_TAG_INCREMENTAL tag.
-// //
-// // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_incremental
-// func ParameterTagIncremental(value *bool) Parameter {
-// 	return booleanParamTag(C.FT_PARAM_TAG_INCREMENTAL, value)
-// }
+// ParameterTagIncremental creates a Parameter for the FT_PARAM_TAG_INCREMENTAL tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_incremental
+func ParameterTagIncremental(value *bool) Parameter {
+	return booleanParamTag(PARAM_TAG_INCREMENTAL, value)
+}
 
-// // ParameterTagIgnoreSbix creates a Parameter for the FT_PARAM_TAG_IGNORE_SBIX tag.
-// //
-// // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_ignore_sbix
-// func ParameterTagIgnoreSbix(value *bool) Parameter {
-// 	return booleanParamTag(C.FT_PARAM_TAG_IGNORE_SBIX, value)
-// }
+// ParameterTagIgnoreSbix creates a Parameter for the FT_PARAM_TAG_IGNORE_SBIX tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_ignore_sbix
+func ParameterTagIgnoreSbix(value *bool) Parameter {
+	return booleanParamTag(PARAM_TAG_IGNORE_SBIX, value)
+}
 
-// const LCDFilterWeightsLen = 5
+const LCDFilterWeightsLen = 5
 
-// // ParameterTagLCDFilterWeights creates a Parameter for the FT_PARAM_TAG_LCD_FILTER_WEIGHTS tag.
-// //
-// // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_lcd_filter_weights
-// func ParameterTagLCDFilterWeights(weights *[LCDFilterWeightsLen]byte) Parameter {
-// 	if weights == nil {
-// 		return C.FT_Parameter{
-// 			tag:  C.FT_PARAM_TAG_LCD_FILTER_WEIGHTS,
-// 			data: nil,
-// 		}
-// 	}
+// ParameterTagLCDFilterWeights creates a Parameter for the FT_PARAM_TAG_LCD_FILTER_WEIGHTS tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_lcd_filter_weights
+func ParameterTagLCDFilterWeights(weights *[LCDFilterWeightsLen]byte) Parameter {
+	if weights == nil {
+		return Parameter{
+			Ftag:  PARAM_TAG_LCD_FILTER_WEIGHTS,
+			Fdata: 0,
+		}
+	}
 
-// 	cWeights := (*C.uchar)(C.malloc(LCDFilterWeightsLen))
-// 	C.memcpy(unsafe.Pointer(cWeights), unsafe.Pointer(&(*weights)[0]), LCDFilterWeightsLen)
+	cWeights := libc.Xmalloc(nil, libc.Tsize_t(unsafe.Sizeof(LCDFilterWeightsLen)))
+	libc.Xmemcpy(nil, cWeights, toUintptr(&(*weights)[0]), LCDFilterWeightsLen)
 
-// 	return C.FT_Parameter{
-// 		tag:  C.FT_PARAM_TAG_LCD_FILTER_WEIGHTS,
-// 		data: C.FT_Pointer(cWeights),
-// 	}
-// }
+	return Parameter{
+		Ftag:  PARAM_TAG_LCD_FILTER_WEIGHTS,
+		Fdata: libfreetype.TFT_Pointer(cWeights),
+	}
+}
 
-// // ParameterTagRandomSeed creates a Parameter for the FT_PARAM_TAG_RANDOM_SEED tag.
-// //
-// // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_random_seed
-// func ParameterTagRandomSeed(value *int) Parameter {
-// 	return integerParamTag(C.FT_PARAM_TAG_RANDOM_SEED, value)
-// }
+// ParameterTagRandomSeed creates a Parameter for the FT_PARAM_TAG_RANDOM_SEED tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_random_seed
+func ParameterTagRandomSeed(value *int) Parameter {
+	return integerParamTag(PARAM_TAG_RANDOM_SEED, value)
+}
 
-// // ParameterTagStemDarkening creates a Parameter for the FT_PARAM_TAG_STEM_DARKENING tag.
-// //
-// // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_stem_darkening
-// func ParameterTagStemDarkening(value *bool) Parameter {
-// 	return booleanParamTag(C.FT_PARAM_TAG_STEM_DARKENING, value)
-// }
+// ParameterTagStemDarkening creates a Parameter for the FT_PARAM_TAG_STEM_DARKENING tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_stem_darkening
+func ParameterTagStemDarkening(value *bool) Parameter {
+	return booleanParamTag(PARAM_TAG_STEM_DARKENING, value)
+}
 
-// // ParameterTagUnpatentedHinting creates a Parameter for the FT_PARAM_TAG_UNPATENTED_HINTING tag.
-// //
-// // https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_unpatented_hinting
-// func ParameterTagUnpatentedHinting(value *bool) Parameter {
-// 	return booleanParamTag(C.FT_PARAM_TAG_UNPATENTED_HINTING, value)
-// }
+// ParameterTagUnpatentedHinting creates a Parameter for the FT_PARAM_TAG_UNPATENTED_HINTING tag.
+//
+// https://freetype.org/freetype2/docs/reference/ft2-parameter_tags.html#ft_param_tag_unpatented_hinting
+func ParameterTagUnpatentedHinting(value *bool) Parameter {
+	return booleanParamTag(PARAM_TAG_UNPATENTED_HINTING, value)
+}
 
-// func booleanParamTag(tag C.FT_ULong, value *bool) Parameter {
-// 	if value == nil {
-// 		return C.FT_Parameter{
-// 			tag:  tag,
-// 			data: nil,
-// 		}
-// 	}
+func booleanParamTag(tag ParamTag, value *bool) Parameter {
+	if value == nil {
+		return Parameter{
+			Ftag:  tag,
+			Fdata: 0,
+		}
+	}
 
-// 	var cBool C.FT_Bool
-// 	cValue := (*C.FT_Bool)(C.malloc(C.size_t(unsafe.Sizeof(cBool))))
-// 	if *value {
-// 		*cValue = 1
-// 	} else {
-// 		*cValue = 0
-// 	}
+	var cBool Bool
+	cValue := fromUintptr[Bool](libc.Xmalloc(nil, libc.Tsize_t(unsafe.Sizeof(cBool))))
+	if *value {
+		*cValue = 1
+	} else {
+		*cValue = 0
+	}
 
-// 	return C.FT_Parameter{
-// 		tag:  tag,
-// 		data: C.FT_Pointer(cValue),
-// 	}
-// }
+	return Parameter{
+		Ftag:  tag,
+		Fdata: libfreetype.TFT_Pointer(toUintptr(cValue)),
+	}
+}
 
-// func integerParamTag(tag C.FT_ULong, value *int) Parameter {
-// 	if value == nil {
-// 		return C.FT_Parameter{
-// 			tag:  tag,
-// 			data: nil,
-// 		}
-// 	}
+func integerParamTag(tag ULong, value *int) Parameter {
+	if value == nil {
+		return Parameter{
+			Ftag:  tag,
+			Fdata: 0,
+		}
+	}
 
-// 	var cInt C.FT_Int32
-// 	cValue := (*C.FT_Int32)(C.malloc(C.size_t(unsafe.Sizeof(cInt))))
-// 	*cValue = C.FT_Int32(*value)
+	var cInt Int32
+	cValue := fromUintptr[Int32](libc.Xmalloc(nil, libc.Tsize_t(unsafe.Sizeof(cInt))))
+	*cValue = Int32(*value)
 
-// 	return C.FT_Parameter{
-// 		tag:  tag,
-// 		data: C.FT_Pointer(cValue),
-// 	}
-// }
+	return Parameter{
+		Ftag:  tag,
+		Fdata: libfreetype.TFT_Pointer(toUintptr(cValue)),
+	}
+}
 
 // FT_Attach_File
 // https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_attach_file
