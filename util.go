@@ -1,54 +1,22 @@
 package freetype
 
-// #include <ft2build.h>
-// #include FT_FREETYPE_H
-import "C"
-
 import (
-	"fmt"
 	"unsafe"
+
+	"modernc.org/libc"
 )
 
-// formatTag returns a formatted representation of the 4 bytes of a tag.
-func formatTag(tag uint32) string {
-	return fmt.Sprintf("'%s', '%s', '%s', '%s'",
-		string(rune(tag>>24&0x000000ff)),
-		string(rune(tag>>16&0x000000ff)),
-		string(rune(tag>>8&0x000000ff)),
-		string(rune(tag>>0&0x000000ff)),
-	)
+func toUintptr[T any](ptr *T) uintptr {
+	return uintptr(unsafe.Pointer(ptr))
 }
 
-func assertSameSize[A any, B any](a A, b B) {
-	if unsafe.Sizeof(a) != unsafe.Sizeof(b) {
-		panic(fmt.Sprintf("size of %T (%d) != size of %T (%d)", a, unsafe.Sizeof(a), b, unsafe.Sizeof(b)))
-	}
+func fromUintptr[T any](ptr uintptr) *T {
+	// Jump through some hoops to avoid "possible misuse of unsafe.Pointer" warning.
+	return (*T)(*(*unsafe.Pointer)(unsafe.Pointer(&ptr)))
 }
 
-func cBoolToGo(value C.FT_Bool) bool {
-	return value != 0
-}
-
-// to converts a value to another type in an unsafe manner, without regard to
-// whether the conversion is reasonable.
-func to[T any, U any](value U) T {
-	return *(toPointer[T](value))
-}
-
-// toPointer accecpts a value and converts it to a pointer to the value as a different type.
-// It does so in an unsafe manner, without regard to whether the conversion is reasonable.
-func toPointer[T any, U any](value U) *T {
-	return (*T)(unsafe.Pointer(&value))
-}
-
-func goStringForNotNullTerminatedCString(str *Byte, strLen UInt) string {
-	// The string is not guaranteed to be null-terminated, so create buffer with one more
-	// byte than string_len
-	buffer := make([]byte, strLen+1)
-	// Copy the string to the buffer.
-	copy(buffer[:strLen], unsafe.Slice((*byte)(unsafe.Pointer(str)), strLen))
-	// Add a null to ensure that the string is terminated.
-	buffer[strLen] = 0
-
-	return C.GoString((*C.char)(unsafe.Pointer(&buffer[0])))
+func alloc[T any](tls *libc.TLS, exampleObject T) (*T, func()) {
+	size := int(unsafe.Sizeof(exampleObject))
+	object := fromUintptr[T](tls.Alloc(size))
+	return object, func() { tls.Free(size) }
 }

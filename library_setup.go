@@ -1,10 +1,9 @@
 package freetype
 
-// #include <ft2build.h>
-// #include FT_FREETYPE_H
-//
-// #include <stdlib.h>
-import "C"
+import (
+	"modernc.org/libc"
+	"modernc.org/libfreetype"
+)
 
 // Functions to start and end the usage of the FreeType library.
 
@@ -14,7 +13,8 @@ Library is a handle to a FreeType library instance.
 https://freetype.org/freetype2/docs/reference/ft2-library_setup.html#ft_library
 */
 type Library struct {
-	library C.FT_Library
+	library libfreetype.TFT_Library
+	tls     *libc.TLS
 }
 
 /*
@@ -23,9 +23,15 @@ Init initializes a new FreeType library object.
 https://freetype.org/freetype2/docs/reference/ft2-library_setup.html#ft_init_freetype
 */
 func Init() (Library, error) {
-	lib := Library{}
-	err := C.FT_Init_FreeType(&lib.library)
-	return lib, newError(err, "failed to init library")
+	tls := libc.NewTLS()
+	lib, freeLib := alloc(tls, Library{})
+	lib.tls = tls
+
+	err := libfreetype.XFT_Init_FreeType(tls, toUintptr(&lib.library))
+
+	lib_ := *lib
+	freeLib()
+	return lib_, newError(err, "failed to init library")
 }
 
 // Done destroys the FreeType library object represented by Library,
@@ -33,7 +39,7 @@ func Init() (Library, error) {
 //
 // https://freetype.org/freetype2/docs/reference/ft2-library_setup.html#ft_done_freetype
 func (lib Library) Done() error {
-	err := C.FT_Done_FreeType(lib.library)
+	err := libfreetype.XFT_Done_FreeType(lib.tls, lib.library)
 	return newError(err, "failed to destroy library")
 }
 
@@ -46,8 +52,9 @@ func (lib Library) Done() error {
 //
 // https://freetype.org/freetype2/docs/reference/ft2-library_setup.html#ft_library_version
 func (lib Library) Version() (int, int, int) {
-	var major, minor, patch C.FT_Int
-	C.FT_Library_Version(lib.library, &major, &minor, &patch)
+	var major, minor, patch libfreetype.TFT_Int
+	libfreetype.XFT_Library_Version(lib.tls, lib.library,
+		toUintptr(&major), toUintptr(&minor), toUintptr(&patch))
 	return int(major), int(minor), int(patch)
 }
 
