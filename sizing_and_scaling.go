@@ -13,7 +13,7 @@ Size is a handle to an object that models a face scaled to a given character siz
 
 https://freetype.org/freetype2/docs/reference/ft2-sizing_and_scaling.html#ft_size
 */
-type Size *SizeRec
+type Size uintptr
 
 func init() {
 	assertSameSize(SizeRec{}, libfreetype.TFT_SizeRec{})
@@ -151,7 +151,7 @@ type SizeRequestRec struct {
 // SizeRequest is a handle to a size request structure.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-sizing_and_scaling.html#ft_size_request
-type SizeRequest *SizeRequestRec
+type SizeRequest uintptr
 
 /*
 SetTransform sets the transformation that is applied to glyph images when they are loaded into a

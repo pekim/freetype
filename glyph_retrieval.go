@@ -13,7 +13,7 @@ GlyphSlot is a handle to a given ‘glyph slot’.
 
 https://freetype.org/freetype2/docs/reference/ft2-glyph_retrieval.html#ft_glyphslot
 */
-type GlyphSlot *GlyphSlotRec
+type GlyphSlot uintptr
 
 func init() {
 	assertSameSize(GlyphSlotRec{}, libfreetype.TFT_GlyphSlotRec{})
