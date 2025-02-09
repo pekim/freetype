@@ -20,24 +20,24 @@ import (
 // 	assert.Equal(t, ENCODING_UNICODE, rec.Charmaps()[0].Encoding)
 // }
 
-// func TestLibraryNewFace(t *testing.T) {
-// 	lib, _ := Init()
+func TestLibraryNewFace(t *testing.T) {
+	lib, _ := Init()
 
-// 	// good font file
-// 	face, err := lib.NewFace("internal/font/DejaVuSansMono.ttf", 0)
-// 	assert.Nil(t, err)
-// 	assert.NotNil(t, face.face)
-// 	err = face.Done()
-// 	assert.Nil(t, err)
+	// good font file
+	face, err := lib.NewFace("internal/font/DejaVuSansMono.ttf", 0)
+	assert.Nil(t, err)
+	assert.NotNil(t, face.face)
+	err = face.Done()
+	assert.Nil(t, err)
 
-// 	// no such file
-// 	face, err = lib.NewFace("bad path", 0)
-// 	assert.Error(t, err)
+	// no such file
+	face, err = lib.NewFace("bad path", 0)
+	assert.Error(t, err)
 
-// 	// file exists but is not a font file
-// 	face, err = lib.NewFace("library.go", 0)
-// 	assert.Error(t, err)
-// }
+	// file exists but is not a font file
+	face, err = lib.NewFace("library.go", 0)
+	assert.Error(t, err)
+}
 
 // func TestFaceReference(t *testing.T) {
 // 	lib, _ := Init()
