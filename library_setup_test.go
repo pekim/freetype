@@ -21,6 +21,6 @@ func TestLibraryVersion(t *testing.T) {
 
 	major, minor, patch := lib.Version()
 	assert.Equal(t, 2, major)
-	assert.Greater(t, minor, 0)
-	assert.GreaterOrEqual(t, patch, 0)
+	assert.Equal(t, 12, minor)
+	assert.Equal(t, 1, patch)
 }
