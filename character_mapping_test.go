@@ -44,8 +44,8 @@ func TestFaceGetCharIndex(t *testing.T) {
 	lib, _ := Init()
 	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
 
-	assert.Equal(t, uint(0x3), face.GetCharIndex(' '))
-	assert.Equal(t, uint(0x44), face.GetCharIndex('a'))
+	assert.Equal(t, UInt(0x3), face.GetCharIndex(' '))
+	assert.Equal(t, UInt(0x44), face.GetCharIndex('a'))
 }
 
 // func TestFaceGetFirstCharGetNextChar(t *testing.T) {

@@ -3,6 +3,7 @@ package freetype
 import (
 	"unsafe"
 
+	"modernc.org/libc"
 	"modernc.org/libfreetype"
 )
 
@@ -170,9 +171,26 @@ a glyph slot through Load_Glyph. See SetTransform for more details.
 https://freetype.org/freetype2/docs/reference/ft2-sizing_and_scaling.html#ft_get_transform
 */
 // // TODO - see https://gitlab.com/cznic/libfreetype/-/issues/1
-// func (face Face) GetTransform() (Matrix, Vector) {
-// 	var matrix Matrix
-// 	var vector Vector
-// 	libfreetype.XFT_Get_Transform(face.tls,face.face, &matrix, &vector)
-// 	return matrix, vector
-// }
+func (face Face) GetTransform() (Matrix, Vector) {
+	var matrix Matrix
+	var vector Vector
+	// libfreetype.XFT_Get_Transform(face.tls,face.face, &matrix, &vector)
+	XFT_Get_Transform(face.tls, face.face, toUintptr(&matrix), toUintptr(&vector))
+	return matrix, vector
+}
+
+// TEMP : copied (and modified) from libfreetype/ccgo_linux_arm64.go
+func XFT_Get_Transform(_ *libc.TLS, face libfreetype.TFT_Face, matrix uintptr, delta uintptr) {
+	var internal libfreetype.TFT_Face_Internal
+	_ = internal
+	if !(face != 0) {
+		return
+	}
+	internal = fromUintptr[libfreetype.TFT_FaceRec_](face).Finternal
+	if matrix != 0 {
+		*(fromUintptr[libfreetype.TFT_Matrix](matrix)) = fromUintptr[libfreetype.TFT_Face_InternalRec_](internal).Ftransform_matrix
+	}
+	if delta != 0 {
+		*(fromUintptr[libfreetype.TFT_Vector](delta)) = fromUintptr[libfreetype.TFT_Face_InternalRec_](internal).Ftransform_delta
+	}
+}

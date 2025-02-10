@@ -42,7 +42,7 @@ func TestFaceSelectSize(t *testing.T) {
 	assert.Error(t, err) // the font is not a bitmap font
 }
 
-func TestFaceGetTransformSetTransform(_ *testing.T) {
+func TestFaceGetTransformSetTransform(t *testing.T) {
 	lib, _ := Init()
 	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
 
@@ -50,7 +50,7 @@ func TestFaceGetTransformSetTransform(_ *testing.T) {
 	vector := Vector{X: 5, Y: 6}
 	face.SetTransform(&matrix, &vector)
 
-	// matrix2, vector2 := face.GetTransform()
-	// assert.Equal(t, matrix, matrix2)
-	// assert.Equal(t, vector, vector2)
+	matrix2, vector2 := face.GetTransform()
+	assert.Equal(t, matrix, matrix2)
+	assert.Equal(t, vector, vector2)
 }
