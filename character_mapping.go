@@ -13,6 +13,11 @@ https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_char
 */
 type CharMap uintptr
 
+// Rec returns a pointer to the FaceRec that is referenced by the Face.
+func (charmap CharMap) Rec() *CharMapRec {
+	return fromUintptr[CharMapRec](uintptr(charmap))
+}
+
 func init() {
 	assertSameSize(CharMapRec{}, libfreetype.TFT_CharMapRec{})
 }
@@ -34,75 +39,73 @@ Encoding is an enumeration to specify character sets supported by charmaps. Used
 
 https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_encoding
 */
-type Encoding = libfreetype.TFT_Encoding
+type Encoding libfreetype.TFT_Encoding
 
-// const (
-// 	ENCODING_NONE = Encoding(C.FT_ENCODING_NONE)
+var (
+	ENCODING_NONE = Encoding(imageTag(0, 0, 0, 0))
 
-// 	ENCODING_MS_SYMBOL = Encoding(C.FT_ENCODING_MS_SYMBOL)
-// 	ENCODING_UNICODE   = Encoding(C.FT_ENCODING_UNICODE)
+	ENCODING_MS_SYMBOL = Encoding(imageTag('s', 'y', 'm', 'b'))
+	ENCODING_UNICODE   = Encoding(imageTag('u', 'n', 'i', 'c'))
 
-// 	ENCODING_SJIS    = Encoding(C.FT_ENCODING_SJIS)
-// 	ENCODING_PRC     = Encoding(C.FT_ENCODING_PRC)
-// 	ENCODING_BIG5    = Encoding(C.FT_ENCODING_BIG5)
-// 	ENCODING_WANSUNG = Encoding(C.FT_ENCODING_WANSUNG)
-// 	ENCODING_JOHAB   = Encoding(C.FT_ENCODING_JOHAB)
+	ENCODING_SJIS    = Encoding(imageTag('s', 'j', 'i', 's'))
+	ENCODING_PRC     = Encoding(imageTag('g', 'b', ' ', ' '))
+	ENCODING_BIG5    = Encoding(imageTag('b', 'i', 'g', '5'))
+	ENCODING_WANSUNG = Encoding(imageTag('w', 'a', 'n', 's'))
+	ENCODING_JOHAB   = Encoding(imageTag('j', 'o', 'h', 'a'))
 
-// 	/* for backward compatibility */
-// 	ENCODING_GB2312     = Encoding(C.FT_ENCODING_GB2312)
-// 	ENCODING_MS_SJIS    = Encoding(C.FT_ENCODING_MS_SJIS)
-// 	ENCODING_MS_GB2312  = Encoding(C.FT_ENCODING_MS_GB2312)
-// 	ENCODING_MS_BIG5    = Encoding(C.FT_ENCODING_MS_BIG5)
-// 	ENCODING_MS_WANSUNG = Encoding(C.FT_ENCODING_MS_WANSUNG)
-// 	ENCODING_MS_JOHAB   = Encoding(C.FT_ENCODING_MS_JOHAB)
+	/* for backward compatibility */
+	ENCODING_GB2312     = ENCODING_PRC
+	ENCODING_MS_SJIS    = ENCODING_SJIS
+	ENCODING_MS_GB2312  = ENCODING_PRC
+	ENCODING_MS_BIG5    = ENCODING_BIG5
+	ENCODING_MS_WANSUNG = ENCODING_WANSUNG
+	ENCODING_MS_JOHAB   = ENCODING_JOHAB
 
-// 	ENCODING_ADOBE_STANDARD = Encoding(C.FT_ENCODING_ADOBE_STANDARD)
-// 	ENCODING_ADOBE_EXPERT   = Encoding(C.FT_ENCODING_ADOBE_EXPERT)
-// 	ENCODING_ADOBE_CUSTOM   = Encoding(C.FT_ENCODING_ADOBE_CUSTOM)
-// 	ENCODING_ADOBE_LATIN_1  = Encoding(C.FT_ENCODING_ADOBE_LATIN_1)
+	ENCODING_ADOBE_STANDARD = Encoding(imageTag('A', 'D', 'O', 'B'))
+	ENCODING_ADOBE_EXPERT   = Encoding(imageTag('A', 'D', 'B', 'E'))
+	ENCODING_ADOBE_CUSTOM   = Encoding(imageTag('A', 'D', 'B', 'C'))
+	ENCODING_ADOBE_LATIN_1  = Encoding(imageTag('l', 'a', 't', '1'))
 
-// 	ENCODING_OLD_LATIN_2 = Encoding(C.FT_ENCODING_OLD_LATIN_2)
+	ENCODING_OLD_LATIN_2 = Encoding(imageTag('l', 'a', 't', '2'))
 
-// 	ENCODING_APPLE_ROMAN = Encoding(C.FT_ENCODING_APPLE_ROMAN)
-// )
+	ENCODING_APPLE_ROMAN = Encoding(imageTag('a', 'r', 'm', 'n'))
+)
 
-// // String returns a formatted representation of the 4 bytes of the Encoding tag.
-// func (encoding Encoding) String() string {
-// 	return formatTag(uint32(encoding))
-// }
+// String returns a formatted representation of the 4 bytes of the Encoding tag.
+func (encoding Encoding) String() string {
+	return formatTag(uint32(encoding))
+}
 
 // // FT_ENC_TAG
 
-// /*
-// SelectCharmap selects a given charmap by its encoding tag.
+/*
+SelectCharmap selects a given charmap by its encoding tag.
 
-// https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_select_charmap
-// */
-// func (face Face) SelectCharmap(encoding Encoding) error {
-// 	err := C.FT_Select_Charmap(face.face, encoding)
-// 	return newError(err, "failed to select charmap for encoding %s (0x%04x)", encoding, int32(encoding))
-// }
+https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_select_charmap
+*/
+func (face Face) SelectCharmap(encoding Encoding) error {
+	err := libfreetype.XFT_Select_Charmap(face.tls, face.face, libfreetype.TFT_Encoding(encoding))
+	return newError(err, "failed to select charmap for encoding %s (0x%04x)", encoding, int32(encoding))
+}
 
-// /*
-// SetCharmap selects a given charmap for character code to glyph index mapping.
+/*
+SetCharmap selects a given charmap for character code to glyph index mapping.
 
-// https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_set_charmap
-// */
-// func (face Face) SetCharmap(charmap CharMap) error {
-// 	ftCharmap := toPointer[C.FT_CharMapRec](charmap)
-// 	ftCharmap.face = charmap.Face.face
-// 	err := C.FT_Set_Charmap(face.face, ftCharmap)
-// 	return newError(err, "failed to set charmap")
-// }
+https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_set_charmap
+*/
+func (face Face) SetCharmap(rec CharMapRec) error {
+	err := libfreetype.XFT_Set_Charmap(face.tls, face.face, toUintptr(&rec))
+	return newError(err, "failed to set charmap")
+}
 
-// /*
-// GetCharmapIndex retrieves the index of a given charmap.
+/*
+GetCharmapIndex retrieves the index of a given charmap.
 
-// https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_get_charmap_index
-// */
-// func GetCharmapIndex(charmap CharMap) Int {
-// 	return C.FT_Get_Charmap_Index((C.FT_CharMap)(unsafe.Pointer(charmap)))
-// }
+https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_get_charmap_index
+*/
+func (face Face) GetCharmapIndex(charmap CharMap) Int {
+	return libfreetype.XFT_Get_Charmap_Index(face.tls, libfreetype.TFT_CharMap(charmap))
+}
 
 /*
 GetCharIndex returns the glyph index of a given character code.

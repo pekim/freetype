@@ -7,38 +7,38 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// func TestFaceSelectCharmap(t *testing.T) {
-// 	lib, _ := Init()
-// 	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+func TestFaceSelectCharmap(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
 
-// 	err := face.SelectCharmap(ENCODING_UNICODE)
-// 	assert.Nil(t, err)
+	err := face.SelectCharmap(ENCODING_UNICODE)
+	assert.Nil(t, err)
 
-// 	err = face.SelectCharmap(ENCODING_BIG5)
-// 	assert.Error(t, err)
-// }
+	err = face.SelectCharmap(ENCODING_BIG5)
+	assert.Error(t, err)
+}
 
-// func TestFaceSetCharmap(t *testing.T) {
-// 	lib, _ := Init()
-// 	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+func TestFaceSetCharmap(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
 
-// 	err := face.SetCharmap(&CharMapRec{
-// 		Face:       face,
-// 		Encoding:   ENCODING_UNICODE,
-// 		PlatformID: 0,
-// 		EncodingID: 1,
-// 	})
-// 	assert.Error(t, err)
-// }
+	err := face.SetCharmap(CharMapRec{
+		Face:       face.face,
+		Encoding:   ENCODING_UNICODE,
+		PlatformID: 0,
+		EncodingID: 1,
+	})
+	assert.Error(t, err)
+}
 
-// func TestFaceGetCharmapIndex(t *testing.T) {
-// 	lib, _ := Init()
-// 	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+func TestFaceGetCharmapIndex(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
 
-// 	charmaps := face.Rec().Charmaps()
-// 	index := GetCharmapIndex(charmaps[2])
-// 	assert.Equal(t, Int(2), index)
-// }
+	charmaps := face.Rec().Charmaps()
+	index := face.GetCharmapIndex(charmaps[2])
+	assert.Equal(t, Int(2), index)
+}
 
 func TestFaceGetCharIndex(t *testing.T) {
 	lib, _ := Init()
