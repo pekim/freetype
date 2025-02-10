@@ -48,38 +48,38 @@ func TestFaceGetCharIndex(t *testing.T) {
 	assert.Equal(t, UInt(0x44), face.GetCharIndex('a'))
 }
 
-// func TestFaceGetFirstCharGetNextChar(t *testing.T) {
-// 	lib, _ := Init()
-// 	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+func TestFaceGetFirstCharGetNextChar(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
 
-// 	// first char
-// 	charCode, glyphIndex := face.GetFirstChar()
-// 	assert.Equal(t, ULong(' '), charCode)
-// 	assert.Equal(t, UInt(3), glyphIndex)
+	// first char
+	charCode, glyphIndex := face.GetFirstChar()
+	assert.Equal(t, ULong(' '), charCode)
+	assert.Equal(t, UInt(3), glyphIndex)
 
-// 	// second char
-// 	charCode, glyphIndex = face.GetNextChar(charCode)
-// 	assert.Equal(t, ULong('!'), charCode)
-// 	assert.Equal(t, UInt(4), glyphIndex)
+	// second char
+	charCode, glyphIndex = face.GetNextChar(charCode)
+	assert.Equal(t, ULong('!'), charCode)
+	assert.Equal(t, UInt(4), glyphIndex)
 
-// 	// remaining chars
-// 	c := 2
-// 	for glyphIndex != 0 {
-// 		charCode, glyphIndex = face.GetNextChar(charCode)
-// 		c++
-// 	}
-// 	c-- // discount the last one, as it wasn't a char
-// 	assert.Equal(t, 3322, c)
-// }
+	// remaining chars
+	c := 2
+	for glyphIndex != 0 {
+		charCode, glyphIndex = face.GetNextChar(charCode)
+		c++
+	}
+	c-- // discount the last one, as it wasn't a char
+	assert.Equal(t, 3322, c)
+}
 
-// func TestFaceLoadChar(t *testing.T) {
-// 	lib, _ := Init()
-// 	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+func TestFaceLoadChar(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
 
-// 	// face.SetPixelSizes(0, 20)
-// 	err := face.LoadChar('A', LOAD_DEFAULT)
-// 	assert.Nil(t, err)
-// 	err = face.RenderGlyph(RENDER_MODE_NORMAL)
-// 	assert.Nil(t, err)
-// 	assertGlyphRecFieldsForUppercaseA(t, face.Rec().Glyph)
-// }
+	// face.SetPixelSizes(0, 20)
+	err := face.LoadChar('A', LOAD_DEFAULT)
+	assert.Nil(t, err)
+	err = face.RenderGlyph(RENDER_MODE_NORMAL)
+	assert.Nil(t, err)
+	assertGlyphRecFieldsForUppercaseA(t, *face.Rec().Glyph.Rec())
+}

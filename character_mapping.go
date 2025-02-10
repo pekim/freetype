@@ -117,34 +117,34 @@ func (face Face) GetCharIndex(charcode rune) UInt {
 	return libfreetype.XFT_Get_Char_Index(face.tls, face.face, libfreetype.TFT_ULong(charcode))
 }
 
-// /*
-// GetFirstChar returns the first character code in the current charmap of a given face, together with its corresponding glyph index.
+/*
+GetFirstChar returns the first character code in the current charmap of a given face, together with its corresponding glyph index.
 
-// https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_get_first_char
-// */
-// func (face Face) GetFirstChar() (ULong, UInt) {
-// 	var gindex UInt
-// 	charCode := C.FT_Get_First_Char(face.face, &gindex)
-// 	return charCode, gindex
-// }
+https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_get_first_char
+*/
+func (face Face) GetFirstChar() (ULong, UInt) {
+	var gindex UInt
+	charCode := libfreetype.XFT_Get_First_Char(face.tls, face.face, toUintptr(&gindex))
+	return charCode, gindex
+}
 
-// /*
-// GetNextChar returns the next character code in the current charmap of a given face following the value char_code, as well as the corresponding glyph index.
+/*
+GetNextChar returns the next character code in the current charmap of a given face following the value char_code, as well as the corresponding glyph index.
 
-// https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_get_next_char
-// */
-// func (face Face) GetNextChar(charCode ULong) (ULong, UInt) {
-// 	var gindex UInt
-// 	nextCharCode := C.FT_Get_Next_Char(face.face, charCode, &gindex)
-// 	return nextCharCode, gindex
-// }
+https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_get_next_char
+*/
+func (face Face) GetNextChar(charCode ULong) (ULong, UInt) {
+	var gindex UInt
+	nextCharCode := libfreetype.XFT_Get_Next_Char(face.tls, face.face, charCode, toUintptr(&gindex))
+	return nextCharCode, gindex
+}
 
-// /*
-// LoadChar loads a glyph into the glyph slot of a face object, accessed by its character code.
+/*
+LoadChar loads a glyph into the glyph slot of a face object, accessed by its character code.
 
-// https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_load_char
-// */
-// func (face Face) LoadChar(charCode rune, loadFlags LoadFlag) error {
-// 	err := C.FT_Load_Char(face.face, ULong(charCode), loadFlags)
-// 	return newError(err, "failed to load char '%s' (0x%04x) with flags 0x%04x", string(charCode), charCode, loadFlags)
-// }
+https://freetype.org/freetype2/docs/reference/ft2-character_mapping.html#ft_load_char
+*/
+func (face Face) LoadChar(charCode rune, loadFlags LoadFlag) error {
+	err := libfreetype.XFT_Load_Char(face.tls, face.face, ULong(charCode), loadFlags)
+	return newError(err, "failed to load char '%s' (0x%04x) with flags 0x%04x", string(charCode), charCode, loadFlags)
+}
