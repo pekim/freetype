@@ -1,26 +1,35 @@
 package freetype
 
-import "modernc.org/libfreetype"
+import (
+	"fmt"
+	"unsafe"
+
+	"modernc.org/libfreetype"
+)
 
 // TrueType-specific table types and functions.
 
-// TTHeader is a structure to model a TrueType font header table.
+func init() {
+	assertSameSize(TT_Header{}, libfreetype.TTT_Header{})
+}
+
+// TT_Header is a structure to model a TrueType font header table.
 // All fields follow the OpenType specification.
 // The 64-bit timestamps are stored in two-element arrays Created and Modified, first the upper then the lower 32 bits.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_header
-type TTHeader struct {
-	Table_Version Fixed
-	Font_Revision Fixed
+type TT_Header struct {
+	TableVersion Fixed
+	FontRevision Fixed
 
-	CheckSum_Adjust Long
-	Magic_Number    Long
+	CheckSumAdjust Long
+	MagicNumber    Long
 
-	Flags        UShort
-	Units_Per_EM UShort
+	Flags      UShort
+	UnitsPerEM UShort
 
-	_ [2]ULong // created
-	_ [2]ULong // modified
+	Created   [2]ULong
+	Modifield [2]ULong
 
 	XMin Short
 	YMin Short
@@ -35,14 +44,6 @@ type TTHeader struct {
 	GlyphDataFormat  Short
 }
 
-// func (header TTHeader)Created()[2]ULong{
-
-// }
-
-func init() {
-	assertSameSize(TTHeader{}, libfreetype.TTT_Header{})
-}
-
 // TT_HoriHeader
 //
 //
@@ -51,9 +52,68 @@ func init() {
 //
 //
 
-// TT_OS2
+func init() {
+	assertSameSize(TT_OS2{}, libfreetype.TTT_OS2{})
+}
+
+// TT_OS2 is a structure to model a TrueType ‘OS/2’ table.
+// All fields comply to the OpenType specification.
 //
-//
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_os2
+type TT_OS2 struct {
+	Version             UShort /* 0x0001 - more or 0xFFFF */
+	XAvgCharWidth       Short
+	UsWeightClass       UShort
+	UssWidthClass       UShort
+	FsType              UShort
+	YSubscriptXSize     Short
+	YSubscriptYSize     Short
+	YSubscriptXOffset   Short
+	YSubscriptYOffset   Short
+	YSuperscriptXSize   Short
+	YSuperscriptYSize   Short
+	YSuperscriptXOffset Short
+	YSuperscriptYOffset Short
+	YStrikeoutSize      Short
+	YStrikeoutPosition  Short
+	SFamilyClass        Short
+
+	Panose [10]Byte
+
+	UlUnicodeRange1 ULong /* Bits 0-31   */
+	UlUnicodeRange2 ULong /* Bits 32-63  */
+	UlUnicodeRange3 ULong /* Bits 64-95  */
+	UlUnicodeRange4 ULong /* Bits 96-127 */
+
+	achVendID [4]Char
+
+	FsSelection      UShort
+	UsFirstCharIndex UShort
+	UsLastCharIndex  UShort
+	STypoAscender    Short
+	STypoDescender   Short
+	STypoLineGap     Short
+	UsWinAscent      UShort
+	UsWinDescent     UShort
+
+	/* only version 1 and higher: */
+
+	UlCodePageRange1 ULong /* Bits 0-31   */
+	UlCodePageRange2 ULong /* Bits 32-63  */
+
+	/* only version 2 and higher: */
+
+	SxHeight       Short
+	SCapHeight     Short
+	USsDefaultChar UShort
+	USsBreakChar   UShort
+	USsMaxContext  UShort
+
+	/* only version 5 and higher: */
+
+	UsLowerOpticalPointSize UShort /* in twips (1/20 points) */
+	UsUpperOpticalPointSize UShort /* in twips (1/20 points) */
+}
 
 // TT_Postscript
 //
@@ -67,13 +127,33 @@ func init() {
 //
 //
 
-// FT_Sfnt_Tag
+// FT_Sfnt_Tag is an enumeration to specify indices of SFNT tables loaded and parsed by FreeType during
+// initialization of an SFNT font. Used in the FT_Get_Sfnt_Table API function.
 //
-//
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#ft_sfnt_tag
+type Sfnt_Tag = libfreetype.TFT_Sfnt_Tag
 
-// FT_Get_Sfnt_Table
+const (
+	SFNT_HEAD = Sfnt_Tag(0)
+	SFNT_MAXP = Sfnt_Tag(1)
+	SFNT_OS2  = Sfnt_Tag(2)
+	SFNT_HHEA = Sfnt_Tag(3)
+	SFNT_VHEA = Sfnt_Tag(4)
+	SFNT_POST = Sfnt_Tag(5)
+	SFNT_PCLT = Sfnt_Tag(6)
+	SFNT_MAX  = Sfnt_Tag(7)
+)
+
+// GetSFNTTable returns a pointer to a given SFNT table stored within a face.
 //
-//
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#ft_get_sfnt_table
+func (face Face) GetSFNTTable(tag Sfnt_Tag) (unsafe.Pointer, error) {
+	table := libfreetype.XFT_Get_Sfnt_Table(face.tls, face.face, tag)
+	if table == 0 {
+		return nil, fmt.Errorf("failed to get SFNT table with tag %d", tag)
+	}
+	return *(*unsafe.Pointer)(unsafe.Pointer(&table)), nil
+}
 
 // FT_Load_Sfnt_Table
 //
