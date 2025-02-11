@@ -308,13 +308,20 @@ func (face Face) SfntTableInfo(tableIndex UInt, tag *ULong) (ULong, error) {
 	return length, newError(err, "failed to get sfnt table info for index %d, tag %s", tableIndex, formatTag(uint32(*tag)))
 }
 
-// FT_Get_CMap_Language_ID
+// GetCMapLanguageID returns cmap language ID as specified in the OpenType standard.
+// Definitions of language ID values are in file FT_TRUETYPE_IDS_H.
 //
-//
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#ft_get_cmap_language_id
+func (face Face) GetCMapLanguageID(charmap CharMap) ULong {
+	return libfreetype.XFT_Get_CMap_Language_ID(face.tls, libfreetype.TFT_CharMap(charmap))
+}
 
-// FT_Get_CMap_Format
+// GetCMapFormat returns the format of an SFNT ‘cmap’ table.
 //
-//
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#ft_get_cmap_format
+func (face Face) GetCMapFormat(charmap CharMap) Long {
+	return libfreetype.XFT_Get_CMap_Format(face.tls, libfreetype.TFT_CharMap(charmap))
+}
 
 // FT_PARAM_TAG_UNPATENTED_HINTING
 //
