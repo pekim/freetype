@@ -284,9 +284,17 @@ func (face Face) GetSFNTTable(tag Sfnt_Tag) (unsafe.Pointer, error) {
 	return *(*unsafe.Pointer)(unsafe.Pointer(&table)), nil
 }
 
-// FT_Load_Sfnt_Table
+// FT_Load_Sfnt_Table loads any SFNT font table into client memory.
 //
-//
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#ft_load_sfnt_table
+func (face Face) LoadSFNTTable(tag uint32, offset Long, buffer []byte, length *ULong) error {
+	var buffer_ uintptr
+	if buffer != nil {
+		buffer_ = toUintptr(&buffer[0])
+	}
+	err := libfreetype.XFT_Load_Sfnt_Table(face.tls, face.face, ULong(tag), Long(offset), buffer_, toUintptr(length))
+	return newError(err, "failed to load sfnt table %s, with offset %d", formatTag(tag), offset)
+}
 
 // FT_Sfnt_Table_Info
 //
