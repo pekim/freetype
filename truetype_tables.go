@@ -327,13 +327,34 @@ func (face Face) GetCMapFormat(charmap CharMap) Long {
 //
 //
 
-// TT_PLATFORM_XXX
+// TT_PLatform is list of valid values for the platform_id identifier code in FT_CharMapRec and FT_SfntName structures.
 //
-//
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_platform_xxx
+type TT_Platform UShort
 
-// TT_APPLE_ID_XXX
+const (
+	PLATFORM_APPLE_UNICODE = TT_Platform(0)
+	PLATFORM_MACINTOSH     = TT_Platform(1)
+	PLATFORM_ISO           = TT_Platform(2) /* deprecated */
+	PLATFORM_MICROSOFT     = TT_Platform(3)
+	PLATFORM_CUSTOM        = TT_Platform(4)
+	PLATFORM_ADOBE         = TT_Platform(7) /* artificial */
+)
+
+// TT_AppleID is a list of valid values for the encoding_id for TT_PLATFORM_APPLE_UNICODE charmaps and name entries.
 //
-//
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_apple_id_xxx
+type TT_AppleID UShort
+
+const (
+	APPLE_ID_DEFAULT          = TT_AppleID(0) /* Unicode 1.0                   */
+	APPLE_ID_UNICODE_1_1      = TT_AppleID(1) /* specify Hangul at U+34xx      */
+	APPLE_ID_ISO_10646        = TT_AppleID(2) /* deprecated                    */
+	APPLE_ID_UNICODE_2_0      = TT_AppleID(3) /* or later                      */
+	APPLE_ID_UNICODE_32       = TT_AppleID(4) /* 2.0 or later, full repertoire */
+	APPLE_ID_VARIANT_SELECTOR = TT_AppleID(5) /* variation selector data       */
+	APPLE_ID_FULL_UNICODE     = TT_AppleID(6) /* used with type 13 cmaps       */
+)
 
 // TT_MAC_ID_XXX
 //
@@ -359,51 +380,51 @@ func (face Face) GetCMapFormat(charmap CharMap) Long {
 //
 //
 
-// TTName is the possible values of the ‘name’ identifier field in the name records of an SFNT ‘name’ table.
+// TT_NameID is the possible values of the ‘name’ identifier field in the name records of an SFNT ‘name’ table.
 // These values are platform independent.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_name_id_xxx
-type TTName = UInt
+type TT_NameID = UInt
 
 const (
-	NAME_ID_COPYRIGHT      = TTName(0)
-	NAME_ID_FONT_FAMILY    = TTName(1)
-	NAME_ID_FONT_SUBFAMILY = TTName(2)
-	NAME_ID_UNIQUE_ID      = TTName(3)
-	NAME_ID_FULL_NAME      = TTName(4)
-	NAME_ID_VERSION_STRING = TTName(5)
-	NAME_ID_PS_NAME        = TTName(6)
-	NAME_ID_TRADEMARK      = TTName(7)
+	NAME_ID_COPYRIGHT      = TT_NameID(0)
+	NAME_ID_FONT_FAMILY    = TT_NameID(1)
+	NAME_ID_FONT_SUBFAMILY = TT_NameID(2)
+	NAME_ID_UNIQUE_ID      = TT_NameID(3)
+	NAME_ID_FULL_NAME      = TT_NameID(4)
+	NAME_ID_VERSION_STRING = TT_NameID(5)
+	NAME_ID_PS_NAME        = TT_NameID(6)
+	NAME_ID_TRADEMARK      = TT_NameID(7)
 
 	/* the following values are from the OpenType spec */
-	NAME_ID_MANUFACTURER = TTName(8)
-	NAME_ID_DESIGNER     = TTName(9)
-	NAME_ID_DESCRIPTION  = TTName(10)
-	NAME_ID_VENDOR_URL   = TTName(11)
-	NAME_ID_DESIGNER_URL = TTName(12)
-	NAME_ID_LICENSE      = TTName(13)
-	NAME_ID_LICENSE_URL  = TTName(14)
+	NAME_ID_MANUFACTURER = TT_NameID(8)
+	NAME_ID_DESIGNER     = TT_NameID(9)
+	NAME_ID_DESCRIPTION  = TT_NameID(10)
+	NAME_ID_VENDOR_URL   = TT_NameID(11)
+	NAME_ID_DESIGNER_URL = TT_NameID(12)
+	NAME_ID_LICENSE      = TT_NameID(13)
+	NAME_ID_LICENSE_URL  = TT_NameID(14)
 	/* number 15 is reserved */
-	NAME_ID_TYPOGRAPHIC_FAMILY    = TTName(16)
-	NAME_ID_TYPOGRAPHIC_SUBFAMILY = TTName(17)
-	NAME_ID_MAC_FULL_NAME         = TTName(18)
+	NAME_ID_TYPOGRAPHIC_FAMILY    = TT_NameID(16)
+	NAME_ID_TYPOGRAPHIC_SUBFAMILY = TT_NameID(17)
+	NAME_ID_MAC_FULL_NAME         = TT_NameID(18)
 
 	/* The following code is new as of 2000-01-21 */
-	NAME_ID_SAMPLE_TEXT = TTName(19)
+	NAME_ID_SAMPLE_TEXT = TT_NameID(19)
 
 	/* This is new in OpenType 1.3 */
-	NAME_ID_CID_FINDFONT_NAME = TTName(20)
+	NAME_ID_CID_FINDFONT_NAME = TT_NameID(20)
 
 	/* This is new in OpenType 1.5 */
-	NAME_ID_WWS_FAMILY    = TTName(21)
-	NAME_ID_WWS_SUBFAMILY = TTName(22)
+	NAME_ID_WWS_FAMILY    = TT_NameID(21)
+	NAME_ID_WWS_SUBFAMILY = TT_NameID(22)
 
 	/* This is new in OpenType 1.7 */
-	NAME_ID_LIGHT_BACKGROUND = TTName(23)
-	NAME_ID_DARK_BACKGROUND  = TTName(24)
+	NAME_ID_LIGHT_BACKGROUND = TT_NameID(23)
+	NAME_ID_DARK_BACKGROUND  = TT_NameID(24)
 
 	/* This is new in OpenType 1.8 */
-	NAME_ID_VARIATIONS_PREFIX = TTName(25)
+	NAME_ID_VARIATIONS_PREFIX = TT_NameID(25)
 )
 
 // TT_UCR_XXX
