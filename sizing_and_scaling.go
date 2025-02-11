@@ -169,7 +169,6 @@ a glyph slot through Load_Glyph. See SetTransform for more details.
 
 https://freetype.org/freetype2/docs/reference/ft2-sizing_and_scaling.html#ft_get_transform
 */
-// // TODO - see https://gitlab.com/cznic/libfreetype/-/issues/1
 func (face Face) GetTransform() (Matrix, Vector) {
 	var matrix Matrix
 	var vector Vector
