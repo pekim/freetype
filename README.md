@@ -2,11 +2,17 @@
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/pekim/freetype-go)](https://pkg.go.dev/github.com/pekim/freetype-go)
 
-This is a cgo-free library that implements the [FreeType](https://freetype.org/) library.
-It is a relatively thin wrapper around [libfreetype](https://pkg.go.dev/modernc.org/libfreetype),
+This is a cgo-free library that implements the much of the [FreeType](https://freetype.org/) C API.
+It is a relatively thin wrapper around the excellent [libfreetype](https://pkg.go.dev/modernc.org/libfreetype),
 providing a slightly more Go friendly API.
 
+A degree of familiarity with FreeType's API will be required.
+The [Freetype Tutorial](https://freetype.org/freetype2/docs/tutorial/index.html) is a good starting point.
+
 ## API
+
+The API attempts to balance Go conventions with FreeType conventions.
+And while it violates both from time to time, hopefully it doesn't stray too far from either.
 
 ### functions
 
@@ -19,7 +25,7 @@ Non-private struct fields are exported, with a few exceptions.
 - Where there are a pair of fields with a count and a pointer to an array, they will not be exported.
   Instead a method that returns a slice is exported.
 - Fields that are a pointer to a zero-terminated string are not exported.
-  An exported method with the same name returns a Go string.
+  Instead there will be an exported method with the same name, and it will return a Go string.
 
 ### types
 
@@ -45,14 +51,14 @@ That should suffice for many glyph rasterization needs.
 
 ### source files
 
-Most source files are named after one of the sections in the FreeType
+Many source files are named after one of the sections in the FreeType
 [API Reference](https://freetype.org/freetype2/docs/reference/index.html).
 The types and functions in those files are maintained in the same order as they appear in their section's documentation.
 
 ### pre-commit hook
 
 There are configuration files for linting and other checks.
-To use a pre-commit hook for the checks
+To use a git pre-commit hook for the checks
 
 - install `goimports` if not already installed
   - https://pkg.go.dev/golang.org/x/tools/cmd/goimports
