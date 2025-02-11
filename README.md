@@ -2,7 +2,9 @@
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/pekim/freetype-go)](https://pkg.go.dev/github.com/pekim/freetype-go)
 
-This is a Go library that implements bindings for the [FreeType](https://freetype.org/) library.
+This is a cgo-free library that implements the [FreeType](https://freetype.org/) library.
+It is a relatively thin wrapper around [libfreetype](https://pkg.go.dev/modernc.org/libfreetype),
+providing a slightly more Go friendly API.
 
 ## API
 
@@ -30,23 +32,6 @@ One exception is the [Font Testing Macros](https://freetype.org/freetype2/docs/r
 They are exposed as functions, such as
 [HasHorizontal](https://pkg.go.dev/pekim/freetype-go#Face.HasHorizontal).
 
-## Requirements
-
-### build
-
-#### C compiler
-
-`cgo` is used. So a C compiler, such as clang or gcc, is required.
-
-#### freetype headers
-
-The FreeType headers must be available, so the freetype development package should be installed.
-For example `dnf install freetype-devel` or `apt install libfreetype6-dev`.
-
-### runtime
-
-The FreeType library must be available, as it will be dynamically loaded at runtime.
-
 ## Examples
 
 Simple examples can be found in the `example` directory.
@@ -64,12 +49,10 @@ Most source files are named after one of the sections in the FreeType
 [API Reference](https://freetype.org/freetype2/docs/reference/index.html).
 The types and functions in those files are maintained in the same order as they appear in their section's documentation.
 
-### type aliases
-
-When defining Go types that correspond to C types, type aliases are used. This is done to reduce the need to convert
-the Go type to the C type when passing an argument to a C function.
-
 ### pre-commit hook
+
+There are configuration files for linting and other checks.
+To use a pre-commit hook for the checks
 
 - install `goimports` if not already installed
   - https://pkg.go.dev/golang.org/x/tools/cmd/goimports
@@ -77,5 +60,5 @@ the Go type to the C type when passing an argument to a C function.
   - https://golangci-lint.run/usage/install/#local-installation
 - install the `pre-commit` application if not already installed
   - https://pre-commit.com/index.html#install
-- install pre-commit hook in this repo's workspace
+- install a git pre-commit hook in this repo's workspace
   - `pre-commit install`
