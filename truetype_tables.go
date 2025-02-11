@@ -44,13 +44,77 @@ type TT_Header struct {
 	GlyphDataFormat  Short
 }
 
-// TT_HoriHeader
-//
-//
+func init() {
+	assertSameSize(TT_HoriHeader{}, libfreetype.TTT_HoriHeader{})
+}
 
-// TT_VertHeader
+// TT_HoriHeader is a structure to model a TrueType horizontal header, the ‘hhea’ table, as well as the
+// corresponding horizontal metrics table, ‘hmtx’.
 //
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_horiheader
+type TT_HoriHeader struct {
+	Version   Fixed
+	Ascender  Short
+	Descender Short
+	Line_Gap  Short
+
+	AdvanceWidthMax UShort /* advance width maximum */
+
+	MinLeftSideBearing  Short /* minimum left-sb       */
+	MinRightSideBearing Short /* minimum right-sb      */
+	XMax_Extent         Short /* xmax extents          */
+	CaretSlopeRise      Short
+	CaretSlopeRun       Short
+	CaretOffset         Short
+
+	Reserved [4]Short
+
+	MetricDataFormat Short
+	NumberOfHMetrics UShort
+
+	/* The following fields are not defined by the OpenType specification */
+	/* but they are used to connect the metrics header to the relevant    */
+	/* 'hmtx' table.                                                      */
+
+	LongMetrics  unsafe.Pointer
+	ShortMetrics unsafe.Pointer
+}
+
+func init() {
+	assertSameSize(TT_VertHeader{}, libfreetype.TTT_VertHeader{})
+}
+
+// TT_VertHeader is a structure used to model a TrueType vertical header, the ‘vhea’ table, as well
+// as the corresponding vertical metrics table, ‘vmtx’.
 //
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_vertheader
+type TT_VertHeader struct {
+	Version   Fixed
+	Ascender  Short
+	Descender Short
+	Line_Gap  Short
+
+	AdvanceHeightMax UShort /* advance height maximum */
+
+	MinTopSideBearing    Short /* minimum top-sb          */
+	MinBottomSideBearing Short /* minimum bottom-sb       */
+	YMax_Extent          Short /* ymax extents            */
+	CaretSlopeRise       Short
+	CaretSlopeRun        Short
+	CaretOffset          Short
+
+	Reserved [4]Short
+
+	MetricDataFormat Short
+	NumberOfVMetrics UShort
+
+	/* The following fields are not defined by the OpenType specification */
+	/* but they are used to connect the metrics header to the relevant    */
+	/* 'vmtx' table.                                                      */
+
+	LongMetrics  unsafe.Pointer
+	ShortMetrics unsafe.Pointer
+}
 
 func init() {
 	assertSameSize(TT_OS2{}, libfreetype.TTT_OS2{})
@@ -115,17 +179,82 @@ type TT_OS2 struct {
 	UsUpperOpticalPointSize UShort /* in twips (1/20 points) */
 }
 
-// TT_Postscript
-//
-//
+func init() {
+	assertSameSize(TT_Postscript{}, libfreetype.TTT_Postscript{})
+}
 
-// TT_PCLT
+// TT_Postscript is a structure to model a TrueType ‘post’ table.
+// All fields comply to the OpenType specification.
+// This structure does not reference a font's PostScript glyph names; use GetGlyphName to retrieve them.
 //
-//
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_postscript
+type TT_Postscript struct {
+	FormatType         Fixed
+	ItalicAngle        Fixed
+	UnderlinePosition  Short
+	UnderlineThickness Short
+	IsFixedPitch       ULong
+	MinMemType42       ULong
+	MaxMemType42       ULong
+	MinMemType1        ULong
+	MaxMemType1        ULong
 
-// TT_MaxProfile
+	/* Glyph names follow in the 'post' table, but we don't */
+	/* load them by default.                                */
+}
+
+func init() {
+	assertSameSize(TT_PCLT{}, libfreetype.TTT_PCLT{})
+}
+
+// TT_PCLT is a structure to model a TrueType ‘PCLT’ table.
+// All fields comply to the OpenType specification.
 //
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_pclt
+
+type TT_PCLT struct {
+	Version             Fixed
+	FontNumber          ULong
+	Pitch               UShort
+	XHeight             UShort
+	Style               UShort
+	TypeFamily          UShort
+	CapHeight           UShort
+	SymbolSet           UShort
+	TypeFace            [16]Char
+	CharacterComplement [8]Char
+	FileName            [6]Char
+	StrokeWeight        Char
+	WidthType           Char
+	SerifStyle          Byte
+	Reserved            Byte
+}
+
+func init() {
+	assertSameSize(TT_MaxProfile{}, libfreetype.TTT_MaxProfile{})
+}
+
+// TT_MaxProfile is the maximum profile (‘maxp’) table contains many max values,
+// which can be used to pre-allocate arrays for speeding up glyph loading and hinting.
 //
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_maxprofile
+type TT_MaxProfile struct {
+	Version               Fixed
+	NumGlyphs             UShort
+	MaxPoints             UShort
+	MaxContours           UShort
+	MaxCompositePoints    UShort
+	MaxCompositeContours  UShort
+	MaxZones              UShort
+	MaxTwilightPoints     UShort
+	MaxStorage            UShort
+	MaxFunctionDefs       UShort
+	MaxInstructionDefs    UShort
+	MaxStackElements      UShort
+	MaxSizeOfInstructions UShort
+	MaxComponentElements  UShort
+	MaxComponentDepth     UShort
+}
 
 // FT_Sfnt_Tag is an enumeration to specify indices of SFNT tables loaded and parsed by FreeType during
 // initialization of an SFNT font. Used in the FT_Get_Sfnt_Table API function.
