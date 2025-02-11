@@ -40,7 +40,7 @@ func alloc[T any](tls *libc.TLS, exampleObject T) (*T, func()) {
 
 func goStringForNotNullTerminatedCString(str *Byte, strLen UInt) string {
 	// The string is not guaranteed to be null-terminated, so create buffer with one more
-	// byte than string_len
+	// byte than strLen.
 	buffer := make([]byte, strLen+1)
 	// Copy the string to the buffer.
 	copy(buffer[:strLen], unsafe.Slice((*byte)(unsafe.Pointer(str)), strLen))
