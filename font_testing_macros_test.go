@@ -22,7 +22,7 @@ func TestFaceFontTestingMacros(t *testing.T) {
 	assert.False(t, face.HasSVG())
 	assert.False(t, face.HasSbix())
 	assert.False(t, face.HasSbixOverlay())
-	assert.True(t, face.IsSFNT())
+	assert.True(t, face.IsSfnt())
 	assert.True(t, face.IsScalable())
 	assert.True(t, face.IsFixedWidth())
 	assert.False(t, face.IsCIDKeyed())

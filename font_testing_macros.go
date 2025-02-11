@@ -74,11 +74,11 @@ func (face Face) HasSbixOverlay() bool {
 	return face.Rec().FaceFlags&FACE_FLAG_SBIX_OVERLAY != 0
 }
 
-// IsSFNT returns true whenever a face object contains a font whose format is based on the SFNT storage scheme.
+// IsSfnt returns true whenever a face object contains a font whose format is based on the SFNT storage scheme.
 // This usually means: TrueType fonts, OpenType fonts, as well as SFNT-based embedded bitmap fonts.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-font_testing_macros.html#ft_is_sfnt
-func (face Face) IsSFNT() bool {
+func (face Face) IsSfnt() bool {
 	return face.Rec().FaceFlags&FACE_FLAG_SFNT != 0
 }
 

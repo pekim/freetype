@@ -260,23 +260,23 @@ type TT_MaxProfile struct {
 // initialization of an SFNT font. Used in the FT_Get_Sfnt_Table API function.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#ft_sfnt_tag
-type Sfnt_Tag = libfreetype.TFT_Sfnt_Tag
+type SfntTag = libfreetype.TFT_Sfnt_Tag
 
 const (
-	SFNT_HEAD = Sfnt_Tag(0)
-	SFNT_MAXP = Sfnt_Tag(1)
-	SFNT_OS2  = Sfnt_Tag(2)
-	SFNT_HHEA = Sfnt_Tag(3)
-	SFNT_VHEA = Sfnt_Tag(4)
-	SFNT_POST = Sfnt_Tag(5)
-	SFNT_PCLT = Sfnt_Tag(6)
-	SFNT_MAX  = Sfnt_Tag(7)
+	SFNT_HEAD = SfntTag(0)
+	SFNT_MAXP = SfntTag(1)
+	SFNT_OS2  = SfntTag(2)
+	SFNT_HHEA = SfntTag(3)
+	SFNT_VHEA = SfntTag(4)
+	SFNT_POST = SfntTag(5)
+	SFNT_PCLT = SfntTag(6)
+	SFNT_MAX  = SfntTag(7)
 )
 
-// GetSFNTTable returns a pointer to a given SFNT table stored within a face.
+// GetSfntTable returns a pointer to a given SFNT table stored within a face.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#ft_get_sfnt_table
-func (face Face) GetSFNTTable(tag Sfnt_Tag) (unsafe.Pointer, error) {
+func (face Face) GetSfntTable(tag SfntTag) (unsafe.Pointer, error) {
 	table := libfreetype.XFT_Get_Sfnt_Table(face.tls, face.face, tag)
 	if table == 0 {
 		return nil, fmt.Errorf("failed to get SFNT table with tag %d", tag)
@@ -284,10 +284,10 @@ func (face Face) GetSFNTTable(tag Sfnt_Tag) (unsafe.Pointer, error) {
 	return *(*unsafe.Pointer)(unsafe.Pointer(&table)), nil
 }
 
-// FT_Load_Sfnt_Table loads any SFNT font table into client memory.
+// LoadSfntTable loads any SFNT font table into client memory.
 //
 // https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#ft_load_sfnt_table
-func (face Face) LoadSFNTTable(tag uint32, offset Long, buffer []byte, length *ULong) error {
+func (face Face) LoadSfntTable(tag uint32, offset Long, buffer []byte, length *ULong) error {
 	var buffer_ uintptr
 	if buffer != nil {
 		buffer_ = toUintptr(&buffer[0])
