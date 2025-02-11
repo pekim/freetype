@@ -47,3 +47,20 @@ func TestFaceLoadSfntTable(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, int16(1233), xAvgCharWidth)
 }
+
+func TestFaceSfntTableInfo(t *testing.T) {
+	lib, _ := Init()
+	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
+
+	// Get number of tables.
+	count, err := face.SfntTableInfo(0, nil)
+	assert.Nil(t, err)
+	assert.Equal(t, ULong(18), count)
+
+	// Get info for a specific table.
+	var tag ULong
+	length, err := face.SfntTableInfo(4, &tag)
+	assert.Nil(t, err)
+	assert.Equal(t, ULong(86), length)
+	assert.Equal(t, ULong(imageTag('O', 'S', '/', '2')), tag)
+}

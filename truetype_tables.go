@@ -296,9 +296,17 @@ func (face Face) LoadSfntTable(tag uint32, offset Long, buffer []byte, length *U
 	return newError(err, "failed to load sfnt table %s, with offset %d", formatTag(tag), offset)
 }
 
-// FT_Sfnt_Table_Info
+// SfntTableInfo returns information on an SFNT table.
 //
-//
+// https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#ft_sfnt_table_info
+func (face Face) SfntTableInfo(tableIndex UInt, tag *ULong) (ULong, error) {
+	var length ULong
+	err := libfreetype.XFT_Sfnt_Table_Info(face.tls, face.face, UInt(tableIndex), toUintptr(tag), toUintptr(&length))
+	if tag == nil {
+		return length, newError(err, "failed to get sfnt table info count")
+	}
+	return length, newError(err, "failed to get sfnt table info for index %d, tag %s", tableIndex, formatTag(uint32(*tag)))
+}
 
 // FT_Get_CMap_Language_ID
 //
