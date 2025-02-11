@@ -102,7 +102,7 @@ https://freetype.org/freetype2/docs/reference/ft2-glyph_retrieval.html#ft_load_x
 type LoadFlag = Int32
 
 const (
-	LOAD_DEFAULT                     = LoadFlag(1 << 0)
+	LOAD_DEFAULT                     = LoadFlag(0x0)
 	LOAD_NO_SCALE                    = LoadFlag(1 << 1)
 	LOAD_NO_HINTING                  = LoadFlag(1 << 2)
 	LOAD_RENDER                      = LoadFlag(1 << 3)

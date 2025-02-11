@@ -23,6 +23,11 @@ func main() {
 		panic(err)
 	}
 
+	err = face.SetPixelSizes(0, 26)
+	if err != nil {
+		panic(err)
+	}
+
 	// Load the glyph for the codepoint 'A'.
 	err = face.LoadGlyph(face.GetCharIndex('A'), freetype.LOAD_DEFAULT)
 	if err != nil {
