@@ -1,4 +1,4 @@
-module github.com/pekim/freetype-go
+module github.com/pekim/freetype
 
 go 1.23.4
 

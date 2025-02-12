@@ -1,6 +1,6 @@
 # freetype
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/pekim/freetype-go)](https://pkg.go.dev/github.com/pekim/freetype-go)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/pekim/freetype)](https://pkg.go.dev/github.com/pekim/freetype)
 
 This is a cgo-free library that implements the much of the [FreeType](https://freetype.org/) C API.
 It is a relatively thin wrapper around the excellent [libfreetype](https://pkg.go.dev/modernc.org/libfreetype),
@@ -36,7 +36,7 @@ Most C types defined by FreeType have a corresponding Go type.
 Most FreeType C macros do not need to be exposed.
 One exception is the [Font Testing Macros](https://freetype.org/freetype2/docs/reference/ft2-font_testing_macros.html).
 They are exposed as functions, such as
-[HasHorizontal](https://pkg.go.dev/pekim/freetype-go#Face.HasHorizontal).
+[HasHorizontal](https://pkg.go.dev/pekim/freetype#Face.HasHorizontal).
 
 ## Examples
 

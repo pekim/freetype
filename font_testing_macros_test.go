@@ -4,7 +4,7 @@ import (
 	_ "embed"
 	"testing"
 
-	"github.com/pekim/freetype-go/internal/font"
+	"github.com/pekim/freetype/internal/font"
 	"github.com/stretchr/testify/assert"
 )
 

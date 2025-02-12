@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/pekim/freetype-go"
-	"github.com/pekim/freetype-go/internal/font"
+	"github.com/pekim/freetype"
+	"github.com/pekim/freetype/internal/font"
 )
 
 // Show how initialize the library, load a font, rasterize a glyph, and dump

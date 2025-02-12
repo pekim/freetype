@@ -5,8 +5,8 @@ import (
 	"image/png"
 	"os"
 
-	"github.com/pekim/freetype-go"
-	"github.com/pekim/freetype-go/internal/font"
+	"github.com/pekim/freetype"
+	"github.com/pekim/freetype/internal/font"
 )
 
 func main() {
