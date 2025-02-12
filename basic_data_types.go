@@ -231,9 +231,10 @@ func (bm Bitmap) Buffer() []byte {
 	return unsafe.Slice((*byte)(bm.buffer), bm.Rows*UInt(math.Abs(float64(bm.Pitch))))
 }
 
-// BufferVisualization returns a string containing an ascii representation of a grayscale buffer.
+// BufferVisualization returns a string containing an ascii representation of a grayscale bitmap.
+// It can be useful for demonstration or debug purposes.
 func (bm Bitmap) BufferVisualization() string {
-	const density = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. "
+	const density = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
 	var builder strings.Builder
 	buffer := bm.Buffer()
 
@@ -242,9 +243,7 @@ func (bm Bitmap) BufferVisualization() string {
 		for col := range bm.Width {
 			pixel := buffer[rowStart+int(col)]
 			index := int(float64(pixel) / 0xff * float64(len(density)-1))
-			index = len(density) - 1 - index // reverse the index, as density const runs from most to least dense
-			densityIndex := density[index]
-			builder.WriteByte(densityIndex)
+			builder.WriteByte(density[index])
 		}
 		builder.WriteRune('\n')
 		rowStart += int(bm.Pitch)
