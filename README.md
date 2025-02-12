@@ -47,6 +47,25 @@ Simple examples can be found in the `example` directory.
 Most types and functions in the [Core API](https://freetype.org/freetype2/docs/reference/index.html#core-api) are implemented.
 That should suffice for many glyph rasterization needs.
 
+## Alternatives
+
+While this library has its benefits there are alternatives that should be considered.
+
+- [modernc.org/libfreetype](https://pkg.go.dev/modernc.org/libfreetype) -
+  This is the library that this library wraps.
+  It is the result of using ccgo to compile the FreeType C source code to Go.
+  The main challenge with using it is that its API is a little tricky to use.
+  Pointers are represented with `uintptr`. An instance of [libc.TLS](https://pkg.go.dev/modernc.org/libc#TLS) must be used,
+  and passed to all functions. It does not export many constants that are needed.
+- [github.com/golang/freetype](https://pkg.go.dev/github.com/golang/freetype) -
+  This is a Go port of the C FreeType library.
+  It has some limitations, a number of open bugs, and has not been updated in 8 years.
+  However it's a good library, and will likely suffice for many use cases.
+- [FreeType](https://freetype.org/) -
+  It's perfectly possible to use cgo to use the FreeType library itself.
+  This requires the library to be installed, for building apps the headers available,
+  and a knowledge of C and cgo.
+
 ## Development
 
 ### source files
