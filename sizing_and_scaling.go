@@ -15,6 +15,11 @@ https://freetype.org/freetype2/docs/reference/ft2-sizing_and_scaling.html#ft_siz
 */
 type Size uintptr
 
+// Rec returns a pointer to the SizeRec that is referenced by the Size.
+func (size Size) Rec() *SizeRec {
+	return fromUintptr[SizeRec](uintptr(size))
+}
+
 func init() {
 	assertSameSize(SizeRec{}, libfreetype.TFT_SizeRec{})
 }
