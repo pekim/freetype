@@ -1,6 +1,8 @@
 package freetype
 
 import (
+	"unsafe"
+
 	"modernc.org/libfreetype"
 )
 
@@ -25,7 +27,7 @@ func init() {
 
 // String returns the table entry's string field.
 func (sn SfntName) String() string {
-	return goStringForNotNullTerminatedCString(sn.string, sn.string_len)
+	return unsafe.String(sn.string, sn.string_len)
 }
 
 // GetSfntNameCount retrieves the number of name strings in the SFNT ‘name’ table.
@@ -55,7 +57,7 @@ func init() {
 
 // String returns the language tag as a string.
 func (sn SfntLangTag) String() string {
-	return goStringForNotNullTerminatedCString(sn.string, sn.string_len)
+	return unsafe.String(sn.string, sn.string_len)
 }
 
 // GetSfntLangTag retrieves the language tag associated with a language ID of an SFNT ‘name’ table entry.

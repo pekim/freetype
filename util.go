@@ -37,15 +37,3 @@ func alloc[T any](tls *libc.TLS, exampleObject T) (*T, func()) {
 	object := fromUintptr[T](tls.Alloc(size))
 	return object, func() { tls.Free(size) }
 }
-
-func goStringForNotNullTerminatedCString(str *Byte, strLen UInt) string {
-	// The string is not guaranteed to be null-terminated, so create buffer with one more
-	// byte than strLen.
-	buffer := make([]byte, strLen+1)
-	// Copy the string to the buffer.
-	copy(buffer[:strLen], unsafe.Slice((*byte)(unsafe.Pointer(str)), strLen))
-	// Add a null to ensure that the string is terminated.
-	buffer[strLen] = 0
-
-	return libc.GoString(toUintptr(&buffer[0]))
-}
