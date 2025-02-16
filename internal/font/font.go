@@ -2,8 +2,8 @@ package font
 
 import _ "embed"
 
-//go:embed DejaVuSans.ttf
+//go:embed DejaVuSans/DejaVuSans.ttf
 var DejaVuSans []byte
 
-//go:embed DejaVuSansMono.ttf
+//go:embed DejaVuSans/DejaVuSansMono.ttf
 var DejaVuSansMono []byte

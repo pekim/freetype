@@ -24,7 +24,7 @@ func TestLibraryNewFace(t *testing.T) {
 	lib, _ := Init()
 
 	// good font file
-	face, err := lib.NewFace("internal/font/DejaVuSansMono.ttf", 0)
+	face, err := lib.NewFace("internal/font/DejaVuSans/DejaVuSansMono.ttf", 0)
 	assert.Nil(t, err)
 	assert.NotNil(t, face.face)
 	err = face.Done()
