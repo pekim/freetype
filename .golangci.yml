@@ -7,10 +7,7 @@
 # Version: v1.0.0
 #
 linters:
-  # some linters are enabled by default
-  # https://golangci-lint.run/usage/linters/
-  #
-  # enable some extra linters
+  disable-all: true
   enable:
     # Errcheck is a program for checking for unchecked errors in Go code.
     - errcheck
@@ -48,9 +45,6 @@ linters:
 
     # Finds commonly misspelled English words.
     - misspell
-
-    # Checks for duplicate words in the source code.
-    # - dupword
 
 linters-settings:
   gci: # define the section orders for imports
@@ -135,12 +129,6 @@ linters-settings:
       # warns when initialism, variable or package naming conventions are not followed.
       - name: var-naming
         disabled: true
-
-  # dupword:
-  #   # Keywords used to ignore detection.
-  #   # Default: []
-  #   ignore:
-  #   #  - "blah" # this will accept "blah blah …" as a valid duplicate word
 
   # misspell:
   #   # Correct spellings using locale preferences for US or UK.
