@@ -1,8 +1,6 @@
 package freetype
 
 import (
-	"unsafe"
-
 	"modernc.org/libfreetype"
 )
 
@@ -50,16 +48,20 @@ type GlyphSlotRec struct {
 	Outline libfreetype.TFT_Outline
 
 	NumSubglyphs UInt
-	_            unsafe.Pointer // subglyphs
+	_            uintptr // subglyphs
 
-	_ unsafe.Pointer // control_data
-	_ int64          // control_len
+	_ uintptr // control_data
+	_ int64   // control_len
 
 	LsbDelta Pos
 	RsbDelta Pos
 
-	_ unsafe.Pointer // other
-	_ unsafe.Pointer // internal
+	Other uintptr
+	_     uintptr // internal
+}
+
+func (rec GlyphSlotRec) SVGDocument() *SVGDocumentRec {
+	return fromUintptr[SVGDocumentRec](rec.Other)
 }
 
 func init() {

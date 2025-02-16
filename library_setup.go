@@ -25,13 +25,14 @@ https://freetype.org/freetype2/docs/reference/ft2-library_setup.html#ft_init_fre
 func Init() (Library, error) {
 	tls := libc.NewTLS()
 	lib, freeLib := alloc(tls, Library{})
+	defer freeLib()
 	lib.tls = tls
 
 	err := libfreetype.XFT_Init_FreeType(tls, toUintptr(&lib.library))
-
-	lib_ := *lib
-	freeLib()
-	return lib_, newError(err, "failed to init library")
+	if err != Err_Ok {
+		return Library{}, newError(err, "failed to init library")
+	}
+	return *lib, nil
 }
 
 // Done destroys the FreeType library object represented by Library,

@@ -37,3 +37,8 @@ func alloc[T any](tls *libc.TLS, exampleObject T) (*T, func()) {
 	object := fromUintptr[T](tls.Alloc(size))
 	return object, func() { tls.Free(size) }
 }
+
+func __ccgo_fp(f interface{}) uintptr {
+	type iface [2]uintptr
+	return (*iface)(unsafe.Pointer(&f))[1]
+}
