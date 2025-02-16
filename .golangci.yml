@@ -136,26 +136,26 @@ linters-settings:
       - name: var-naming
         disabled: true
 
-  dupword:
-    # Keywords used to ignore detection.
-    # Default: []
-    ignore:
-    #  - "blah" # this will accept "blah blah …" as a valid duplicate word
+  # dupword:
+  #   # Keywords used to ignore detection.
+  #   # Default: []
+  #   ignore:
+  #   #  - "blah" # this will accept "blah blah …" as a valid duplicate word
 
-  misspell:
-    # Correct spellings using locale preferences for US or UK.
-    # Setting locale to US will correct the British spelling of 'colour' to 'color'.
-    # Default ("") is to use a neutral variety of English.
-    locale:
-      US
-      # - initialise
+  # misspell:
+  #   # Correct spellings using locale preferences for US or UK.
+  #   # Setting locale to US will correct the British spelling of 'colour' to 'color'.
+  #   # Default ("") is to use a neutral variety of English.
+  #   locale:
+  #     US
+  #     # - initialise
 
-    # List of words to ignore
-    # among the one defined in https://github.com/golangci/misspell/blob/master/words.go
-    ignore-words:
-      # - Colour
+  #   # List of words to ignore
+  #   # among the one defined in https://github.com/golangci/misspell/blob/master/words.go
+  #   ignore-words:
+  #     # - Colour
 
-    # Extra word corrections.
-    extra-words:
-    #  - typo: "whattever"
-    #    correction: "whatever"
+  #   # Extra word corrections.
+  #   extra-words:
+  #   #  - typo: "whattever"
+  #   #    correction: "whatever"
