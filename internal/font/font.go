@@ -10,3 +10,6 @@ var DejaVuSansMono []byte
 
 //go:embed Noto_Color_Emoji/NotoColorEmoji-Regular.ttf
 var NotoColorEmoji []byte
+
+//go:embed Roboto/Roboto-VariableFont_wdth,wght.ttf
+var RobotoVariable []byte
