@@ -60,10 +60,6 @@ type GlyphSlotRec struct {
 	_     uintptr // internal
 }
 
-func (rec GlyphSlotRec) SVGDocument() *SVGDocumentRec {
-	return fromUintptr[SVGDocumentRec](rec.Other)
-}
-
 func init() {
 	assertSameSize(GlyphMetrics{}, libfreetype.TFT_Glyph_Metrics{})
 }
