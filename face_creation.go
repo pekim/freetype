@@ -293,7 +293,7 @@ func ParameterTagLCDFilterWeights(weights *[LCDFilterWeightsLen]byte) Parameter 
 		}
 	}
 
-	cWeights := malloc(uint64(unsafe.Sizeof(LCDFilterWeightsLen)))
+	cWeights := libc.Xmalloc(nil, libc.Tsize_t(unsafe.Sizeof(LCDFilterWeightsLen)))
 	libc.Xmemcpy(nil, cWeights, toUintptr(&(*weights)[0]), LCDFilterWeightsLen)
 
 	return Parameter{
@@ -332,7 +332,7 @@ func booleanParamTag(tag ParamTag, value *bool) Parameter {
 	}
 
 	var cBool Bool
-	cValue := fromUintptr[Bool](malloc(uint64(unsafe.Sizeof(cBool))))
+	cValue := fromUintptr[Bool](libc.Xmalloc(nil, libc.Tsize_t(unsafe.Sizeof(cBool))))
 	if *value {
 		*cValue = 1
 	} else {
@@ -354,7 +354,7 @@ func integerParamTag(tag ULong, value *int) Parameter {
 	}
 
 	var cInt Int32
-	cValue := fromUintptr[Int32](malloc(uint64(unsafe.Sizeof(cInt))))
+	cValue := fromUintptr[Int32](libc.Xmalloc(nil, libc.Tsize_t(unsafe.Sizeof(cInt))))
 	*cValue = Int32(*value)
 
 	return Parameter{

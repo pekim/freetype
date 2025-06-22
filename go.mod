@@ -4,8 +4,8 @@ go 1.23.4
 
 require (
 	github.com/stretchr/testify v1.10.0
-	modernc.org/libc v1.61.13
-	modernc.org/libfreetype v0.9.17
+	modernc.org/libc v1.66.0
+	modernc.org/libfreetype v0.9.21
 )
 
 require (
@@ -16,10 +16,10 @@ require (
 	github.com/ncruces/go-strftime v0.1.9 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
-	golang.org/x/exp v0.0.0-20250210185358-939b2ce775ac // indirect
-	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b // indirect
+	golang.org/x/sys v0.33.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	modernc.org/libz v0.16.14 // indirect
+	modernc.org/libz v0.16.18 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
-	modernc.org/memory v1.8.2 // indirect
+	modernc.org/memory v1.11.0 // indirect
 )
