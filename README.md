@@ -1,7 +1,7 @@
 # freetype
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/pekim/freetype)](https://pkg.go.dev/github.com/pekim/freetype)
-[![golangci-lint](https://github.com/pekim/freetype/actions/workflows/golangci-lint.yml/badge.svg)](https://github.com/pekim/freetype/actions/workflows/golangci-lint.yml)
+[![golangci-lint](https://github.com/pekim/freetype/actions/workflows/verify.yml/badge.svg)](https://github.com/pekim/freetype/actions/workflows/verify.yml)
 
 This is a cgo-free library that implements the much of the [FreeType](https://freetype.org/) C API.
 It is a relatively thin wrapper around the excellent [libfreetype](https://pkg.go.dev/modernc.org/libfreetype),
