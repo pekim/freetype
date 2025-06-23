@@ -76,8 +76,9 @@ func TestFaceLoadChar(t *testing.T) {
 	lib, _ := Init()
 	face, _ := lib.NewMemoryFace(font.DejaVuSansMono, 0)
 
-	// face.SetPixelSizes(0, 20)
-	err := face.LoadChar('A', LOAD_DEFAULT)
+	err := face.SetPixelSizes(0, 32)
+	assert.Nil(t, err)
+	err = face.LoadChar('A', LOAD_DEFAULT)
 	assert.Nil(t, err)
 	err = face.RenderGlyph(RENDER_MODE_NORMAL)
 	assert.Nil(t, err)
