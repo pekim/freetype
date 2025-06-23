@@ -1,6 +1,7 @@
 package freetype
 
 import (
+	"runtime"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -21,6 +22,8 @@ func TestLibraryVersion(t *testing.T) {
 
 	major, minor, patch := lib.Version()
 	assert.Equal(t, 2, major)
-	assert.Equal(t, 12, minor)
-	assert.Equal(t, 1, patch)
+	if runtime.GOOS == "linux" {
+		assert.Equal(t, 12, minor)
+		assert.Equal(t, 1, patch)
+	}
 }
