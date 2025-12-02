@@ -4,8 +4,9 @@ import (
 	_ "embed"
 	"testing"
 
-	"github.com/pekim/freetype/internal/font"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/pekim/freetype/internal/font"
 )
 
 //go:embed bitmap_visualization_A

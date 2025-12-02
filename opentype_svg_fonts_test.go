@@ -5,9 +5,10 @@ package freetype
 import (
 	"testing"
 
-	"github.com/pekim/freetype/internal/font"
 	"github.com/stretchr/testify/assert"
 	"modernc.org/libc"
+
+	"github.com/pekim/freetype/internal/font"
 )
 
 func TestLibrarySetSVGHooks(t *testing.T) {

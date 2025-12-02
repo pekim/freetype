@@ -82,8 +82,8 @@ To use a git pre-commit hook for the checks
 
 - install `goimports` if not already installed
   - https://pkg.go.dev/golang.org/x/tools/cmd/goimports
-- install `golangci-lint` if not already installed
-  - https://golangci-lint.run/usage/install/#local-installation
+- install `golangci-lint` (v2.x) if not already installed
+  - https://golangci-lint.run/docs/welcome/install/#binaries
 - install the `pre-commit` application if not already installed
   - https://pre-commit.com/index.html#install
 - install a git pre-commit hook in this repo's workspace

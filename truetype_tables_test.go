@@ -4,8 +4,9 @@ import (
 	"encoding/binary"
 	"testing"
 
-	"github.com/pekim/freetype/internal/font"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/pekim/freetype/internal/font"
 )
 
 func TestFaceSfntTable(t *testing.T) {

@@ -3,8 +3,9 @@ package freetype
 import (
 	"testing"
 
-	"github.com/pekim/freetype/internal/font"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/pekim/freetype/internal/font"
 )
 
 func TestFaceSelectCharmap(t *testing.T) {
